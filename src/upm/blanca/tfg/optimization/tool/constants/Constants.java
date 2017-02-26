@@ -18,7 +18,6 @@ public class Constants {
 	//public final static String LABEL_SQL = "¿Qué consulta deseas realizar?";
 	public final static String LABEL_REPORT = "La consulta seleccionada es: ";
 
-
 	//POSSIBLE SELECTIONS
 	public final static String SQL_TYPE = "SQL";
 	public final static String PREDETERMINED_TYPE = "Predeterminado";
