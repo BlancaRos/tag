@@ -72,7 +72,6 @@ public class CheckboxUtility {
 					MensajeDialog.MessageSelectOption();
 				}
 			}
-		});
-		
+		});		
 	}
 }

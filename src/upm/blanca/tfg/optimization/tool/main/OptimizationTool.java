@@ -12,5 +12,4 @@ public class OptimizationTool {
 		  MainInterface demoPanelConFichas = new MainInterface();
 	      demoPanelConFichas.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	}
-
 }

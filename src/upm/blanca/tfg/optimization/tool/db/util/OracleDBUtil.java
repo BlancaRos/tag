@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.main;
+package upm.blanca.tfg.optimization.tool.db.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
+import upm.blanca.tfg.optimization.tool.main.MainInterface;
 import upm.blanca.tfg.optimization.tool.util.QueryBean;
 
 public class OracleDBUtil {
-
 
 	public static Connection getConnectionOracle() throws SQLException{
 
@@ -34,9 +34,8 @@ public class OracleDBUtil {
 			e.printStackTrace();
 		}
 		return connection;
-
-
 	}
+	
 	public static void createQueryOracle(Connection connection, QueryBean queryBean) throws SQLException{
 		if (connection != null) {
 			System.out.println("You made it, take control your database now!");
@@ -89,5 +88,4 @@ public class OracleDBUtil {
 			System.out.println("Failed to make connection!");
 		}
 	}
-
 }

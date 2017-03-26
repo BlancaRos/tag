@@ -72,6 +72,7 @@ public class ComboBoxUtility {
 		panel.setLayout(null);
 
 		labelDesignQuery = new JLabel();
+		labelDesignQuery.setName("id2_sqlText");
 		labelDesignQuery.setText(Constants.SQL_TEXT);
 		labelDesignQuery.setBounds(50, 80, 400, 25);
 
@@ -147,9 +148,9 @@ public class ComboBoxUtility {
 		labelQueryDatabase = new JLabel();
 		labelQueryDatabase.setText(Constants.LABEL_REPORT);
 		labelQueryDatabase.setBounds(10, 10, 400, 25);
-		labelQueryDatabase.setName("infoSelectConsult");
+		labelQueryDatabase.setName("id2_infoSelectConsult");
 		labelSelectedQuery = new JLabel();
-		labelSelectedQuery.setName("designQuery");     
+		labelSelectedQuery.setName("id2_designQuery");     
         //Introducir la consulta elegida
 		
 		//labelSelectedQuery.setText(MainInterface.queryBean.getQueryString());

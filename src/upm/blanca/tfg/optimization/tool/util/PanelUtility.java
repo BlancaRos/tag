@@ -17,7 +17,7 @@ public class PanelUtility {
 		//Crear primer panel y etiqueta correspondiente
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel(text, SwingConstants.CENTER);
-		label.setName("labelDB");
+		label.setName("id1_labelDB");
 		panel.setLayout(null);//Para poder poner los componentes donde quiero
 		label.setBounds(50,10,400,25); //x, y, largo, ancho
 		panel.add(label); 
@@ -31,6 +31,7 @@ public class PanelUtility {
 		//Crear segundo panel y etiqueta correspondiente
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel(text, SwingConstants.CENTER);
+		label.setName("id2_labelQueryType");
 		//Crear un desplegable
 		DefaultComboBoxModel dropDown = new DefaultComboBoxModel();
 		dropDown.addElement(Constants.DEFAULT_TYPE);
@@ -94,5 +95,4 @@ public class PanelUtility {
 	//
 	//	return panel;
 	//}
-
 }

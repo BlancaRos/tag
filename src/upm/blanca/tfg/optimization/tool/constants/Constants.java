@@ -48,5 +48,4 @@ public class Constants {
 	public final static String ERROR_DIALOG = "¡Debes seleccionar una opción!";
 	public final static String ERROR_DIALOG_TITLE = "¡Error!";
 
-
 }

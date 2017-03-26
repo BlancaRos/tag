@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.main;
+package upm.blanca.tfg.optimization.tool.db.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 public class MySQLUtil {
 
 	public static Connection getConnectionMySQL() throws SQLException{
-
 
 		System.out.println("-------- MySQL JDBC Connection Testing ------------");
 

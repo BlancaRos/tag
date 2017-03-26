@@ -42,6 +42,4 @@ public class ButtonUtility {
 			MensajeDialog.MessageDialogue();
 		}
 	}
-
-
 }

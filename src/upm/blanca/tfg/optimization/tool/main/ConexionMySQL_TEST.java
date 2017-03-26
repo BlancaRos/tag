@@ -4,7 +4,10 @@ import java.sql.*;
 
 import javax.swing.JOptionPane;
 
-public class ConexionMySQL {
+//EJEMPLO PRUEBA!!!!!
+
+
+public class ConexionMySQL_TEST {
 
 	public String db = "tfg_pruebas";
 	public String url = "jdbc:mysql://localhost/"+db;
@@ -27,7 +30,7 @@ public class ConexionMySQL {
 	public static void btnProbarconexionActionPerformed() throws SQLException { 
 		//public void btnProbarconexionActionPerformed(java.awt.event.ActionEvent evt) { 
 
-		ConexionMySQL mysql = new ConexionMySQL();
+		ConexionMySQL_TEST mysql = new ConexionMySQL_TEST();
 		java.sql.Connection cn= mysql.Conectar();
 		PreparedStatement stmt;
 
@@ -49,6 +52,5 @@ public class ConexionMySQL {
 		stmt.setString(7, "HOLA");
 
 		stmt.executeUpdate();
-
 	} 
 }

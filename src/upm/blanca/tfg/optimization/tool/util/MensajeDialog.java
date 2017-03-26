@@ -10,8 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
+import upm.blanca.tfg.optimization.tool.db.util.OracleDBUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
-import upm.blanca.tfg.optimization.tool.main.OracleDBUtil;
 
 public class MensajeDialog implements ActionListener{
 	public void actionPerformed (ActionEvent e){
@@ -23,20 +23,19 @@ public class MensajeDialog implements ActionListener{
 		if( eleccion == JOptionPane.NO_OPTION){
 			System.exit(0);
 		} else {
-			//			System.out.println(">> " + MainInterface.queryBean.getBbddName() + " - " + MainInterface.queryBean.getQueryType() + " - " + MainInterface.queryBean.getQueryString());
+			//System.out.println(">> " + MainInterface.queryBean.getBbddName() + " - " + MainInterface.queryBean.getQueryType() + " - " + MainInterface.queryBean.getQueryString());
 			System.out.println(">> " + MainInterface.queryBean.getBbddName() + " - " + MainInterface.queryBean.getQueryString());
 
 			//PARA IR DIRECTAMENTE A LA PESTAÑA FINAL
 			MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3),true);
 			MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3));
 			for(Component jc:MainInterface.panel3.getComponents()){
-				if(jc instanceof JLabel && jc.getName().equals("designQuery")){					
+				if(jc instanceof JLabel && jc.getName().equals("id2_designQuery")){					
 					//VER COMO DIFERENCIAR LOS DOS JLABEL PARA QUE NO ME MODIFIQUE LOS DOS
 					((JLabel) jc).setText(MainInterface.queryBean.getQueryString());
 				}
 			}
 			Component c = MainInterface.panel3.getComponent(0);
-
 
 			try {
 				Connection oracleConnection = OracleDBUtil.getConnectionOracle();
@@ -54,7 +53,7 @@ public class MensajeDialog implements ActionListener{
 
 	public static void NextStep(){
 		//PARA IR DIRECTAMENTE A LA PESTAÑA DE SELECCIONAR CONSULTA
-		//		MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel2),true);
+		//MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel2),true);
 		MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel2));
 	}
 

@@ -57,6 +57,4 @@ public class QueryBean {
 	public void setQueryDate(Date queryDate) {
 		this.queryDate = queryDate;
 	}
-
-
 }

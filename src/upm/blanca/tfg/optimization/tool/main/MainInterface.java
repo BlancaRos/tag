@@ -12,17 +12,14 @@ import upm.blanca.tfg.optimization.tool.util.QueryBean;
 
 public class MainInterface extends JFrame  {
 
-	
 	public static QueryBean queryBean = new QueryBean();
 	public static JTabbedPane mainInterface = new JTabbedPane();
 	public static String labelDB = Constants.LABEL_DB;
 	public static String labelReport = Constants.LABEL_REPORT;
 	public static String labelDefaultQuery = Constants.LABEL_QUERY;
-	public static JPanel panel1 = PanelUtility.createPanelDataBase(labelDB);	
-	public static JPanel panel3 = PanelUtility.createPanelReport(labelReport);
-	public static JPanel panel2 = PanelUtility.createPanelQueryType(labelDefaultQuery);
-
-
+	public static JPanel panel1 = null;	
+	public static JPanel panel3 =null;
+	public static JPanel panel2 = null;
 	
 	boolean valor = false;
 
@@ -30,7 +27,9 @@ public class MainInterface extends JFrame  {
 	public MainInterface() throws SQLException {
 
 		super( "TFG" );
-	 
+		panel1 = PanelUtility.createPanelDataBase(labelDB);	
+		panel3 = PanelUtility.createPanelReport(labelReport);
+		panel2 = PanelUtility.createPanelQueryType(labelDefaultQuery);
 		//Crear objeto JTabbedPane 
 		//JTabbedPane mainInterface = new JTabbedPane();
 
@@ -65,9 +64,6 @@ public class MainInterface extends JFrame  {
 		//panel2.setVisible(false);
 		//panel3.setVisible(false);
 		
-		
 		//MySQLUtil.ConexionBBDDMySQL();
 	} 
-	  
-	
 }
