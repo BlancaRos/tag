@@ -17,14 +17,11 @@ public class ButtonUtility {
 	static boolean isClicked = false;
 
 	public static void addListenerClickButton(JButton boton) {
-		final int var=3;
-
+		
 		boton.addActionListener (new ActionListener(){
 			public void actionPerformed (ActionEvent e){
 				isClicked = true;
 				pulsedButton(isClicked); // añadir logica necesaria
-				// Aquí está accesible unaVariable
-				System.out.println(var);
 			}
 		});
 	}
