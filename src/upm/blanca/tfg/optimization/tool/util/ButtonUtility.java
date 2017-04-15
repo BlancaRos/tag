@@ -20,6 +20,7 @@ public class ButtonUtility {
 			public void actionPerformed (ActionEvent e){
 				isClicked = true;
 				pulsedButton(isClicked); // añadir logica necesaria
+				System.out.println("hola");
 			}
 		});
 	}
