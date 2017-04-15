@@ -12,6 +12,8 @@ import upm.blanca.tfg.optimization.tool.util.QueryBean;
 
 public class MainInterface extends JFrame  {
 
+	private static final long serialVersionUID = -809150699758926335L;
+
 	public static QueryBean queryBean = new QueryBean();
 	public static JTabbedPane mainInterface = new JTabbedPane();
 	public static String labelDB = Constants.LABEL_DB;
@@ -58,7 +60,7 @@ public class MainInterface extends JFrame  {
 		// agregar objeto JTabbedPane al contenedor
 		getContentPane().add(mainInterface);
 
-		setSize(550, 400);
+		setSize(1000, 500);
 		setVisible(true);
 		//panel1.setVisible(true);
 		//panel2.setVisible(false);

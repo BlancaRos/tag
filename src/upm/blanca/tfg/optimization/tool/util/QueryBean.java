@@ -12,6 +12,9 @@ public class QueryBean {
 	private long queryStart;
 	private long queryEnd;
 	private Date queryDate;
+	private int numRows;
+	private String costQuery;
+	private String avgTime;
 
 	public QueryBean(){
 	}
@@ -56,5 +59,23 @@ public class QueryBean {
 	}
 	public void setQueryDate(Date queryDate) {
 		this.queryDate = queryDate;
+	}
+	public int getNumRows() {
+		return numRows;
+	}
+	public void setNumRows(int numRows) {
+		this.numRows = numRows;
+	}
+	public String getCostQuery() {
+		return costQuery;
+	}
+	public void setCostQuery(String costQuery) {
+		this.costQuery = costQuery;
+	}
+	public String getAvgTime() {
+		return avgTime;
+	}
+	public void setAvgTime(String avgTime) {
+		this.avgTime = avgTime;
 	}
 }

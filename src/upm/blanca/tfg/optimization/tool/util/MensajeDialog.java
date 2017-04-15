@@ -3,13 +3,20 @@ package upm.blanca.tfg.optimization.tool.util;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
+import upm.blanca.tfg.optimization.tool.csv.CSVUtil;
+import upm.blanca.tfg.optimization.tool.db.util.MySQLUtil;
 import upm.blanca.tfg.optimization.tool.db.util.OracleDBUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 
@@ -20,6 +27,8 @@ public class MensajeDialog implements ActionListener{
 	}
 	public static void MessageDialogue() {
 		int eleccion = JOptionPane.showConfirmDialog(null, Constants.CONFIRM_DIALOG, Constants.CONFIRM_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		ResultSet resultSet = null;
+
 		if( eleccion == JOptionPane.NO_OPTION){
 			System.exit(0);
 		} else {
@@ -35,19 +44,61 @@ public class MensajeDialog implements ActionListener{
 					((JLabel) jc).setText(MainInterface.queryBean.getQueryString());
 				}
 			}
-			Component c = MainInterface.panel3.getComponent(0);
+			Component comp = MainInterface.panel3.getComponent(0);
 
 			try {
 				Connection oracleConnection = OracleDBUtil.getConnectionOracle();
 
 				if (oracleConnection != null){
-					OracleDBUtil.createQueryOracle(oracleConnection,MainInterface.queryBean);
+					resultSet = OracleDBUtil.createQueryOracle(oracleConnection,MainInterface.queryBean);
+
+					// Numero de columnas pedidas a iterar
+					int numOfColums = resultSet.getMetaData().getColumnCount();
+					boolean first = true;
+					String [] columns = new String[numOfColums];
+					FileWriter writer;
+					String csvFile =  "/Users/admin/Desktop/resultQuery.csv";
+					int type  = 0;
+					writer = new FileWriter(csvFile);
+					int numRows = 0;
+
+					// Iterar los resultados de la query
+					while(resultSet.next())  {
+						numRows++;
+						for (int i=0; i<numOfColums;i++){
+							//Guardo los nombres de las columnas
+							if(first){
+								columns[i] = resultSet.getMetaData().getColumnName(i+1);
+							//Guardo todos los valores sin importar el tipo
+							} else {
+								columns[i] = String.valueOf(resultSet.getObject(i+1)).replaceAll(",",Constants.BLANK);
+							}
+						}
+						//Escribo en el csv
+						CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
+						first = false;
+
+					}
+					MainInterface.queryBean.setNumRows(numRows);
+					oracleConnection.close(); 
+
+					writer.flush();
+					writer.close();
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 
+		}
+		try {
+			MySQLUtil.populateDB(MainInterface.queryBean);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

@@ -19,15 +19,15 @@ public class Constants {
 	public final static String LABEL_REPORT = "La consulta seleccionada es: ";
 
 	//POSSIBLE SELECTIONS
-	public final static String SQL_TYPE = "SQL";
-	public final static String PREDETERMINED_TYPE = "Predeterminado";
+	public final static String NEW_TYPE = "Consulta nueva";
+	public final static String OLD_TYPE = "Modificar consulta creada";
 	public final static String DEFAULT_TYPE = "Seleccione uno...";
 	public final static String VEHICLE_DATABASE = "Vehículos";
 	public final static String OTHER_DATABASE = "Otro";
-	public final static String TYPE_SELECT = "Select";
-	public final static String TYPE_DELETE = "Delete";
-	public final static String TYPE_INSERT = "Insert";
-	public final static String TYPE_UPDATE = "Update";
+	//public final static String TYPE_SELECT = "Select";
+	//public final static String TYPE_DELETE = "Delete";
+	//public final static String TYPE_INSERT = "Insert";
+	//public final static String TYPE_UPDATE = "Update";
 	
 	//PANEL NAME
 	public final static String FIRST_PANEL = "Panel BBDD";
@@ -36,7 +36,13 @@ public class Constants {
 
 	//Explanation of the two types of queries
 	public final static String SQL_TEXT = "Diseñe la consulta que desee realizar.";
+	public final static String DESCRIPTION_TEXT = "Diseñe la descripcion a consultar.";
 	public final static String OPERATION_TYPE = "Seleccione el tipo de consulta que desea ver.";
+	
+	//Modify query
+	public final static String MODIFY_DESCRIPTION_TEXT = "1) Seleccione la descripción a la que desea añadir una consulta: ";
+	public final static String MODIFY_SQL_TEXT = "2) Seleccione/añada la consulta a realizar: ";
+
 
 	//BUTTONS
 	public final static String SENT_QUERY ="Enviar consulta a BBDD";

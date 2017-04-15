@@ -1,10 +1,15 @@
 package upm.blanca.tfg.optimization.tool.util;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+
+import upm.blanca.tfg.optimization.tool.main.MainInterface;
 
 
 public class ButtonUtility {
@@ -20,6 +25,34 @@ public class ButtonUtility {
 				pulsedButton(isClicked); // añadir logica necesaria
 				// Aquí está accesible unaVariable
 				System.out.println(var);
+			}
+		});
+	}
+
+	public static void addListenerClickCancelButtonDescription(JButton button, JFrame ventana) {
+
+		button.addActionListener (new ActionListener(){
+
+			public void actionPerformed (ActionEvent e){
+				System.out.println("aaaaaaaaa");
+				ventana.setVisible(false);
+			}
+		});
+	}
+
+	public static void addListenerClickOkButtonDescription(JButton button, JFrame ventana, JList list) {
+
+		button.addActionListener (new ActionListener(){
+			public void actionPerformed (ActionEvent e){
+				System.out.println("ooooo " + list.getSelectedValue().toString());
+				JLabel labelDescriptionQuery = new JLabel();
+				labelDescriptionQuery.setName("id2_descriptionQuery");
+				labelDescriptionQuery.setText(list.getSelectedValue().toString());
+				labelDescriptionQuery.setBounds(50, 70, 500, 30);
+				
+				MainInterface.panel2.add(labelDescriptionQuery);
+			
+				ventana.setVisible(false);
 			}
 		});
 	}

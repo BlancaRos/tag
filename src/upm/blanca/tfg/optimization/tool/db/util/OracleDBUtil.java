@@ -36,7 +36,8 @@ public class OracleDBUtil {
 		return connection;
 	}
 	
-	public static void createQueryOracle(Connection connection, QueryBean queryBean) throws SQLException{
+	public static ResultSet createQueryOracle(Connection connection, QueryBean queryBean) throws SQLException{
+		ResultSet resultSet = null;
 		if (connection != null) {
 			System.out.println("You made it, take control your database now!");
 
@@ -53,30 +54,13 @@ public class OracleDBUtil {
 				}
 				// Hacer loop de ejecuciones
 				long startTime = System.currentTimeMillis();
-				ResultSet rs=stmt.executeQuery(finalQuery);
+				resultSet=stmt.executeQuery(finalQuery);
 				long endTime = System.currentTimeMillis();
 
 				long totalTime = endTime- startTime;
-				// Numero de columnas pedidas a iterar
-				int numOfColums = rs.getMetaData().getColumnCount();
-
-				// Iterar los resultados de la query
-				while(rs.next())  {
-
-					for (int i=1; i<=numOfColums;i++){
-						System.out.println(rs.getObject(i));	 
-					}
-					//					System.out.println(rs.getString(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  
-					//					System.out.println(rs.getObject("VEHICULOID"));
-					//					System.out.println(rs.getObject("NUMEROBASTIDOR"));
-					//					System.out.println(rs.getObject("MARCAMODELO"));
-					//					System.out.println(rs.getObject("COLOR"));
-					//					System.out.println(rs.getObject("ANIOFABRICACION"));
-					//					System.out.println(rs.getObject("OBSERVACIONES"));
-					System.out.println("-------------");
-				}
+				
 				System.out.println("La consulta ha tardado: "  + totalTime + "ms");
-				connection.close();  
+				 
 
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -87,5 +71,6 @@ public class OracleDBUtil {
 		} else {				
 			System.out.println("Failed to make connection!");
 		}
+		return resultSet;
 	}
 }

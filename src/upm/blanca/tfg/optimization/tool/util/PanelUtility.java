@@ -35,8 +35,8 @@ public class PanelUtility {
 		//Crear un desplegable
 		DefaultComboBoxModel dropDown = new DefaultComboBoxModel();
 		dropDown.addElement(Constants.DEFAULT_TYPE);
-		dropDown.addElement(Constants.PREDETERMINED_TYPE);
-		dropDown.addElement(Constants.SQL_TYPE);
+		dropDown.addElement(Constants.OLD_TYPE);
+		dropDown.addElement(Constants.NEW_TYPE);
 		JComboBox comboBox = new JComboBox(dropDown);
 		panel.add(label);
 		panel.add(comboBox);
