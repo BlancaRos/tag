@@ -2,8 +2,6 @@ package upm.blanca.tfg.optimization.tool.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -28,32 +26,21 @@ public class CheckboxUtility {
 		nextButton = new JButton(Constants.NEXT_BUTTON);
 		vehiclesButton = new JRadioButton(Constants.VEHICLE_DATABASE, false);
 		otherButton = new JRadioButton(Constants.OTHER_DATABASE, false);
-		
+
 		vehiclesButton.setBounds(100, 50, 100, 50);
 		otherButton.setBounds(100, 100, 100, 50);
 		nextButton.setBounds(300, 200, 100, 50);
-		
+
 		group.add(vehiclesButton);
 		group.add(otherButton);
-		
+
 		panel.add(vehiclesButton);
 		panel.add(otherButton);
 		panel.add(nextButton);
-		
+
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {				
-				MensajeDialog.NextStep();
-			}
-		});
-		
-		eventHandler();
-	}
-
-	public static void eventHandler(){ //eventHandler = manejador de eventos????
-		Integer numBbdd = 0;
-		nextButton.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				if(vehiclesButton.isSelected()){
 					System.out.println("PULSASTE VEHICULOS");
 					//Guardo la BBDD en una variable
@@ -68,7 +55,26 @@ public class CheckboxUtility {
 				else{
 					MensajeDialog.MessageSelectOption();
 				}
+				MensajeDialog.NextStep();
 			}
-		});		
+		});
+		//		nextButton.addMouseListener(new MouseAdapter() {
+		//			public void mousePressed(MouseEvent e) {
+		//				if(vehiclesButton.isSelected()){
+		//					System.out.println("PULSASTE VEHICULOS");
+		//					//Guardo la BBDD en una variable
+		//					bbddName = "VEHICULOS";
+		//					MainInterface.queryBean.setBbddName(bbddName);
+		//				}
+		//				else if(otherButton.isSelected()){
+		//					System.out.println("PULSASTE OTROS");
+		//					bbddName = "OTROS";
+		//					MainInterface.queryBean.setBbddName(bbddName);
+		//				}
+		//				else{
+		//					MensajeDialog.MessageSelectOption();
+		//				}
+		//			}
+		//		});		
 	}
 }

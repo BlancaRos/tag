@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Arrays;
 
 import javax.swing.JLabel;
@@ -21,10 +20,12 @@ import upm.blanca.tfg.optimization.tool.db.util.OracleDBUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 
 public class MensajeDialog implements ActionListener{
+	
 	public void actionPerformed (ActionEvent e){
 		// Aqui el código que queremos que se ejecute cuando tiene lugar la acción.
 		// la pulsación del botón, el <INTRO> en el JTextField, elección en el JComboBox, etc.
 	}
+	
 	public static void MessageDialogue() {
 		int eleccion = JOptionPane.showConfirmDialog(null, Constants.CONFIRM_DIALOG, Constants.CONFIRM_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		ResultSet resultSet = null;
@@ -32,19 +33,18 @@ public class MensajeDialog implements ActionListener{
 		if( eleccion == JOptionPane.NO_OPTION){
 			System.exit(0);
 		} else {
-			//System.out.println(">> " + MainInterface.queryBean.getBbddName() + " - " + MainInterface.queryBean.getQueryType() + " - " + MainInterface.queryBean.getQueryString());
-			System.out.println(">> " + MainInterface.queryBean.getBbddName() + " - " + MainInterface.queryBean.getQueryString());
 
 			//PARA IR DIRECTAMENTE A LA PESTAÑA FINAL
 			MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3),true);
 			MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3));
 			for(Component jc:MainInterface.panel3.getComponents()){
-				if(jc instanceof JLabel && jc.getName().equals("id2_designQuery")){					
-					//VER COMO DIFERENCIAR LOS DOS JLABEL PARA QUE NO ME MODIFIQUE LOS DOS
+				if(jc instanceof JLabel && jc.getName().equals("id2_infoSQLQuerySelected")){					
 					((JLabel) jc).setText(MainInterface.queryBean.getQueryString());
 				}
+				if(jc instanceof JLabel && jc.getName().equals("id2_infoDescriptQuerySelected")){					
+					((JLabel) jc).setText(MainInterface.queryBean.getQueryDescription());
+				}
 			}
-			Component comp = MainInterface.panel3.getComponent(0);
 
 			try {
 				Connection oracleConnection = OracleDBUtil.getConnectionOracle();
@@ -58,7 +58,6 @@ public class MensajeDialog implements ActionListener{
 					String [] columns = new String[numOfColums];
 					FileWriter writer;
 					String csvFile =  "/Users/admin/Desktop/resultQuery.csv";
-					int type  = 0;
 					writer = new FileWriter(csvFile);
 					int numRows = 0;
 
@@ -86,10 +85,8 @@ public class MensajeDialog implements ActionListener{
 					writer.close();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -97,14 +94,12 @@ public class MensajeDialog implements ActionListener{
 		try {
 			MySQLUtil.populateDB(MainInterface.queryBean);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public static void NextStep(){
 		//PARA IR DIRECTAMENTE A LA PESTAÑA DE SELECCIONAR CONSULTA
-		//MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel2),true);
 		MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel2));
 	}
 

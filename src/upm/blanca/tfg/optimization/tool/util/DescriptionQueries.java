@@ -1,13 +1,8 @@
 package upm.blanca.tfg.optimization.tool.util;
 
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -15,11 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import upm.blanca.tfg.optimization.tool.constants.Constants;
-
 public class DescriptionQueries {
 	
-	public static void selectDescriptionQuery(ArrayList result){ 
+	public static void selectDescriptionQuery(List<String> result){ 
 		//Creación de la ventana 
 		JFrame ventana = new JFrame("Consultas texto disponibles"); 
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
@@ -29,15 +22,6 @@ public class DescriptionQueries {
 		//Creación del panel, que contendra JList 
 		JPanel panel = new JPanel(); 
 		panel.setLayout(null); 
-		/*ArrayList nombres;
-		for(int x=0;x<list.size();x++) {
-			System.out.println(list.get(x));
-		}*/
-		/*Iterator<String> nombreIterator = list.iterator();
-		while(nombreIterator.hasNext()){
-			String elemento = nombreIterator.next();
-			nombres.add(elemento);
-		}*/
 		
 		//creación del objeto lista 
 		String[] descriptions = new String[result.size()];

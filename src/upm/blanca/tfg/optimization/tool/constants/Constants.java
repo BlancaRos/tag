@@ -14,9 +14,8 @@ public class Constants {
 	//EXPLANATION TABS
 	public final static String LABEL_DB = "Elige la base de datos a la que realizar la consulta.";
 	public final static String LABEL_QUERY = "Selecciona el tipo de consulta a realizar";
-	//public final static String LABEL_NATURAL = "¿Qué consulta deseas realizar?";
-	//public final static String LABEL_SQL = "¿Qué consulta deseas realizar?";
-	public final static String LABEL_REPORT = "La consulta seleccionada es: ";
+	public final static String LABEL_DESCRIPTION_REPORT = "La consulta en formato texto seleccionada es: ";
+	public final static String LABEL_SQL_REPORT = "La consulta en formato SQL seleccionada es: ";
 
 	//POSSIBLE SELECTIONS
 	public final static String NEW_TYPE = "Consulta nueva";
@@ -24,10 +23,6 @@ public class Constants {
 	public final static String DEFAULT_TYPE = "Seleccione uno...";
 	public final static String VEHICLE_DATABASE = "Vehículos";
 	public final static String OTHER_DATABASE = "Otro";
-	//public final static String TYPE_SELECT = "Select";
-	//public final static String TYPE_DELETE = "Delete";
-	//public final static String TYPE_INSERT = "Insert";
-	//public final static String TYPE_UPDATE = "Update";
 	
 	//PANEL NAME
 	public final static String FIRST_PANEL = "Panel BBDD";
@@ -45,8 +40,10 @@ public class Constants {
 
 
 	//BUTTONS
-	public final static String SENT_QUERY ="Enviar consulta a BBDD";
+	public final static String SENT_QUERY ="Ver informe";
 	public final static String NEXT_BUTTON = "Siguiente";
+	public final static String RESET_BUTTON = "Reset";
+	
 	
 	//MESSAGE DIALOGS
 	public final static String CONFIRM_DIALOG = "¿Seguro que desea continuar?";

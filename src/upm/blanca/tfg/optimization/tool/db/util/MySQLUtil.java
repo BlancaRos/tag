@@ -6,10 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.mysql.jdbc.PreparedStatement;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import upm.blanca.tfg.optimization.tool.util.QueryBean;
+
+import com.mysql.jdbc.PreparedStatement;
 public class MySQLUtil {
 
 	public static Connection getConnectionMySQL() throws SQLException{
@@ -31,176 +34,151 @@ public class MySQLUtil {
 		return connection;
 
 	}
-	//	public static void createQueryMySQL(Connection connection) throws SQLException{
-	//		Statement stmt = null;
-	//
-	//		//STEP 4: Execute a query
-	//		System.out.println("Creating statement...");
-	//		stmt = connection.createStatement();
-	//		String sql;
-	//		sql = "SELECT Matricula,Color FROM Vehiculos";
-	//		ResultSet rs = stmt.executeQuery(sql);
-	//
-	//		//STEP 5: Extract data from result set
-	//		while(rs.next()){
-	//			//Retrieve by column name
-	//			String id  = rs.getString("Matricula");
-	//			String color = rs.getString("Color");
-	//
-	//			//Display values
-	//			System.out.print("ID: " + id);
-	//			System.out.print("COLOR: " + color);
-	//			System.out.println();
-	//		}
-	//		//STEP 6: Clean-up environment
-	//		rs.close();
-	//		stmt.close();
-	//		connection.close();
-	//
-	//		if (connection != null) {
-	//			System.out.println("You made it, take control your database now!");
-	//		} else {
-	//			System.out.println("Failed to make connection!");
-	//		}
-	//	}
 
 	public static void populateDB(QueryBean queryBean) throws SQLException{
 		//hace conexion y redistribuye
 		Connection connection = getConnectionMySQL();
 		int idBBDD = insertIntoBBDD(connection, queryBean);
-		//int idDescription = insertIntoQueryDescription(connection, queryBean);
-		//insertIntoQuerySQL(connection, queryBean, idBBDD, idDescription);
-		//insertIntoExecution(connection, queryBean);
+		int idDescription = insertIntoQueryDescription(connection, queryBean);
+		int idSQLQuery = insertIntoQuerySQL(connection, queryBean, idBBDD, idDescription);
+		insertIntoExecution(connection, queryBean, idSQLQuery);
+		connection.close();
+		System.out.println("CLAVES: " + idBBDD + ", " + idDescription + ", " + idSQLQuery);
 	}
 
 	public static int insertIntoBBDD(Connection connection, QueryBean queryBean) throws SQLException{
-		System.out.println("%%%%% Entro");
 		int claveGenerada = 0;
+		long idResult = 0L;
 		String nameBBDD = "";
 		if(connection != null){
 
 			Statement s = connection.createStatement(); 
-			ResultSet rs = s.executeQuery ("SELECT * FROM BBDD WHERE NombreBBDD = 'VEHICULOS'");
+			ResultSet rs = s.executeQuery (("SELECT * FROM BBDD WHERE NombreBBDD = '") + queryBean.getBbddName() + ("'"));
 
 			//Guardo los valores del resultado de la consulta
-			while (rs.next()) 
-			{ 
-				//System.out.println ("CREADA ANTERIORMENTE: " + rs.getInt (1) + " " + rs.getString (2)); 
+			while (rs.next()){ 
 				claveGenerada = rs.getInt(1);
 				nameBBDD = rs.getString(2);
-				System.out.println("CREADA ANTERIORMENTE: "+ claveGenerada + " " + nameBBDD);
 			}
 
 			if(!nameBBDD.equals("VEHICULOS")){
-				System.out.println(":::::NO CREADA!!");
-				// Realizar INSERT en cada una de las tablas (execution BBDD...) intentar parametrizar lo maximo posbile
-				// (nombre BBDD...)
 				PreparedStatement pstm = null;
 				String query = "INSERT INTO BBDD (NombreBBDD) VALUES(?);";
 
 				pstm = (PreparedStatement) connection.prepareStatement(query);
 				pstm.setString(1, queryBean.getBbddName());
 				pstm.execute();
+				idResult = pstm.getLastInsertID();
 			}
 			else{
 				System.out.println("BBDD ya creada!!!!");
+				idResult = claveGenerada;
 			}
-
 		}
-		return claveGenerada;
+		System.out.println("<< " + idResult);
+		return (int) idResult;
 	}
 	public static int insertIntoQueryDescription(Connection connection, QueryBean queryBean) throws SQLException{
 		int claveGenerada = 0;
+		String description = "";
+		long idResult = 0L;
+
 		if(connection != null){
 
-			PreparedStatement prepStat = null;
-			Boolean result = false;
-			String verificationQuery = null;
-			verificationQuery = "SELECT * FROM QueryDescription WHERE Descripcion = '" + queryBean.getQueryDescription() + "'";
-			prepStat = (PreparedStatement) connection.prepareStatement(verificationQuery);
+			Statement s = connection.createStatement(); 
+			ResultSet rs = s.executeQuery ("SELECT * FROM QueryDescription where Descripcion = '" + queryBean.getQueryDescription() + ("'"));
 
-			result = prepStat.execute();
+			//Guardo los valores del resultado de la consulta
+			while (rs.next()){ 
+				claveGenerada = rs.getInt(1);
+				description = rs.getString(2);
+			}
 
-			if(!result){
-				// Realizar INSERT en cada una de las tablas (execution BBDD...) intentar parametrizar lo maximo posbile
-				// (nombre BBDD...)
+			if(!description.equals(queryBean.getQueryDescription())){
 				PreparedStatement pstm = null;
-				String query = "INSERT INTO QueryDescription (Descripcion) VALUES(null,?);";
+				String query = "INSERT INTO QueryDescription (Descripcion) VALUES(?);";
 
-				pstm = (PreparedStatement) connection.prepareStatement(query, pstm.RETURN_GENERATED_KEYS);
+				pstm = (PreparedStatement) connection.prepareStatement(query);
 				pstm.setString(1, queryBean.getQueryDescription());
 				pstm.execute();
+				idResult = pstm.getLastInsertID();
 
-				ResultSet rs = pstm.getGeneratedKeys();
-				while (rs.next()) {
-					claveGenerada = rs.getInt(1);
-					System.out.println("Clave generada DESCRIPTION = " + claveGenerada);
-				}
 			}
 			else{
-				System.out.println("Descripcion ya creada!!!!");
+				System.out.println("Descripción ya creada!!!!");
+				idResult = claveGenerada;
 			}
+
 		}		
-		return claveGenerada;
+		return (int) idResult;
 	}
-	public static void insertIntoQuerySQL(Connection connection, QueryBean queryBean, int idBBDD, int idDescription) throws SQLException{
+	
+	/**
+	 * 
+	 * @param connection
+	 * @param queryBean
+	 * @param idBBDD
+	 * @param idDescription
+	 * @return int the primary key
+	 * @throws SQLException sqle
+	 */
+	public static int insertIntoQuerySQL(Connection connection, QueryBean queryBean, int idBBDD, int idDescription) throws SQLException{
+		int claveGenerada = 0;
+		String querySQL = "";
+		long idResult = 0L;
+
 		if(connection != null){
-			PreparedStatement prepStat = null;
-			Boolean result = false;
-			String verificationQuery = null;
-			verificationQuery = "SELECT * FROM QuerySQL WHERE query = '"+ queryBean.getQueryString() + "'";
-			prepStat = (PreparedStatement) connection.prepareStatement(verificationQuery);
 
-			result = prepStat.execute();
+			Statement s = connection.createStatement(); 
+			ResultSet rs = s.executeQuery ("SELECT * FROM QuerySQL where query = '" + StringEscapeUtils.escapeSql(queryBean.getQueryString()) + ("'"));
 
-			if(!result){
+			//Guardo los valores del resultado de la consulta
+			while (rs.next()){ 
+				claveGenerada = rs.getInt(1);
+				querySQL = rs.getString(2);
+			}
+
+			if(!querySQL.equals(queryBean.getQueryString())){
 				PreparedStatement pstm = null;
-				String query = "INSERT INTO querySQL (query, idBBDD, idQueryDescription) VALUES(?,?,?);";
+				String query = "INSERT INTO QuerySQL (query, idBBDD, idQueryDescription) VALUES(?,?,?);";
 
 				pstm = (PreparedStatement) connection.prepareStatement(query);
-
 				pstm.setString(1, queryBean.getQueryString());
 				pstm.setInt(2, idBBDD);
-				pstm.setInt(3,idDescription);
+				pstm.setInt(3, idDescription);
+				pstm.execute();
+				idResult = pstm.getLastInsertID();
 
-				pstm.execute();	
 			}
 			else{
-				System.out.println("QUERY ya creada!!");
+				System.out.println("Descripción ya creada!!!!");				
+				idResult = claveGenerada;
 			}
-		}	
+
+		}		
+		return (int) idResult;
 	}
-	public static void insertIntoExecution(Connection connection, QueryBean queryBean) throws SQLException{
-		if(connection != null){
-			PreparedStatement prepStat = null;
-			Boolean result = false;
-			String verificationQuery = null;
-			verificationQuery = "SELECT * FROM BBDD WHERE NombreBBDD = 'VEHICULOS'";
-			prepStat = (PreparedStatement) connection.prepareStatement(verificationQuery);
-
-			result = prepStat.execute();
-
-			if(!result){
-				PreparedStatement pstm = null;
-				String query = "INSERT INTO queryDescription (Descripcion) VALUES(?);";
-
-				pstm = (PreparedStatement) connection.prepareStatement(query);
-				pstm.setString(1, queryBean.getQueryString());
-
-				pstm.execute();	
-			}
-		}	
-	}
-	public static ArrayList getDescriptions(Connection connection) throws SQLException{
-
-		ArrayList lista=new ArrayList();
-		//String[] lista = null;
+	public static void insertIntoExecution(Connection connection, QueryBean queryBean, int idSQLQuery) throws SQLException{
 
 		if(connection != null){
 
-			//Statement s = connection.createStatement(); 
-			//ResultSet rs = s.executeQuery ("SELECT Descripcion FROM QueryDescription");
-			int i = 1;
+			PreparedStatement pstm = null;
+			String query = "INSERT INTO Execution (Fecha, HoraInicio, HoraFin, Tiempo, idQuerySQL) VALUES(?,?,?,?,?);";
+
+			pstm = (PreparedStatement) connection.prepareStatement(query);
+			pstm.setString(1, queryBean.getQueryDate());
+			pstm.setString(2, queryBean.getQueryStartTime());
+			pstm.setString(3, queryBean.getQueryEndTime());
+			pstm.setInt(4, (queryBean.getTotalTime()));
+			pstm.setInt(5, idSQLQuery);
+			pstm.execute();
+		}		
+	}
+	public static List<String> getDescriptions(Connection connection) throws SQLException{
+
+		List<String> lista=new ArrayList<String>();
+
+		if(connection != null){
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement("SELECT Descripcion FROM QueryDescription");
 			ResultSet result1 = consulta1.executeQuery();
@@ -211,7 +189,6 @@ public class MySQLUtil {
 				//Creas un objeto del tipo que te estas trayendo de la bd
 				String k=new String(nombre);//le mandas los parametros necesarios al constructor
 				lista.add(k); //agregas ese objeto a la lista
-
 			}
 		}
 		return lista;

@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
@@ -35,7 +38,7 @@ public class OracleDBUtil {
 		}
 		return connection;
 	}
-	
+
 	public static ResultSet createQueryOracle(Connection connection, QueryBean queryBean) throws SQLException{
 		ResultSet resultSet = null;
 		if (connection != null) {
@@ -44,30 +47,38 @@ public class OracleDBUtil {
 			Statement stmt;
 			try {
 				stmt = connection.createStatement();
-				//step4 execute query  
-				//ResultSet rs=stmt.executeQuery("select * from personas"); 
 				String finalQuery = Constants.BLANK;
 				if (MainInterface.queryBean.getQueryString().contains(Constants.SEMICOLON)) {
 					finalQuery = MainInterface.queryBean.getQueryString().replace(Constants.SEMICOLON,Constants.BLANK);
 				} else {
 					finalQuery = MainInterface.queryBean.getQueryString();
 				}
-				// Hacer loop de ejecuciones
-				long startTime = System.currentTimeMillis();
-				resultSet=stmt.executeQuery(finalQuery);
-				long endTime = System.currentTimeMillis();
 
-				long totalTime = endTime- startTime;
-				
-				System.out.println("La consulta ha tardado: "  + totalTime + "ms");
-				 
+				long startTimeMillis = System.currentTimeMillis();
+
+				Date currentDateMillis = new Date(startTimeMillis);
+				DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				String dateString  = formatter.format(currentDateMillis);
+
+				MainInterface.queryBean.setQueryDate(dateString);
+
+				String startTime = new SimpleDateFormat("HH:mm:ss").format(new Date(startTimeMillis));
+				MainInterface.queryBean.setQueryStartTime(startTime);
+
+				resultSet=stmt.executeQuery(finalQuery);
+
+				long endTimeMillis = System.currentTimeMillis();
+				String endTime = new SimpleDateFormat("HH:mm:ss").format(new Date(endTimeMillis));
+				MainInterface.queryBean.setQueryEndTime(endTime);
+
+				long totalTime = endTimeMillis- startTimeMillis;
+				MainInterface.queryBean.setTotalTime((int) totalTime);
+
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}  
-
-			//step5 close the connection object  
+//			connection.close();
 		} else {				
 			System.out.println("Failed to make connection!");
 		}

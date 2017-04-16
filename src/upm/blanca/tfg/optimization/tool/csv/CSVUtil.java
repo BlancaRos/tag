@@ -10,22 +10,9 @@ public class CSVUtil {
 
 	private static final char DEFAULT_SEPARATOR = ',';
 
-
-//	private static String followCVSformat(String value) {
-//
-//		//Escapar comillas
-//		String result = value;
-//		if (result.contains("\"")) {
-//			result = result.replace("\"", "\"\"");
-//		}
-//		return result;
-//	}
-
 	public static void writeLine(Writer w, List<String> values, char separators) throws IOException {
 
 		boolean first = true;
-
-		//default customQuote is empty
 
 		if (separators == ' ') {
 			separators = DEFAULT_SEPARATOR;
@@ -46,7 +33,5 @@ public class CSVUtil {
 		}
 		sb.append("\n");
 		w.append(sb.toString());
-
-
 	}
 }

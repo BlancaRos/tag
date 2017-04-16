@@ -1,17 +1,15 @@
 package upm.blanca.tfg.optimization.tool.util;
 
-import java.util.Date;
-
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 
 public class QueryBean {
 	private String queryString = Constants.BLANK;
 	private String queryDescription = Constants.BLANK;
 	private String bbddName = Constants.BLANK;
-	//private String queryType =Constants.BLANK;
-	private long queryStart;
-	private long queryEnd;
-	private Date queryDate;
+	private String queryStartTime;
+	private String queryEndTime;
+	private int totalTime;
+	private String queryDate;
 	private int numRows;
 	private String costQuery;
 	private String avgTime;
@@ -36,29 +34,23 @@ public class QueryBean {
 	public void setBbddName(String bbddName) {
 		this.bbddName = bbddName;
 	}
-	//	public String getQueryType() {
-	//		return queryType;
-	//	}
-	//	public void setQueryType(String queryType) {
-	//		this.queryType = queryType;
-	//	}
-	public long getQueryStart() {
-		return queryStart;
+	public String getQueryStartTime() {
+		return queryStartTime;
 	}
-	public void setQueryStart(long queryStart) {
-		this.queryStart = queryStart;
-	}
-	public long getQueryEnd() {
-		return queryEnd;
-	}
-	public void setQueryEnd(long queryEnd) {
-		this.queryEnd = queryEnd;
-	}
-	public Date getQueryDate() {
+	public String getQueryDate() {
 		return queryDate;
 	}
-	public void setQueryDate(Date queryDate) {
+	public void setQueryDate(String queryDate) {
 		this.queryDate = queryDate;
+	}
+	public void setQueryStartTime(String queryStartTime) {
+		this.queryStartTime = queryStartTime;
+	}
+	public String getQueryEndTime() {
+		return queryEndTime;
+	}
+	public void setQueryEndTime(String queryEndTime) {
+		this.queryEndTime = queryEndTime;
 	}
 	public int getNumRows() {
 		return numRows;
@@ -77,5 +69,11 @@ public class QueryBean {
 	}
 	public void setAvgTime(String avgTime) {
 		this.avgTime = avgTime;
+	}
+	public int getTotalTime() {
+		return totalTime;
+	}
+	public void setTotalTime(int totalTime) {
+		this.totalTime = totalTime;
 	}
 }

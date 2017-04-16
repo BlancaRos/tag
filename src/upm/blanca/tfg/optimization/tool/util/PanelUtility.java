@@ -10,7 +10,6 @@ import upm.blanca.tfg.optimization.tool.constants.Constants;
 
 public class PanelUtility {
 
-	//private static JTextField eco;
 	public static String message = "";
 
 	public static JPanel createPanelDataBase(String text) {
@@ -49,50 +48,9 @@ public class PanelUtility {
 	public static JPanel createPanelReport(String text) {
 		//Crear tercer panel y etiqueta correspondiente
 		JPanel panel = new JPanel();
-		//ventana.setLocationRelativeTo(null); // centramos la ventana en la pantalla
-		//ventana.setResizable(false); // hacemos que la ventana no sea redimiensionable
-		//JLabel label = new JLabel(text, SwingConstants.NORTH);
-
 		panel = ComboBoxUtility.ReportQuery();
 
 		return panel;
 	}
 
-	/*public static void addListenerClickPanel(JPanel panel){
-		panel.addMouseListener(new MouseAdapter() { 
-			public void mousePressed(MouseEvent me) { 
-				System.out.println("Has hecho click sobre el panel"); 
-				ColorController eventColor = new ColorController();
-				eventColor.cambiarColor(panel);
-			} 
-		}); 
-	}*/
-
-	//	public static JPanel createPanelNaturalQuery(String text) {
-	//	JPanel panel = new JPanel();
-	//	JLabel label = new JLabel(text, SwingConstants.CENTER);
-	//
-	//	panel.setBackground(Color.GREEN);
-	//	panel.setLayout(new BorderLayout());  
-	//	panel.add(new JButton("Norte"), BorderLayout.NORTH);
-	//	panel.add(new JButton("Oeste"), BorderLayout.WEST);
-	//	panel.add(new JButton("Este"), BorderLayout.EAST);
-	//	panel.add(new JButton("Sur"), BorderLayout.SOUTH);
-	//	panel.add(label, BorderLayout.CENTER);
-	//
-	//	return panel;
-	//}
-
-	//public static JPanel createPanelSqlQuery(String text) {
-	//	JPanel panel = new JPanel();
-	//	JLabel label = new JLabel(text, SwingConstants.CENTER);
-	//
-	//	panel.setBackground(Color.ORANGE);
-	//	panel.setLayout(new BorderLayout());  
-	//	panel.add(new JButton("Cancelar"), BorderLayout.WEST);
-	//	panel.add(new JButton("Siguiente"), BorderLayout.EAST);
-	//	panel.add(label, BorderLayout.CENTER);
-	//
-	//	return panel;
-	//}
 }

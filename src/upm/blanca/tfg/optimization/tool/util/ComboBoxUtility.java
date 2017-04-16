@@ -1,16 +1,15 @@
 package upm.blanca.tfg.optimization.tool.util;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -23,15 +22,15 @@ public class ComboBoxUtility {
 
 	private static JTextField desiredQuery;
 	private static JTextField descriptionQuery;
-	private static JTextField modifyDescriptionQuery;
 	private static JTextField modifySQLQuery;
 
 	private static JTextField eco;
 	private static JLabel labelDesignQuery;
 	private static JLabel labelQueryDescription;
-	private static JLabel labelSelectedQuery;
-	private static JLabel labelQueryDatabase;
-	private static JLabel predeterminedText;
+	private static JLabel labelInfoSQLQuery;
+	private static JLabel labelInfoTextQuery;
+	private static JLabel labelSQLSelected;
+	private static JLabel labelTextSelected;
 	
 	private static JLabel labelModifyDescriptionText;
 	private static JLabel labelModifySQLQuery;
@@ -39,11 +38,10 @@ public class ComboBoxUtility {
 	private static JButton showContent; 
 	private static JButton nextStep;
 	private static JButton sentQueryButton; 
-	private static DefaultComboBoxModel<String> dropDown;
-	private static JComboBox comboBox;
-	//private static String[] optionsComboBox={Constants.DEFAULT_TYPE, Constants.TYPE_SELECT, Constants.TYPE_DELETE, Constants.TYPE_UPDATE, Constants.TYPE_INSERT};
-	public static String newQuery = "";
-	public static String oldQuery = "";
+	private static JButton resetButton; 
+
+	public static String sqlQuery = "";
+	public static String textQuery = "";
 	public static String message;
 	
 
@@ -51,13 +49,12 @@ public class ComboBoxUtility {
 		dropDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				JComboBox<String> combo = (JComboBox<String>) event.getSource();
-				String selectedBook = (String) combo.getSelectedItem();
-//				MainInterface.queryBean.setQueryType(selectedBook);
+				JComboBox<String> typeOfAction = (JComboBox<String>) event.getSource();
+				String actionSelected = (String) typeOfAction.getSelectedItem();
 
-				if (selectedBook.equals("Modificar consulta creada")) {
+				if (actionSelected.equals("Modificar consulta creada")) {
 					
-					//Si se ha seleccionado SQL antes, eliminar el panel
+					//Si se ha seleccionado "Consulta nueva" antes, eliminar el panel
 					if(labelQueryDescription != null)
 						panel.remove(labelQueryDescription);
 					if(descriptionQuery != null)
@@ -71,26 +68,28 @@ public class ComboBoxUtility {
 					if(nextStep != null)
 						panel.remove(nextStep);	
 					try {
-						oldQuery = ModifyQuery(panel);
+						textQuery = ModifyQuery(panel);
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					//ChooseQuery(panel);
-				}else if (selectedBook.equals("Consulta nueva")) {
+				}else if (actionSelected.equals("Consulta nueva")) {
 
-					//Si se ha seleccionado Predeterminado antes, eliminar el panel
+					//Si se ha seleccionado "Modificar consulta creada" antes, eliminar el panel
 					if(labelModifyDescriptionText != null)
 						panel.remove(labelModifyDescriptionText);
-					if(modifyDescriptionQuery != null)
-						panel.remove(modifyDescriptionQuery);
 					if(labelModifySQLQuery != null)
 						panel.remove(labelModifySQLQuery);
 					if(modifySQLQuery != null)
 						panel.remove(modifySQLQuery);
-					if(comboBox != null)
-						panel.remove(comboBox);
-					newQuery = DesignQuery(panel);
+					if(nextStep != null)
+						panel.remove(nextStep);	
+					for(Component jc:MainInterface.panel2.getComponents()){
+						if(jc instanceof JLabel && jc.getName().equals("id2_descriptionQuery")){					
+							panel.remove((JLabel) jc);
+						}
+					}
+
+					sqlQuery = DesignQuery(panel);
 				}else{
 					MensajeDialog.MessageSelectOption();
 				}
@@ -98,6 +97,7 @@ public class ComboBoxUtility {
 		});
 	}
 
+	//CONSULTA NUEVA
 	public static String DesignQuery(JPanel panel){
 		panel.setLayout(null);
 
@@ -107,26 +107,28 @@ public class ComboBoxUtility {
 		labelQueryDescription.setBounds(50, 60, 400, 10);
 		
 		descriptionQuery = new JTextField();
-		descriptionQuery.setBounds(50, 80, 400, 80);
+		descriptionQuery.setBounds(50, 100, 400, 80);
 		
 		labelDesignQuery = new JLabel();
 		labelDesignQuery.setName("id2_sqlText");
 		labelDesignQuery.setText(Constants.SQL_TEXT);
-		labelDesignQuery.setBounds(50, 160, 400, 10);
+		labelDesignQuery.setBounds(50, 200, 400, 10);
 
 		desiredQuery = new JTextField();
-		desiredQuery.setBounds(50, 180, 400, 80);
+		desiredQuery.setBounds(50, 240, 400, 80);
 
 		nextStep = new JButton();
 		nextStep.setText(Constants.NEXT_BUTTON);
-		nextStep.setBounds(350, 260, 100, 30);
+		nextStep.setBounds(400, 350, 100, 30);
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextStep.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				newQuery = desiredQuery.getText(); 
+				sqlQuery = desiredQuery.getText(); 
+				textQuery = descriptionQuery.getText();
 
-				//GUARDO LA CONSULTA A REALIZAR
-				MainInterface.queryBean.setQueryString(newQuery);
+				//GUARDO LA CONSULTA A REALIZAR (texto y sql)
+				MainInterface.queryBean.setQueryString(sqlQuery);
+				MainInterface.queryBean.setQueryDescription(textQuery);
 				
 				MensajeDialog.MessageDialogue();
 			}
@@ -139,9 +141,10 @@ public class ComboBoxUtility {
 		panel.add(nextStep);
 		//Añadir nuevos componentes al panel
 		panel.paintAll(panel.getGraphics());
-		return newQuery;
+		return sqlQuery;
 	}
 
+	//MODIFICAR CONSULTA
 	public static String ModifyQuery(JPanel panel) throws SQLException{
 		panel.setLayout(null);
 
@@ -152,11 +155,8 @@ public class ComboBoxUtility {
 		
 		Connection connection = MySQLUtil.getConnectionMySQL();
 		
-		ArrayList result = MySQLUtil.getDescriptions(connection);
+		List<String> result = MySQLUtil.getDescriptions(connection);
 		DescriptionQueries.selectDescriptionQuery(result);
-		
-//		modifyDescriptionQuery = new JTextField();
-//		modifyDescriptionQuery.setBounds(50, 80, 400, 80);
 		
 		labelModifySQLQuery = new JLabel();
 		labelModifySQLQuery.setName("id2_queryModify");
@@ -173,68 +173,74 @@ public class ComboBoxUtility {
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextStep.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				newQuery = desiredQuery.getText(); 
+				sqlQuery = desiredQuery.getText(); 
 
 				//GUARDO LA CONSULTA A REALIZAR
-				MainInterface.queryBean.setQueryString(newQuery);
+				MainInterface.queryBean.setQueryString(sqlQuery);
 				
 				MensajeDialog.MessageDialogue();
 			}
 		});
 
 		panel.add(labelModifyDescriptionText);
-		//panel.add(modifyDescriptionQuery);
 		panel.add(labelModifySQLQuery);
 		panel.add(modifySQLQuery);
 		panel.add(nextStep);
 		//Añadir nuevos componentes al panel
 		panel.paintAll(panel.getGraphics());
-		return newQuery;
+		return sqlQuery;
 	}
-	
-	/*public static void ChooseQuery(JPanel panel){
-		panel.setLayout(null);
-		predeterminedText = new JLabel();
-		predeterminedText.setText(Constants.OPERATION_TYPE);
-		predeterminedText.setBounds(10, 80, 400, 25);
-		comboBox = new JComboBox(optionsComboBox);
-		comboBox.setBounds(300, 80, 200, 25);
-		panel.add(predeterminedText);
-		panel.add(comboBox);
-		panel.paintAll(panel.getGraphics());
-		addListenerToChooseQuery(comboBox, panel);
-	}*/
-	
 	
 	public static JPanel ReportQuery(){
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		labelQueryDatabase = new JLabel();
-		labelQueryDatabase.setText(Constants.LABEL_REPORT);
-		labelQueryDatabase.setBounds(10, 10, 400, 25);
-		labelQueryDatabase.setName("id2_infoSelectConsult");
-		labelSelectedQuery = new JLabel();
-		labelSelectedQuery.setName("id2_designQuery");     
-        //Introducir la consulta elegida
 		
-		//labelSelectedQuery.setText(MainInterface.queryBean.getQueryString());
-        
-		labelSelectedQuery.setBounds(50, 100, 200, 30);
-		labelSelectedQuery.setText("Texto a mano");
+		labelInfoTextQuery = new JLabel();
+		labelInfoTextQuery.setText(Constants.LABEL_DESCRIPTION_REPORT);
+		labelInfoTextQuery.setBounds(10, 10, 400, 30);
+		labelInfoTextQuery.setName("id2_infoDescriptQuery");
+		
+		labelTextSelected = new JLabel();
+		labelTextSelected.setName("id2_infoDescriptQuerySelected");
+		labelTextSelected.setText("Aquí vendrá la descripción seleccionada");
+		labelTextSelected.setBounds(30, 40, 400, 30);
+		
+		labelInfoSQLQuery = new JLabel();
+		labelInfoSQLQuery.setText(Constants.LABEL_SQL_REPORT);
+		labelInfoSQLQuery.setBounds(10, 150, 400, 30);
+		labelInfoSQLQuery.setName("id2_infoSQLQuery");     		
+		
+		labelSQLSelected = new JLabel();
+		labelSQLSelected.setName("id2_infoSQLQuerySelected");
+		labelSQLSelected.setText("Aquí vendrá el SQL seleccionado");
+		labelSQLSelected.setBounds(30, 190, 400, 30);
+		
         sentQueryButton = new JButton();
 		sentQueryButton.setText(Constants.SENT_QUERY);
-		sentQueryButton.setBounds(50, 200, 200, 30);
+		sentQueryButton.setBounds(100, 360, 200, 30);
         
-		panel.add(labelQueryDatabase);
-		panel.add(labelSelectedQuery);
-		panel.add(sentQueryButton);
-
-		return panel;
-	}
+		resetButton = new JButton();
+		resetButton.setText(Constants.RESET_BUTTON);
+		resetButton.setBounds(280, 360, 200, 30);
 	
-	public static JComponent addTextField() {
-		//Se crea el campo de texto donde poner el eco
-		eco = new JTextField("Introduce sentencia...");
-		return eco; 
+		resetButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Runtime.getRuntime().exec("java -jar miapp.jar");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				System.exit(0);
+			}
+		});
+		
+		panel.add(labelInfoTextQuery);
+		panel.add(labelTextSelected);
+		panel.add(labelInfoSQLQuery);
+		panel.add(labelSQLSelected);
+		panel.add(sentQueryButton);
+		panel.add(resetButton);	
+		
+		return panel;
 	}
 }
