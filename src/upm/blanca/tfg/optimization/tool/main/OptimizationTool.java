@@ -8,7 +8,7 @@ public class OptimizationTool {
 
 	public static void main(String[] args) throws SQLException {
 
-		  MainInterface demoPanelConFichas = new MainInterface();
-	      demoPanelConFichas.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		  MainInterface panelPpal = new MainInterface();
+		  panelPpal.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	}
 }

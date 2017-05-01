@@ -43,6 +43,7 @@ public class Constants {
 	public final static String SENT_QUERY ="Ver informe";
 	public final static String NEXT_BUTTON = "Siguiente";
 	public final static String RESET_BUTTON = "Reset";
+	public final static String ADD_BUTTON = "Añadir";
 	
 	
 	//MESSAGE DIALOGS

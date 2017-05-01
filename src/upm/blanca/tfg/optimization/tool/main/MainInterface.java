@@ -12,7 +12,7 @@ import upm.blanca.tfg.optimization.tool.util.QueryBean;
 
 public class MainInterface extends JFrame  {
 
-	private static final long serialVersionUID = -809150699758926335L;
+	//private static final long serialVersionUID = -809150699758926335L;
 
 	public static QueryBean queryBean = new QueryBean();
 	public static JTabbedPane mainInterface = new JTabbedPane();

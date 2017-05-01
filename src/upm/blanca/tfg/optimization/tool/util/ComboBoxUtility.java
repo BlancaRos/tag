@@ -11,7 +11,9 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
@@ -24,7 +26,6 @@ public class ComboBoxUtility {
 	private static JTextField descriptionQuery;
 	private static JTextField modifySQLQuery;
 
-	private static JTextField eco;
 	private static JLabel labelDesignQuery;
 	private static JLabel labelQueryDescription;
 	private static JLabel labelInfoSQLQuery;
@@ -37,6 +38,7 @@ public class ComboBoxUtility {
 
 	private static JButton showContent; 
 	private static JButton nextStep;
+	private static JButton addQuery;
 	private static JButton sentQueryButton; 
 	private static JButton resetButton; 
 
@@ -83,11 +85,7 @@ public class ComboBoxUtility {
 						panel.remove(modifySQLQuery);
 					if(nextStep != null)
 						panel.remove(nextStep);	
-					for(Component jc:MainInterface.panel2.getComponents()){
-						if(jc instanceof JLabel && jc.getName().equals("id2_descriptionQuery")){					
-							panel.remove((JLabel) jc);
-						}
-					}
+					Util.removeComponentFromPanel(MainInterface.panel2, "id2_descriptionQuery", "id2_scrollPaneSqlQueries");
 
 					sqlQuery = DesignQuery(panel);
 				}else{
@@ -163,28 +161,34 @@ public class ComboBoxUtility {
 		labelModifySQLQuery.setText(Constants.MODIFY_SQL_TEXT);
 		labelModifySQLQuery.setBounds(50, 160, 400, 10);
 
-		//BUSCAR EN BBDD LAS DESCRIPCIONES EXISTENTES
-		modifySQLQuery = new JTextField();
-		modifySQLQuery.setBounds(50, 180, 400, 80);
-
 		nextStep = new JButton();
 		nextStep.setText(Constants.NEXT_BUTTON);
-		nextStep.setBounds(350, 260, 100, 30);
+		nextStep.setBounds(350, 320, 100, 30);
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextStep.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				sqlQuery = desiredQuery.getText(); 
-
-				//GUARDO LA CONSULTA A REALIZAR
-				MainInterface.queryBean.setQueryString(sqlQuery);
-				
-				MensajeDialog.MessageDialogue();
+				//Busco el scrollPane y añado en el bean la consulta seleccionada
+				String selected = Util.searchScrollPaneInfo(MainInterface.panel2, "id2_scrollPaneSqlQueries");
+				MainInterface.queryBean.setQueryString(selected);
+				MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3),true);
+				MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3));
+				Util.setLabelsInfoPanel3(MainInterface.panel3, "id2_infoSQLQuerySelected", "id2_infoDescriptQuerySelected");
 			}
 		});
 
+		addQuery = new JButton();
+		addQuery.setText(Constants.ADD_BUTTON);
+		addQuery.setBounds(150, 320, 100, 30);
+
+		addQuery.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				WindowUtility.createWindowAddQuery();
+			}
+		});
+		
 		panel.add(labelModifyDescriptionText);
 		panel.add(labelModifySQLQuery);
-		panel.add(modifySQLQuery);
+		panel.add(addQuery);
 		panel.add(nextStep);
 		//Añadir nuevos componentes al panel
 		panel.paintAll(panel.getGraphics());

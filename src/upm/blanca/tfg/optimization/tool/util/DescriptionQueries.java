@@ -31,9 +31,9 @@ public class DescriptionQueries {
 		//se cambia la orientación de presentación y el ajuste 
 		lista.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION); 
 		//selecciona un elemento de la lista 
-		Object seleccion = lista.getSelectedValue(); 
+//		Object seleccion = lista.getSelectedValue(); 
 		//recoge el indice de los seleccionados 
-		int[] indices = lista.getSelectedIndices(); 
+//		int[] indices = lista.getSelectedIndices(); 
 
 		// aquí se crea el objeto, es decir la barra de desplazamiento 
 		JScrollPane barraDesplazamiento = new JScrollPane(lista); 

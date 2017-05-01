@@ -1,5 +1,7 @@
 package upm.blanca.tfg.optimization.tool.util;
 
+import java.sql.SQLException;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -12,7 +14,7 @@ public class PanelUtility {
 
 	public static String message = "";
 
-	public static JPanel createPanelDataBase(String text) {
+	public static JPanel createPanelDataBase(String text) throws SQLException {
 		//Crear primer panel y etiqueta correspondiente
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel(text, SwingConstants.CENTER);

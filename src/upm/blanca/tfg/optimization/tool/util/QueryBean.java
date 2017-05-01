@@ -5,7 +5,10 @@ import upm.blanca.tfg.optimization.tool.constants.Constants;
 public class QueryBean {
 	private String queryString = Constants.BLANK;
 	private String queryDescription = Constants.BLANK;
+	private String bbddService = Constants.BLANK;
 	private String bbddName = Constants.BLANK;
+	private String bbddUser = Constants.BLANK;
+	private String bbddPass = Constants.BLANK;
 	private String queryStartTime;
 	private String queryEndTime;
 	private int totalTime;
@@ -13,6 +16,7 @@ public class QueryBean {
 	private int numRows;
 	private String costQuery;
 	private String avgTime;
+	private int idBBDD;
 
 	public QueryBean(){
 	}
@@ -28,11 +32,11 @@ public class QueryBean {
 	public void setQueryDescription(String queryDescription) {
 		this.queryDescription = queryDescription;
 	}
-	public String getBbddName() {
-		return bbddName;
+	public String getBbddService() {
+		return bbddService;
 	}
-	public void setBbddName(String bbddName) {
-		this.bbddName = bbddName;
+	public void setBbddService(String bbddName) {
+		this.bbddService = bbddName;
 	}
 	public String getQueryStartTime() {
 		return queryStartTime;
@@ -75,5 +79,29 @@ public class QueryBean {
 	}
 	public void setTotalTime(int totalTime) {
 		this.totalTime = totalTime;
+	}
+	public String getBbddUser() {
+		return bbddUser;
+	}
+	public void setBbddUser(String bbddUser) {
+		this.bbddUser = bbddUser;
+	}
+	public String getBbddPass() {
+		return bbddPass;
+	}
+	public void setBbddPass(String bbddPass) {
+		this.bbddPass = bbddPass;
+	}
+	public int getIdBBDD() {
+		return idBBDD;
+	}
+	public void setIdBBDD(int idBBDD) {
+		this.idBBDD = idBBDD;
+	}
+	public String getBbddName() {
+		return bbddName;
+	}
+	public void setBbddName(String bbddName) {
+		this.bbddName = bbddName;
 	}
 }
