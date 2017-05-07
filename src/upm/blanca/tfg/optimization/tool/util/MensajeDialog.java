@@ -62,21 +62,21 @@ public class MensajeDialog implements ActionListener{
 					int numRows = 0;
 
 					// Iterar los resultados de la query
+					for (int i=0; i<numOfColums;i++){
+						columns[i] = resultSet.getMetaData().getColumnName(i+1);
+					}
+					//Escribo en el csv
+					CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
+					
 					while(resultSet.next())  {
 						numRows++;
 						for (int i=0; i<numOfColums;i++){
-							//Guardo los nombres de las columnas
-							if(first){
-								columns[i] = resultSet.getMetaData().getColumnName(i+1);
 							//Guardo todos los valores sin importar el tipo
-							} else {
-								columns[i] = String.valueOf(resultSet.getObject(i+1)).replaceAll(",",Constants.BLANK);
-							}
+							columns[i] = String.valueOf(resultSet.getObject(i+1)).replaceAll(",",Constants.BLANK);
 						}
 						//Escribo en el csv
 						CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
 						first = false;
-
 					}
 					MainInterface.queryBean.setNumRows(numRows);
 					oracleConnection.close(); 

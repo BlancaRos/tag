@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="/Users/admin/Downloads/mysql-connector-java-5.1.40/mysql-connector-java-5.1.40-bin.jar"/>
 	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/ojdbc7.jar"/>
-	<classpathentry kind="lib" path="/Users/admin/Downloads/commons-lang-2.6/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/commons-lang-2.6/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/jasperreports-6.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/commons-logging-1.1.2.jar"/>
+	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/commons-beanutils-1.9.3.jar"/>
+	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/commons-collections-3.0.jar"/>
+	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/itext-2.1.7.jar"/>
+	<classpathentry kind="lib" path="/Users/admin/Desktop/TFG/Archivos/poi-3.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

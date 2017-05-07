@@ -4,9 +4,13 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,9 +20,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.db.util.MySQLUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
+import upm.blanca.tfg.optimization.tool.pdf.PDFGenerator;
 
 public class ComboBoxUtility {
 
@@ -223,6 +235,45 @@ public class ComboBoxUtility {
 		sentQueryButton.setText(Constants.SENT_QUERY);
 		sentQueryButton.setBounds(100, 360, 200, 30);
         
+		sentQueryButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+//				try {
+//					PDFGenerator.generatePDF();
+//				} catch (JRException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+				List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
+			     Map<String, Object> parameters = new HashMap<String, Object>();
+			      
+			        
+			          parameters.put("description", "HOLA CARA COLAAAAAAA");
+//			          List<ProductOrderPDFBean> products = order.getProducts();
+//			          for (ProductOrderPDFBean product : order.getProducts()) {
+//			            product.setTotPedida(order.getTotPedida());
+//			            product.setTotServida(order.getTotServida());
+//			            product.setNomCoop(order.getNomCoop());
+//			            product.setNumCoop(order.getNumCoop());
+//			            product.setNumPedido(order.getPedido());
+//			          }       
+			          InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream("Informe.jrxml");
+			          JasperReport jReport;
+					try {
+						jReport = JasperCompileManager.compileReport(template);
+						 JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, new JREmptyDataSource());
+				          jasperPrintList.add(jPrint);
+				        
+						JasperExportManager.exportReportToPdfFile(jPrint, "/Users/admin/Desktop/TFG/Reports/pdf1.pdf");
+
+					} catch (JRException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+//			          JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(products);
+			         
+			}
+		});
+		
 		resetButton = new JButton();
 		resetButton.setText(Constants.RESET_BUTTON);
 		resetButton.setBounds(280, 360, 200, 30);
