@@ -240,14 +240,13 @@ public class ComboBoxUtility {
 //				try {
 //					PDFGenerator.generatePDF();
 //				} catch (JRException e1) {
-//					// TODO Auto-generated catch block
 //					e1.printStackTrace();
 //				}
 				List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 			     Map<String, Object> parameters = new HashMap<String, Object>();
 			      
 			        
-			          parameters.put("description", "HOLA CARA COLAAAAAAA");
+			          parameters.put("description", MainInterface.queryBean.getQueryDescription());
 //			          List<ProductOrderPDFBean> products = order.getProducts();
 //			          for (ProductOrderPDFBean product : order.getProducts()) {
 //			            product.setTotPedida(order.getTotPedida());
