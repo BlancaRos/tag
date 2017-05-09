@@ -53,7 +53,7 @@ public class ButtonUtility {
 				
 				try {
 					List<String> sqlList = MySQLUtil.getSelectedSqlQuery(descriptionSelected);
-					
+					//MySQLUtil.getReportValuesQuery(descriptionSelected);
 					String[] sqlQueries = new String[sqlList.size()];
 					sqlQueries = (String[]) sqlList.toArray(sqlQueries);
 					JList lista = new JList(sqlQueries);

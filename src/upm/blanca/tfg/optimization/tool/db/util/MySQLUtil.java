@@ -10,8 +10,10 @@ import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 import upm.blanca.tfg.optimization.tool.util.QueryBean;
+import upm.blanca.tfg.optimization.tool.util.ReportBean;
 
 import com.mysql.jdbc.PreparedStatement;
 public class MySQLUtil {
@@ -254,7 +256,6 @@ public class MySQLUtil {
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement("select * from BBDD where NombreBBDD = '" + descriptionSelected + "'");
 			ResultSet result1 = consulta1.executeQuery();
 			while(result1.next()){
-
 				user = result1.getString("UserBBDD");
 				pass = result1.getString("PassBBDD");
 				service = result1.getString("ServicioBBDD");
@@ -263,8 +264,36 @@ public class MySQLUtil {
 				MainInterface.queryBean.setBbddPass(pass);
 			}
 		}
+		
 	}
 	
+	public static List<ReportBean> getQueryToReport() throws SQLException{
+		Connection connection = MySQLUtil.getConnectionMySQL();
+		try {
+			connection = MySQLUtil.getConnectionMySQL();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		List<ReportBean> listaReport=new ArrayList<ReportBean>();
 
+		if(connection != null){
+
+			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.REPORT_VALUES + MainInterface.queryBean.getQueryDescription() + "')");
+			ResultSet result1 = consulta1.executeQuery();
+			while(result1.next()){
+				//creo bean, guardo valores y lo mando a la lista de beans
+				ReportBean reportBean = new ReportBean();
+				String querySql= result1.getString(1);
+				String avgTime= result1.getString(2);
+				String rows= result1.getString(3);
+				reportBean.setQuery(querySql);
+				reportBean.setAvgTime(avgTime);
+				reportBean.setRows(rows);
+				listaReport.add(reportBean);
+			}
+			
+		}
+		return listaReport;
+	}
 
 }

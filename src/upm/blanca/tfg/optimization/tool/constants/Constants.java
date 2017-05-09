@@ -51,5 +51,9 @@ public class Constants {
 	public final static String CONFIRM_DIALOG_TITLE = "¡Alerta!";
 	public final static String ERROR_DIALOG = "¡Debes seleccionar una opción!";
 	public final static String ERROR_DIALOG_TITLE = "¡Error!";
+	
+	
+	//Queries
+	public final static String REPORT_VALUES = "select qs.query, qs.avgTime, exec.numFilas from QuerySQL qs, Execution exec where qs.idQuerySQL = exec.idQuerySQL and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
 
 }

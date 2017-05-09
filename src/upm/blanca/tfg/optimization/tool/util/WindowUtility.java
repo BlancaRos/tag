@@ -142,11 +142,14 @@ public class WindowUtility {
 				newSqlQuery = desiredAddQuery.getText();
 				MainInterface.queryBean.setQueryString(newSqlQuery);
 				ventanaAddQuery.setVisible(false); 
-				//MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3),true);
-				//MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3));
 				MensajeDialog.MessageDialogue();
 			}
 		});
+		
+		JButton buttonCancel = new JButton(); 
+		buttonCancel.setText("CANCELAR");
+		buttonCancel.setBounds(100, 380, 100, 30);
+		ButtonUtility.addListenerClickCancelButtonDescription(buttonCancel, ventanaAddQuery);
 
 		panelCreateAddQuery.add(labelAddQuery);
 		panelCreateAddQuery.add(desiredAddQuery);
@@ -154,6 +157,5 @@ public class WindowUtility {
 		ventanaAddQuery.add(panelCreateAddQuery); 
 		ventanaAddQuery.setVisible(true); 
 	}
-
 
 }

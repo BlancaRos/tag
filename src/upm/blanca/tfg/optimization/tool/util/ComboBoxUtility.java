@@ -1,6 +1,5 @@
 package upm.blanca.tfg.optimization.tool.util;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -15,22 +14,20 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.db.util.MySQLUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
-import upm.blanca.tfg.optimization.tool.pdf.PDFGenerator;
 
 public class ComboBoxUtility {
 
@@ -236,39 +233,46 @@ public class ComboBoxUtility {
 		sentQueryButton.setBounds(100, 360, 200, 30);
         
 		sentQueryButton.addActionListener(new ActionListener(){
+			List<ReportBean> reportBean = new ArrayList<ReportBean>();
+
 			public void actionPerformed(ActionEvent e) {
-//				try {
-//					PDFGenerator.generatePDF();
-//				} catch (JRException e1) {
-//					e1.printStackTrace();
-//				}
+
 				List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 			     Map<String, Object> parameters = new HashMap<String, Object>();
-			      
 			        
 			          parameters.put("description", MainInterface.queryBean.getQueryDescription());
-//			          List<ProductOrderPDFBean> products = order.getProducts();
-//			          for (ProductOrderPDFBean product : order.getProducts()) {
-//			            product.setTotPedida(order.getTotPedida());
-//			            product.setTotServida(order.getTotServida());
-//			            product.setNomCoop(order.getNomCoop());
-//			            product.setNumCoop(order.getNumCoop());
-//			            product.setNumPedido(order.getPedido());
-//			          }       
+			          
+//			          ReportBean obj1 = new ReportBean();
+//			          ReportBean obj2 = new ReportBean();
+//			          ReportBean obj3 = new ReportBean();
+//			          obj1.setQuery("Select1");
+//			          obj1.setAvgTime("1.1");
+//			          obj1.setRows("30");
+//			          obj2.setQuery("Select2");
+//			          obj2.setAvgTime("2.1");
+//			          obj2.setRows("40");
+//			          obj3.setQuery("Select3");
+//			          obj3.setAvgTime("3.1");
+//			          obj3.setRows("50");
+//			          reportBean.add(obj1);
+//			          reportBean.add(obj2);
+//			          reportBean.add(obj3);
+
 			          InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream("Informe.jrxml");
 			          JasperReport jReport;
 					try {
 						jReport = JasperCompileManager.compileReport(template);
-						 JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, new JREmptyDataSource());
-				          jasperPrintList.add(jPrint);
-				        
+						//JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, new JREmptyDataSource());
+				        //jasperPrintList.add(jPrint);
+						List<ReportBean> listaReport = new ArrayList<ReportBean>();
+						listaReport = MySQLUtil.getQueryToReport();
+						JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
+					    JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, datasource);
 						JasperExportManager.exportReportToPdfFile(jPrint, "/Users/admin/Desktop/TFG/Reports/pdf1.pdf");
-
-					} catch (JRException e1) {
-						// TODO Auto-generated catch block
+						JasperViewer.viewReport(jPrint, false);
+					} catch (JRException | SQLException e1) {
 						e1.printStackTrace();
 					}
-//			          JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(products);
 			         
 			}
 		});
