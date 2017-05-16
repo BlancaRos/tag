@@ -1,5 +1,7 @@
 package upm.blanca.tfg.optimization.tool.util;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -7,14 +9,19 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import net.sf.jasperreports.engine.JRException;
@@ -31,9 +38,9 @@ import upm.blanca.tfg.optimization.tool.main.MainInterface;
 
 public class ComboBoxUtility {
 
-	private static JTextField desiredQuery;
-	private static JTextField descriptionQuery;
-	private static JTextField modifySQLQuery;
+	private static JTextArea desiredQuery;
+	private static JTextArea descriptionQuery;
+	private static JTextArea modifySQLQuery;
 
 	private static JLabel labelDesignQuery;
 	private static JLabel labelQueryDescription;
@@ -41,9 +48,11 @@ public class ComboBoxUtility {
 	private static JLabel labelInfoTextQuery;
 	private static JLabel labelSQLSelected;
 	private static JLabel labelTextSelected;
-	
+
 	private static JLabel labelModifyDescriptionText;
 	private static JLabel labelModifySQLQuery;
+	private static JLabel labelLoading;
+	private static Icon icon;
 
 	private static JButton showContent; 
 	private static JButton nextStep;
@@ -54,7 +63,7 @@ public class ComboBoxUtility {
 	public static String sqlQuery = "";
 	public static String textQuery = "";
 	public static String message;
-	
+
 
 	public static void addListenerToDropDown(JComboBox dropDown, JPanel panel){
 		dropDown.addActionListener(new ActionListener() {
@@ -64,7 +73,7 @@ public class ComboBoxUtility {
 				String actionSelected = (String) typeOfAction.getSelectedItem();
 
 				if (actionSelected.equals("Modificar consulta creada")) {
-					
+
 					//Si se ha seleccionado "Consulta nueva" antes, eliminar el panel
 					if(labelQueryDescription != null)
 						panel.remove(labelQueryDescription);
@@ -94,7 +103,9 @@ public class ComboBoxUtility {
 						panel.remove(modifySQLQuery);
 					if(nextStep != null)
 						panel.remove(nextStep);	
-					Util.removeComponentFromPanel(MainInterface.panel2, "id2_descriptionQuery", "id2_scrollPaneSqlQueries");
+					if(addQuery != null)
+						panel.remove(addQuery);	
+					Util.removeComponentFromPanel(MainInterface.panel2, "id2_descriptionModify", "id2_queryModify");
 
 					sqlQuery = DesignQuery(panel);
 				}else{
@@ -105,28 +116,31 @@ public class ComboBoxUtility {
 	}
 
 	//CONSULTA NUEVA
-	public static String DesignQuery(JPanel panel){
+	public static String DesignQuery(JPanel panel) {
 		panel.setLayout(null);
+		
 
 		labelQueryDescription = new JLabel();
 		labelQueryDescription.setName("id2_descriptionText");
 		labelQueryDescription.setText(Constants.DESCRIPTION_TEXT);
-		labelQueryDescription.setBounds(50, 60, 400, 10);
-		
-		descriptionQuery = new JTextField();
-		descriptionQuery.setBounds(50, 100, 400, 80);
-		
+		labelQueryDescription.setBounds(55, 60, 400, 15);
+
+		descriptionQuery = new JTextArea();
+		descriptionQuery.setBounds(50, 90, 400, 80);
+		descriptionQuery.setForeground(new Color(27,85,131));
+
 		labelDesignQuery = new JLabel();
 		labelDesignQuery.setName("id2_sqlText");
 		labelDesignQuery.setText(Constants.SQL_TEXT);
-		labelDesignQuery.setBounds(50, 200, 400, 10);
+		labelDesignQuery.setBounds(55, 200, 400, 15);
 
-		desiredQuery = new JTextField();
-		desiredQuery.setBounds(50, 240, 400, 80);
+		desiredQuery = new JTextArea();
+		desiredQuery.setBounds(50, 230, 400, 80);
+		desiredQuery.setForeground(new Color(27,85,131));
 
 		nextStep = new JButton();
 		nextStep.setText(Constants.NEXT_BUTTON);
-		nextStep.setBounds(400, 350, 100, 30);
+		nextStep.setBounds(351, 340, 100, 50);
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextStep.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -136,10 +150,39 @@ public class ComboBoxUtility {
 				//GUARDO LA CONSULTA A REALIZAR (texto y sql)
 				MainInterface.queryBean.setQueryString(sqlQuery);
 				MainInterface.queryBean.setQueryDescription(textQuery);
-				
+
 				MensajeDialog.MessageDialogue();
 			}
 		});
+
+////		try {
+//			System.out.println("EEIII");
+////			icon = new ImageIcon(ImageIO.read(ComboBoxUtility.class.getClassLoader().getResourceAsStream("loading.gif")));
+////			labelLoading = new JLabel(icon);
+//			labelLoading = new JLabel("Loading...");
+//			labelLoading.setBounds(250, 340, 50, 50);
+//			labelLoading.setVisible(true);
+//			panel.add(labelLoading);
+//
+////		} catch (IOException e1) {
+////			// TODO Auto-generated catch block
+////			e1.printStackTrace();
+////		}
+		
+//		JPanel panelito = Util.searchPane(MainInterface.mainInterface, "panel2");
+//		panelito.add(labelLoading);
+		/////////////////////
+//		JLabel img = new JLabel(); 
+//		ImageIcon image = new ImageIcon("/Users/admin/Desktop/TFG/Imágenes/cargando.gif"); 
+//
+//		//Propiedades de la etiqueta 
+//		img.setIcon(image); 
+//		img.setSize(100,100); 
+//		img.setLocation(460,80); 
+//		img.setVisible(true); 
+//		
+//		panel.add(img);
+
 
 		panel.add(labelQueryDescription);
 		panel.add(descriptionQuery);
@@ -158,21 +201,21 @@ public class ComboBoxUtility {
 		labelModifyDescriptionText = new JLabel();
 		labelModifyDescriptionText.setName("id2_descriptionModify");
 		labelModifyDescriptionText.setText(Constants.MODIFY_DESCRIPTION_TEXT);
-		labelModifyDescriptionText.setBounds(50, 60, 400, 10);
-		
+		labelModifyDescriptionText.setBounds(50, 60, 450, 15);
+
 		Connection connection = MySQLUtil.getConnectionMySQL();
-		
+
 		List<String> result = MySQLUtil.getDescriptions(connection);
 		DescriptionQueries.selectDescriptionQuery(result);
-		
+
 		labelModifySQLQuery = new JLabel();
 		labelModifySQLQuery.setName("id2_queryModify");
 		labelModifySQLQuery.setText(Constants.MODIFY_SQL_TEXT);
-		labelModifySQLQuery.setBounds(50, 160, 400, 10);
+		labelModifySQLQuery.setBounds(50, 130, 450, 15);
 
 		nextStep = new JButton();
 		nextStep.setText(Constants.NEXT_BUTTON);
-		nextStep.setBounds(350, 320, 100, 30);
+		nextStep.setBounds(225, 320, 100, 50);
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextStep.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -187,14 +230,14 @@ public class ComboBoxUtility {
 
 		addQuery = new JButton();
 		addQuery.setText(Constants.ADD_BUTTON);
-		addQuery.setBounds(150, 320, 100, 30);
+		addQuery.setBounds(120, 320, 100, 50);
 
 		addQuery.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				WindowUtility.createWindowAddQuery();
 			}
 		});
-		
+
 		panel.add(labelModifyDescriptionText);
 		panel.add(labelModifySQLQuery);
 		panel.add(addQuery);
@@ -203,102 +246,124 @@ public class ComboBoxUtility {
 		panel.paintAll(panel.getGraphics());
 		return sqlQuery;
 	}
-	
+
 	public static JPanel ReportQuery(){
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		
+		Font font = new Font("Verdana",Font.ITALIC,12);
+
 		labelInfoTextQuery = new JLabel();
 		labelInfoTextQuery.setText(Constants.LABEL_DESCRIPTION_REPORT);
-		labelInfoTextQuery.setBounds(10, 10, 400, 30);
+		labelInfoTextQuery.setBounds(50, 60, 450, 15);
 		labelInfoTextQuery.setName("id2_infoDescriptQuery");
-		
+
 		labelTextSelected = new JLabel();
 		labelTextSelected.setName("id2_infoDescriptQuerySelected");
-		labelTextSelected.setText("Aquí vendrá la descripción seleccionada");
-		labelTextSelected.setBounds(30, 40, 400, 30);
-		
+		labelTextSelected.setFont(font);
+		labelTextSelected.setForeground(new Color(27,85,131));
+		labelTextSelected.setBounds(60, 80, 700, 50);
+
 		labelInfoSQLQuery = new JLabel();
 		labelInfoSQLQuery.setText(Constants.LABEL_SQL_REPORT);
-		labelInfoSQLQuery.setBounds(10, 150, 400, 30);
+		labelInfoSQLQuery.setBounds(50, 160, 450, 15);
 		labelInfoSQLQuery.setName("id2_infoSQLQuery");     		
-		
+
 		labelSQLSelected = new JLabel();
 		labelSQLSelected.setName("id2_infoSQLQuerySelected");
-		labelSQLSelected.setText("Aquí vendrá el SQL seleccionado");
-		labelSQLSelected.setBounds(30, 190, 400, 30);
-		
-        sentQueryButton = new JButton();
+		labelSQLSelected.setFont(font);
+		labelSQLSelected.setForeground(new Color(27,85,131));
+		labelSQLSelected.setBounds(60, 180, 700, 50);
+
+		sentQueryButton = new JButton();
 		sentQueryButton.setText(Constants.SENT_QUERY);
-		sentQueryButton.setBounds(100, 360, 200, 30);
-        
+		sentQueryButton.setBounds(110, 320, 100, 50);
+
 		sentQueryButton.addActionListener(new ActionListener(){
 			List<ReportBean> reportBean = new ArrayList<ReportBean>();
 
 			public void actionPerformed(ActionEvent e) {
 
-				List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
-			     Map<String, Object> parameters = new HashMap<String, Object>();
-			        
-			          parameters.put("description", MainInterface.queryBean.getQueryDescription());
-			          
-//			          ReportBean obj1 = new ReportBean();
-//			          ReportBean obj2 = new ReportBean();
-//			          ReportBean obj3 = new ReportBean();
-//			          obj1.setQuery("Select1");
-//			          obj1.setAvgTime("1.1");
-//			          obj1.setRows("30");
-//			          obj2.setQuery("Select2");
-//			          obj2.setAvgTime("2.1");
-//			          obj2.setRows("40");
-//			          obj3.setQuery("Select3");
-//			          obj3.setAvgTime("3.1");
-//			          obj3.setRows("50");
-//			          reportBean.add(obj1);
-//			          reportBean.add(obj2);
-//			          reportBean.add(obj3);
+				Calendar cal = Calendar.getInstance();
+				int year = cal.get(Calendar.YEAR);
+				int month = cal.get(Calendar.MONTH) + 1;
+				int day = cal.get(Calendar.DAY_OF_MONTH);
+				int hour = cal.get(Calendar.HOUR_OF_DAY);
+				int minute = cal.get(Calendar.MINUTE);
+				int second = cal.get(Calendar.SECOND);
+				StringBuilder sb = new StringBuilder();
 
-			          InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream("Informe.jrxml");
-			          JasperReport jReport;
-					try {
-						jReport = JasperCompileManager.compileReport(template);
-						//JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, new JREmptyDataSource());
-				        //jasperPrintList.add(jPrint);
-						List<ReportBean> listaReport = new ArrayList<ReportBean>();
-						listaReport = MySQLUtil.getQueryToReport();
-						JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
-					    JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, datasource);
-						JasperExportManager.exportReportToPdfFile(jPrint, "/Users/admin/Desktop/TFG/Reports/pdf1.pdf");
-						JasperViewer.viewReport(jPrint, false);
-					} catch (JRException | SQLException e1) {
-						e1.printStackTrace();
-					}
-			         
+				sb.append(year);
+				sb.append(month);
+				sb.append(day);
+				sb.append(Constants.LOW_BAR);
+				sb.append(hour);
+				sb.append(minute);				
+				sb.append(second);
+
+				List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
+				Map<String, Object> parameters = new HashMap<String, Object>();
+
+				parameters.put("description", MainInterface.queryBean.getQueryDescription());
+
+				InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.INFORME);
+				JasperReport jReport;
+				try {
+					//Añadir datos obtenidos
+					jReport = JasperCompileManager.compileReport(template);
+					List<ReportBean> listaReport = new ArrayList<ReportBean>();
+
+					List<CSVReportBean> listCSV = new ArrayList<CSVReportBean>();
+					CSVReportBean cv1 = new CSVReportBean();
+					cv1.setCsv("mi row1");
+					CSVReportBean cv2 = new CSVReportBean();
+					cv2.setCsv("mi row2");
+					listCSV.add(cv1);
+					listCSV.add(cv2);
+
+					listaReport = MySQLUtil.getQueryToReport();
+					//listCSV = MySQLUtil.getCSVToReport();
+					JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
+//					JRBeanCollectionDataSource datasource2 = new JRBeanCollectionDataSource(listCSV);
+
+					parameters.put("csv",cv1.getCsv()+"<br/>"+cv2.getCsv());
+					//csv
+//					JRBeanArrayDataSource datasource = new JRBeanArrayDataSource(beanArray);
+					JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, datasource);
+					JasperExportManager.exportReportToPdfFile(jPrint, Constants.REPORT_PATH + sb.toString() + Constants.REPORT_EXTENSION);
+					JasperViewer.viewReport(jPrint, false);
+					
+					//Añadir csv
+					
+				} catch (JRException | SQLException e1) {
+					e1.printStackTrace();
+				}
+
 			}
 		});
-		
+
 		resetButton = new JButton();
 		resetButton.setText(Constants.RESET_BUTTON);
-		resetButton.setBounds(280, 360, 200, 30);
-	
+		resetButton.setBounds(225, 320, 100, 50);
+
 		resetButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Runtime.getRuntime().exec("java -jar miapp.jar");
+					Runtime.getRuntime().exec(Constants.APP);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 				System.exit(0);
 			}
 		});
-		
+
 		panel.add(labelInfoTextQuery);
 		panel.add(labelTextSelected);
 		panel.add(labelInfoSQLQuery);
 		panel.add(labelSQLSelected);
 		panel.add(sentQueryButton);
 		panel.add(resetButton);	
-		
+
 		return panel;
 	}
 }

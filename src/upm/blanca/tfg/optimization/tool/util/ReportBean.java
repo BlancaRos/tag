@@ -7,6 +7,7 @@ import upm.blanca.tfg.optimization.tool.constants.Constants;
 public class ReportBean implements Serializable {
 
 	private String query = Constants.BLANK;
+	private String bbdd = Constants.BLANK;
 	private String avgTime = Constants.BLANK;
 	private String rows;
 	public String getQuery() {
@@ -26,6 +27,12 @@ public class ReportBean implements Serializable {
 	}
 	public void setRows(String rows) {
 		this.rows = rows;
+	}
+	public String getBbdd() {
+		return bbdd;
+	}
+	public void setBbdd(String bbdd) {
+		this.bbdd = bbdd;
 	}
 	
 	/**

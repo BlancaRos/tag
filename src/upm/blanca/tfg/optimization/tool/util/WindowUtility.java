@@ -1,5 +1,6 @@
 package upm.blanca.tfg.optimization.tool.util;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
@@ -20,24 +22,24 @@ public class WindowUtility {
 	private static JLabel labelBbddUser;
 	private static JLabel labelBbddPass;
 	private static JLabel labelAddQuery;
-	private static JTextField desiredBbddService;
-	private static JTextField desiredBbddName;
-	private static JTextField desiredBbddUser;
-	private static JTextField desiredBbddPass;
-	private static JTextField desiredAddQuery;
+	private static JTextArea desiredBbddService;
+	private static JTextArea desiredBbddName;
+	private static JTextArea desiredBbddUser;
+	private static JTextArea desiredBbddPass;
+	private static JTextArea desiredAddQuery;
 
 
 	private static JButton nextStep;
-	public static String newBbddService = "";
-	public static String newBbddName = "";
-	public static String newBbddUser = "";
-	public static String newBbddPass = "";
-	public static String newSqlQuery = "";
+	public static String newBbddService = Constants.BLANK;
+	public static String newBbddName = Constants.BLANK;
+	public static String newBbddUser = Constants.BLANK;
+	public static String newBbddPass = Constants.BLANK;
+	public static String newSqlQuery = Constants.BLANK;
 
 	public static void createWindowNewBbdd (){
-		JFrame ventanaBBDD = new JFrame("Añadir una BBDD nueva"); 
+		JFrame ventanaBBDD = new JFrame(Constants.ADD_NEW_DB); 
 		ventanaBBDD.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-		ventanaBBDD.setBounds(200,150,500,500); 
+		ventanaBBDD.setBounds(200,150,400,500); 
 		ventanaBBDD.setFocusable(true);
 		ventanaBBDD.setLayout(new GridLayout()); 
 
@@ -47,39 +49,39 @@ public class WindowUtility {
 		//Servicio de la BBDD
 		labelBbddService = new JLabel();
 		labelBbddService.setName("id1_newServiceBBDD");
-		labelBbddService.setText("1) Inserte el servicio de la BBDD:");
+		labelBbddService.setText(Constants.INSERT_DB_SERVICE);
 		labelBbddService.setBounds(50, 30, 400, 10);	
-		desiredBbddService = new JTextField();
+		desiredBbddService = new JTextArea();
 		desiredBbddService.setBounds(70, 60, 250, 40);
 
 		//Nombre BBDD
 		labelBbddName = new JLabel();
 		labelBbddName.setName("id1_newNameBBDD");
-		labelBbddName.setText("2) Inserte un nombre para el servicio:");
+		labelBbddName.setText(Constants.INSERT_DB_NAME);
 		labelBbddName.setBounds(50, 120, 400, 10);	
-		desiredBbddName = new JTextField();
+		desiredBbddName = new JTextArea();
 		desiredBbddName.setBounds(70, 150, 250, 40);
 
 		//Usuario de la BBDD
 		labelBbddUser = new JLabel();
 		labelBbddUser.setName("id1_newUserBBDD");
-		labelBbddUser.setText("2) Introduce el usuario de la BBDD");
+		labelBbddUser.setText(Constants.INSERT_DB_USER);
 		labelBbddUser.setBounds(50, 210, 400, 10);
-		desiredBbddUser = new JTextField();
+		desiredBbddUser = new JTextArea();
 		desiredBbddUser.setBounds(70, 230, 250, 40);
 
 		//Usuario de la BBDD
 		labelBbddPass = new JLabel();
 		labelBbddPass.setName("id2_newPassBBDD");
-		labelBbddPass.setText("3) Introduce la contraseña de la BBDD");
+		labelBbddPass.setText(Constants.INSERT_DB_PASS);
 		labelBbddPass.setBounds(50, 300, 400, 10);
-		desiredBbddPass = new JTextField();
+		desiredBbddPass = new JTextArea();
 		desiredBbddPass.setBounds(70, 320, 250, 40);
 
 		//Obtener los datos añadidos
 		nextStep = new JButton();
 		nextStep.setText(Constants.NEXT_BUTTON);
-		nextStep.setBounds(250, 380, 100, 30);
+		nextStep.setBounds(220, 380, 100, 50);
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextStep.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -92,7 +94,6 @@ public class WindowUtility {
 				MainInterface.queryBean.setBbddUser(newBbddUser);
 				newBbddPass = desiredBbddPass.getText();
 				MainInterface.queryBean.setBbddPass(newBbddPass);
-				System.out.println("----- "+ newBbddService + ":"+ newBbddName + " : " + newBbddUser + " - " + newBbddPass);
 				ventanaBBDD.setVisible(false); 
 
 				MensajeDialog.NextStep();
@@ -115,9 +116,9 @@ public class WindowUtility {
 	}
 
 	public static void createWindowAddQuery (){
-		JFrame ventanaAddQuery = new JFrame("Añadir una consulta nueva"); 
+		JFrame ventanaAddQuery = new JFrame(Constants.INSERT_NEW_QUERY); 
 		ventanaAddQuery.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-		ventanaAddQuery.setBounds(200,150,500,500); 
+		ventanaAddQuery.setBounds(200,150,500,400); 
 		ventanaAddQuery.setFocusable(true);
 		ventanaAddQuery.setLayout(new GridLayout()); 
 
@@ -127,15 +128,19 @@ public class WindowUtility {
 		//Servicio de la BBDD
 		labelAddQuery = new JLabel();
 		labelAddQuery.setName("id2_addQuery");
-		labelAddQuery.setText("Inserte la consulta que desea añadir:");
-		labelAddQuery.setBounds(50, 30, 400, 10);	
-		desiredAddQuery = new JTextField();
-		desiredAddQuery.setBounds(70, 60, 250, 100);
+		labelAddQuery.setText(Constants.INSERT_NEW_QUERY_SQL);
+		labelAddQuery.setBounds(50, 30, 400, 15);	
+//		desiredAddQuery = new JTextField();
+//		desiredAddQuery.setBounds(50, 60, 400, 180);
+		desiredAddQuery = new JTextArea();
+		desiredAddQuery.setLineWrap(true);
+		desiredAddQuery.setBounds(50, 60, 400, 180);
+		desiredAddQuery.setForeground(new Color(6,57,113));
 
 		//Obtener los datos añadidos
 		nextStep = new JButton();
 		nextStep.setText(Constants.NEXT_BUTTON);
-		nextStep.setBounds(250, 380, 100, 30);
+		nextStep.setBounds(350, 250, 100, 50);
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextStep.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -146,10 +151,10 @@ public class WindowUtility {
 			}
 		});
 		
-		JButton buttonCancel = new JButton(); 
-		buttonCancel.setText("CANCELAR");
-		buttonCancel.setBounds(100, 380, 100, 30);
-		ButtonUtility.addListenerClickCancelButtonDescription(buttonCancel, ventanaAddQuery);
+//		JButton buttonCancel = new JButton(); 
+//		buttonCancel.setText(Constants.CANCEL_BUTTON);
+//		buttonCancel.setBounds(100, 380, 100, 30);
+//		ButtonUtility.addListenerClickCancelButtonDescription(buttonCancel, ventanaAddQuery);
 
 		panelCreateAddQuery.add(labelAddQuery);
 		panelCreateAddQuery.add(desiredAddQuery);

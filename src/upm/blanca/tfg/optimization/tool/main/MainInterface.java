@@ -20,7 +20,7 @@ public class MainInterface extends JFrame  {
 	public static String labelReport = Constants.LABEL_SQL_REPORT;
 	public static String labelDefaultQuery = Constants.LABEL_QUERY;
 	public static JPanel panel1 = null;	
-	public static JPanel panel3 =null;
+	public static JPanel panel3 = null;
 	public static JPanel panel2 = null;
 	
 	boolean valor = false;

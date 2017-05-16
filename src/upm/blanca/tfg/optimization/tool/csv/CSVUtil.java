@@ -31,7 +31,7 @@ public class CSVUtil {
 			}
 			first = false;
 		}
-		sb.append("\n");
+		sb.append(Constants.LINE_BREAK);
 		w.append(sb.toString());
 	}
 }

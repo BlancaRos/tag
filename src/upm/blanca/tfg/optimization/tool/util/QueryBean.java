@@ -17,7 +17,14 @@ public class QueryBean {
 	private String costQuery;
 	private String avgTime;
 	private int idBBDD;
+	private byte[] csv;
 
+	public byte[] getCsv() {
+		return csv;
+	}
+	public void setCsv(byte[] csv) {
+		this.csv = csv;
+	}
 	public QueryBean(){
 	}
 	public String getQueryString() {

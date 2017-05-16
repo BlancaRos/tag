@@ -1,4 +1,5 @@
 package upm.blanca.tfg.optimization.tool.util;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -47,6 +48,7 @@ public class ButtonUtility {
 				String descriptionSelected = list.getSelectedValue().toString();
 				labelDescriptionQuery.setText(descriptionSelected);
 				labelDescriptionQuery.setBounds(50, 70, 500, 30);
+				labelDescriptionQuery.setForeground(new Color(27,85,131));
 
 				MainInterface.queryBean.setQueryDescription(descriptionSelected);
 				MainInterface.panel2.add(labelDescriptionQuery);

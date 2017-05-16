@@ -1,5 +1,6 @@
 package upm.blanca.tfg.optimization.tool.db.util;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,12 +10,23 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 import upm.blanca.tfg.optimization.tool.util.QueryBean;
+import upm.blanca.tfg.optimization.tool.util.Util;
 
 public class OracleDBUtil {
-
+	
+	private static JLabel labelLoading;
+	private static JPanel panel;
+	
 	public static Connection getConnectionOracle() throws SQLException{
 
 		System.out.println("-------- Oracle JDBC Connection Testing ------");
@@ -31,6 +43,40 @@ public class OracleDBUtil {
 		Connection connection = null;
 
 		try {
+//			Icon icon = new ImageIcon(ImageIO.read(OracleDBUtil.class.getClassLoader().getResourceAsStream("loading.gif")));
+//			JLabel labelLoading = new JLabel("holaaaa");
+//			labelLoading.setBounds(460, 340, 50, 50);
+//			labelLoading.setVisible(true);
+//			JPanel panelito = Util.searchPane(MainInterface.mainInterface, "panel2");
+//			panelito.add(labelLoading);
+//			MainInterface.panel2.add(labelLoading);
+			
+//			System.out.println("EEIII");
+//			labelLoading = new JLabel("Loading...");
+//			labelLoading.setBounds(200, 340, 50, 50);
+//			labelLoading.setVisible(true);
+//			//JPanel panel = Util.searchPane(MainInterface.mainInterface, "panel2");
+//			panel = Util.searchPane(MainInterface.mainInterface, "panel2");
+//			panel.add(labelLoading);
+
+			
+			JLabel img = new JLabel(); 
+			ImageIcon image = new ImageIcon("/Users/admin/Desktop/TFG/Imágenes/cargando.gif"); 
+
+			//JPanel panelito = Util.searchPane(MainInterface.mainInterface, Constants.TAB_QUERY);
+			
+			//JTabbedPane panelito = Util.searchPane(MainInterface.mainInterface, "panel2");
+
+			
+			//Propiedades de la etiqueta 
+			img.setIcon(image); 
+			img.setSize(100,100); 
+			img.setLocation(460,80); 
+			img.setVisible(true); 
+			
+			//panelito.add(img);
+			MainInterface.mainInterface.add(img);
+			
 			//connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521/orcl", "hr","oracle");
 			connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521/" + MainInterface.queryBean.getBbddService(), MainInterface.queryBean.getBbddUser(),MainInterface.queryBean.getBbddPass());
 
@@ -41,7 +87,7 @@ public class OracleDBUtil {
 		return connection;
 	}
 
-	public static ResultSet createQueryOracle(Connection connection, QueryBean queryBean) throws SQLException{
+	public static ResultSet createQueryOracle(Connection connection, QueryBean queryBean) throws SQLException, IOException{
 		ResultSet resultSet = null;
 		if (connection != null) {
 			System.out.println("You made it, take control your database now!");
@@ -66,7 +112,7 @@ public class OracleDBUtil {
 
 				String startTime = new SimpleDateFormat("HH:mm:ss").format(new Date(startTimeMillis));
 				MainInterface.queryBean.setQueryStartTime(startTime);
-
+		        
 				resultSet=stmt.executeQuery(finalQuery);
 
 				long endTimeMillis = System.currentTimeMillis();
@@ -75,8 +121,7 @@ public class OracleDBUtil {
 
 				long totalTime = endTimeMillis- startTimeMillis;
 				MainInterface.queryBean.setTotalTime((int) totalTime);
-
-
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}  

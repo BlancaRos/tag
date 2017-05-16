@@ -3,8 +3,11 @@ package upm.blanca.tfg.optimization.tool.util;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,7 +60,7 @@ public class MensajeDialog implements ActionListener{
 					boolean first = true;
 					String [] columns = new String[numOfColums];
 					FileWriter writer;
-					String csvFile =  "/Users/admin/Desktop/resultQuery.csv";
+					String csvFile =  Constants.CSV_PATH;
 					writer = new FileWriter(csvFile);
 					int numRows = 0;
 
@@ -72,7 +75,7 @@ public class MensajeDialog implements ActionListener{
 						numRows++;
 						for (int i=0; i<numOfColums;i++){
 							//Guardo todos los valores sin importar el tipo
-							columns[i] = String.valueOf(resultSet.getObject(i+1)).replaceAll(",",Constants.BLANK);
+							columns[i] = String.valueOf(resultSet.getObject(i+1)).replaceAll(Constants.COMMA,Constants.BLANK);
 						}
 						//Escribo en el csv
 						CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
@@ -80,7 +83,19 @@ public class MensajeDialog implements ActionListener{
 					}
 					MainInterface.queryBean.setNumRows(numRows);
 					oracleConnection.close(); 
-
+					System.out.println(writer.toString());
+					InputStream bo = new ByteArrayInputStream(writer.toString().getBytes());
+					MainInterface.queryBean.setCsv(writer.toString().getBytes());
+//					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//					byte[] tmp = new byte[4096];
+//					int ret = 0;
+//
+//					while((ret = inputStream.read(tmp)) > 0)
+//					{
+//					    bos.write(tmp, 0, ret);
+//					}
+//
+//					byte[] myArray = bos.toByteArray();
 					writer.flush();
 					writer.close();
 				}
