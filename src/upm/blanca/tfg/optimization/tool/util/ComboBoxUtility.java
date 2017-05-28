@@ -105,6 +105,8 @@ public class ComboBoxUtility {
 						panel.remove(nextStep);	
 					if(addQuery != null)
 						panel.remove(addQuery);	
+					//if(labelDescriptionQuery != null) , labelAddQuery , desiredAddQuery
+					//	panel.remove(labelDescriptionQuery);
 					Util.removeComponentFromPanel(MainInterface.panel2, "id2_descriptionModify", "id2_queryModify");
 
 					sqlQuery = DesignQuery(panel);
@@ -172,16 +174,17 @@ public class ComboBoxUtility {
 //		JPanel panelito = Util.searchPane(MainInterface.mainInterface, "panel2");
 //		panelito.add(labelLoading);
 		/////////////////////
-//		JLabel img = new JLabel(); 
-//		ImageIcon image = new ImageIcon("/Users/admin/Desktop/TFG/Imágenes/cargando.gif"); 
-//
-//		//Propiedades de la etiqueta 
-//		img.setIcon(image); 
-//		img.setSize(100,100); 
+		JLabel img = new JLabel(); 
+		ImageIcon image = new ImageIcon("/Users/admin/Desktop/TFG/Imágenes/cargando.gif"); 
+
+		//Propiedades de la etiqueta 
+		img.setIcon(image); 
+		img.setName("id2_loading");
+		img.setSize(80,80); 
 //		img.setLocation(460,80); 
-//		img.setVisible(true); 
-//		
-//		panel.add(img);
+		img.setLocation(55,310); 
+		img.setVisible(false); 
+		panel.add(img);
 
 
 		panel.add(labelQueryDescription);
@@ -311,29 +314,29 @@ public class ComboBoxUtility {
 				try {
 					//Añadir datos obtenidos
 					jReport = JasperCompileManager.compileReport(template);
+					
 					List<ReportBean> listaReport = new ArrayList<ReportBean>();
+					listaReport = MySQLUtil.getQueryToReport();
+					JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
 
 					List<CSVReportBean> listCSV = new ArrayList<CSVReportBean>();
+					listCSV = MySQLUtil.getCSVToReport();
+					JRBeanCollectionDataSource datasourceCsv = new JRBeanCollectionDataSource(listCSV);
+					
+//					JasperPrint jPrint = JasperFillManager.fillReport(jReport, datasourceCsv, datasource);
+
 					CSVReportBean cv1 = new CSVReportBean();
 					cv1.setCsv("mi row1");
 					CSVReportBean cv2 = new CSVReportBean();
 					cv2.setCsv("mi row2");
 					listCSV.add(cv1);
 					listCSV.add(cv2);
-
-					listaReport = MySQLUtil.getQueryToReport();
-					//listCSV = MySQLUtil.getCSVToReport();
-					JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
-//					JRBeanCollectionDataSource datasource2 = new JRBeanCollectionDataSource(listCSV);
-
 					parameters.put("csv",cv1.getCsv()+"<br/>"+cv2.getCsv());
-					//csv
-//					JRBeanArrayDataSource datasource = new JRBeanArrayDataSource(beanArray);
+
 					JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, datasource);
+					
 					JasperExportManager.exportReportToPdfFile(jPrint, Constants.REPORT_PATH + sb.toString() + Constants.REPORT_EXTENSION);
 					JasperViewer.viewReport(jPrint, false);
-					
-					//Añadir csv
 					
 				} catch (JRException | SQLException e1) {
 					e1.printStackTrace();

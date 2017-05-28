@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Informe" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a4c7ff9-26e6-4edc-88bb-773b1b4a8ac7">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="136"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -149,6 +149,33 @@
 				<reportElement style="table_TD" stretchType="RelativeToBandHeight" mode="Opaque" x="341" y="0" width="66" height="20" uuid="101cc121-df80-41dd-8b14-801c5bab55fc"/>
 				<textFieldExpression><![CDATA[$F{bbdd}]]></textFieldExpression>
 			</textField>
+		</band>
+		<band height="96">
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="19" y="16" width="515" height="20" uuid="99231a02-850c-4f43-97b1-baf6218c2d83"/>
+				<text><![CDATA[Como se puede ver en la tabla anterior, la sentencia SQL más rápida para la descripción mencionada anteriormente es:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="76" width="59" height="20" uuid="daa8c1fe-ef35-4f57-b4ab-2e7077a9a4a0"/>
+				<text><![CDATA[Tardando ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="197" y="76" width="100" height="20" uuid="04530e9c-afa1-4310-a854-0d0deb089c92"/>
+				<text><![CDATA[(nanosegundos)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="87" y="76" width="100" height="20" forecolor="#0070B8" uuid="69a4621b-0ff8-4e0d-8c17-1c6b56890b62"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{avgTime}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="79">
+			<staticText>
+				<reportElement x="19" y="37" width="59" height="20" forecolor="#FE0000" uuid="b774f99d-c140-44ca-9129-e24f8d925582"/>
+				<text><![CDATA[CSV!!!!!!]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>

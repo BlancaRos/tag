@@ -15,6 +15,8 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
+import upm.blanca.tfg.optimization.tool.util.CSVReportBean;
+import upm.blanca.tfg.optimization.tool.util.ExecutionBean;
 import upm.blanca.tfg.optimization.tool.util.QueryBean;
 import upm.blanca.tfg.optimization.tool.util.ReportBean;
 
@@ -160,6 +162,8 @@ public class MySQLUtil {
 				pstm.setString(1, queryBean.getQueryString());
 				pstm.setInt(2, idBBDD);
 				pstm.setInt(3, idDescription);
+				pstm.setString(4, queryBean.getAvgTime());
+				pstm.setInt(5, queryBean.getNumRows());
 				pstm.execute();
 				idResult = pstm.getLastInsertID();
 
@@ -178,14 +182,16 @@ public class MySQLUtil {
 			PreparedStatement pstm = null;
 			String query = Constants.INSERT_EXECUTION;
 
-			pstm = (PreparedStatement) connection.prepareStatement(query);
-			pstm.setString(1, queryBean.getQueryDate());
-			pstm.setString(2, queryBean.getQueryStartTime());
-			pstm.setString(3, queryBean.getQueryEndTime());
-			pstm.setInt(4, (queryBean.getTotalTime()));
-			pstm.setInt(5, idSQLQuery);
-			pstm.setInt(6,queryBean.getNumRows());
-			pstm.execute();
+			for(ExecutionBean eb : queryBean.getExecutionBeanList()){
+				pstm = (PreparedStatement) connection.prepareStatement(query);
+				pstm.setString(1, eb.getQueryDate());
+				pstm.setString(2, eb.getQueryStartTime());
+				pstm.setString(3, eb.getQueryEndTime());
+				pstm.setInt(4, (eb.getTotalTime()));
+				pstm.setInt(5, idSQLQuery);
+				pstm.setInt(6, queryBean.getNumRows());
+				pstm.execute();
+			}
 		}		
 	}
 	public static List<String> getDescriptions(Connection connection) throws SQLException{
@@ -299,28 +305,30 @@ public class MySQLUtil {
 		return listaReport;
 	}
 
-	public static List<ReportBean> getCSVToReport() throws SQLException{
+	public static List<CSVReportBean> getCSVToReport() throws SQLException{
 		Connection connection = MySQLUtil.getConnectionMySQL();
 		try {
 			connection = MySQLUtil.getConnectionMySQL();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		List<ReportBean> listaReport=new ArrayList<ReportBean>();
+		List<CSVReportBean> listaCsvReport=new ArrayList<CSVReportBean>();
 
 		if(connection != null){
-//OBTENER LOS CSV DE LA TABLA DESCRIPCION!!!!!
-			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.CSV_VALUES + MainInterface.queryBean.getQueryDescription() + Constants.CLOSE_QUERY_WITH_SUBQUERY);
+
+			//OBTENER LOS CSV DE LA TABLA DESCRIPCION!!!!!
+			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.CSV_VALUES + MainInterface.queryBean.getQueryDescription() + Constants.CLOSE_QUERY);
 			ResultSet result1 = consulta1.executeQuery();
 			while(result1.next()){
 				//creo bean, guardo valores y lo mando a la lista de beans
-				ReportBean reportBean = new ReportBean();
-				String querySql= result1.getString(1);
-				reportBean.setQuery(querySql);
+				CSVReportBean csvReportBean = new CSVReportBean();
+				String csvQuery= result1.getString(1);
+				csvReportBean.setCsv(csvQuery);
+				listaCsvReport.add(csvReportBean);
 			}
 
 		}
-		return listaReport;
+		return listaCsvReport;
 
 	}
 }

@@ -55,12 +55,6 @@ public class CheckboxUtility {
 						e1.printStackTrace();
 					}
 				}
-//				try {
-//					MySQLUtil.getSelectedDataBase(selected);
-//				} catch (SQLException e1) {
-////					MensajeDialog.MessageSelectOption();
-//					e1.printStackTrace();
-//				}
 			}
 		});
 

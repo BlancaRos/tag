@@ -23,16 +23,16 @@ import upm.blanca.tfg.optimization.tool.db.util.OracleDBUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 
 public class MensajeDialog implements ActionListener{
-	
+
 	public void actionPerformed (ActionEvent e){
 		// Aqui el código que queremos que se ejecute cuando tiene lugar la acción.
 		// la pulsación del botón, el <INTRO> en el JTextField, elección en el JComboBox, etc.
 	}
-	
+
 	public static void MessageDialogue() {
 		int eleccion = JOptionPane.showConfirmDialog(null, Constants.CONFIRM_DIALOG, Constants.CONFIRM_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		ResultSet resultSet = null;
-
+		
 		if( eleccion == JOptionPane.NO_OPTION){
 			System.exit(0);
 		} else {
@@ -70,7 +70,7 @@ public class MensajeDialog implements ActionListener{
 					}
 					//Escribo en el csv
 					CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
-					
+
 					while(resultSet.next())  {
 						numRows++;
 						for (int i=0; i<numOfColums;i++){
@@ -86,18 +86,24 @@ public class MensajeDialog implements ActionListener{
 					System.out.println(writer.toString());
 					InputStream bo = new ByteArrayInputStream(writer.toString().getBytes());
 					MainInterface.queryBean.setCsv(writer.toString().getBytes());
-//					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//					byte[] tmp = new byte[4096];
-//					int ret = 0;
-//
-//					while((ret = inputStream.read(tmp)) > 0)
-//					{
-//					    bos.write(tmp, 0, ret);
-//					}
-//
-//					byte[] myArray = bos.toByteArray();
+					//					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					//					byte[] tmp = new byte[4096];
+					//					int ret = 0;
+					//
+					//					while((ret = inputStream.read(tmp)) > 0)
+					//					{
+					//					    bos.write(tmp, 0, ret);
+					//					}
+					//
+					//					byte[] myArray = bos.toByteArray();
 					writer.flush();
 					writer.close();
+					
+					try {
+						MySQLUtil.populateDB(MainInterface.queryBean);
+					} catch (SQLException e) {			
+						e.printStackTrace();
+					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -106,11 +112,7 @@ public class MensajeDialog implements ActionListener{
 			}
 
 		}
-		try {
-			MySQLUtil.populateDB(MainInterface.queryBean);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	public static void NextStep(){
@@ -120,5 +122,20 @@ public class MensajeDialog implements ActionListener{
 
 	public static void MessageSelectOption() {
 		JOptionPane.showMessageDialog(null, Constants.ERROR_DIALOG, Constants.ERROR_DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
+	}
+
+	public static void MessageSqlInfo() {
+		JOptionPane.showMessageDialog(null, "Error en la sentencia SQL", "ERROR SQL", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public static void MessageDBInfo() {
+		JOptionPane.showMessageDialog(null, "No es posible conectarse a la BBDD Interna", "ERROR BBDD", JOptionPane.ERROR_MESSAGE);
+		//MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel1));
+		try {
+			Runtime.getRuntime().exec(Constants.APP);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		System.exit(0);
 	}
 }

@@ -80,13 +80,13 @@ public class Constants {
 	public final static String REPORT_EXTENSION = ".pdf";
 	
 	//Queries
-	//public final static String REPORT_VALUES = "select qs.query, qs.avgTime, exec.numFilas from QuerySQL qs, Execution exec where qs.idQuerySQL = exec.idQuerySQL and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
-	public final static String REPORT_VALUES = "select qs.query, db.NombreBBDD, qs.avgTime, exec.numFilas from QuerySQL qs, Execution exec, BBDD db where qs.idQuerySQL = exec.idQuerySQL and db.idBBDD = qs.idBBDD and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
+	public final static String REPORT_VALUES = "select qs.query, db.NombreBBDD, qs.avgTime, qs.rows from QuerySQL qs, BBDD db where db.idBBDD = qs.idBBDD and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
+	//public final static String REPORT_VALUES = "select qs.query, db.NombreBBDD, qs.avgTime, exec.numFilas from QuerySQL qs, Execution exec, BBDD db where qs.idQuerySQL = exec.idQuerySQL and db.idBBDD = qs.idBBDD and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
 	public final static String CSV_VALUES = "select csv from QueryDescription where Descripcion = '";
 	public final static String INSERT_DESCRIPTION = "INSERT INTO QueryDescription (Descripcion, csv) VALUES(?,?);";
 	public final static String INSERT_BBDD = "INSERT INTO BBDD (NombreBBDD, UserBBDD, PassBBDD, ServicioBBDD) VALUES(?,?,?,?);";
 	public final static String INSERT_EXECUTION = "INSERT INTO Execution (Fecha, HoraInicio, HoraFin, Tiempo, idQuerySQL, numFilas) VALUES(?,?,?,?,?,?);";
-	public final static String INSERT_SQL = "INSERT INTO QuerySQL (query, idBBDD, idQueryDescription) VALUES(?,?,?);";
+	public final static String INSERT_SQL = "INSERT INTO QuerySQL (query, idBBDD, idQueryDescription, avgTime, rows) VALUES(?,?,?,?,?);";
 	public final static String SELECT_DESCRIPTION = "SELECT * FROM QueryDescription where Descripcion = '";
 	public final static String SELECT_BBDD = "SELECT * FROM BBDD WHERE ServicioBBDD = '";
 	public final static String SELECT_SQL = "SELECT * FROM QuerySQL where query = '";
