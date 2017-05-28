@@ -43,7 +43,7 @@ public class ButtonUtility {
 		button.addActionListener (new ActionListener(){
 			public void actionPerformed (ActionEvent e){
 				JLabel labelDescriptionQuery = new JLabel();
-				labelDescriptionQuery.setName("id2_descriptionQuery");
+				labelDescriptionQuery.setName("id2_descriptionSelectedQuery");
 				
 				String descriptionSelected = list.getSelectedValue().toString();
 				labelDescriptionQuery.setText(descriptionSelected);

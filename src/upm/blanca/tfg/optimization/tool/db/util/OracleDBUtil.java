@@ -47,58 +47,7 @@ public class OracleDBUtil {
 
 		Connection connection = null;
 
-		for(Component jc:MainInterface.panel2.getComponents()){
-			if(jc instanceof JLabel && jc.getName().equals("id2_loading")){	
-				System.out.println("FOTI");
-				((JLabel) jc).setVisible(true);
-			}
-		}
-
 		try {
-			//			Icon icon = new ImageIcon(ImageIO.read(OracleDBUtil.class.getClassLoader().getResourceAsStream("loading.gif")));
-			//			JLabel labelLoading = new JLabel("holaaaa");
-			//			labelLoading.setBounds(460, 340, 50, 50);
-			//			labelLoading.setVisible(true);
-			//			JPanel panelito = Util.searchPane(MainInterface.mainInterface, "panel2");
-			//			panelito.add(labelLoading);
-			//			MainInterface.panel2.add(labelLoading);
-
-			//			System.out.println("EEIII");
-			//			labelLoading = new JLabel("Loading...");
-			//			labelLoading.setBounds(200, 340, 50, 50);
-			//			labelLoading.setVisible(true);
-			//			//JPanel panel = Util.searchPane(MainInterface.mainInterface, "panel2");
-			//			panel = Util.searchPane(MainInterface.mainInterface, "panel2");
-			//			panel.add(labelLoading);
-
-
-
-
-			//JPanel panelito = Util.searchPane(MainInterface.mainInterface, Constants.TAB_QUERY);
-
-			//JTabbedPane panelito = Util.searchPane(MainInterface.mainInterface, "panel2");
-
-			/////////////// 2
-			//			JLabel img = new JLabel(); 
-			//			ImageIcon image = new ImageIcon("/Users/admin/Desktop/TFG/Imágenes/cargando.gif"); 
-			//			//Propiedades de la etiqueta 
-			//			img.setIcon(image); 
-			//			img.setSize(100,100); 
-			//			img.setLocation(460,80); 
-			//			img.setVisible(true); 
-			//			
-			//			//panelito.add(img);
-			//			MainInterface.mainInterface.add(img);
-
-			///////////////// 3
-			//			for(Component jc:MainInterface.panel2.getComponents()){
-			//				if(jc instanceof JLabel && jc.getName().equals("id2_loading")){	
-			//					System.out.println("FOTI");
-			//					((JLabel) jc).setVisible(true);
-			//				}
-			//			}
-
-
 			//connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521/orcl", "hr","oracle");
 			connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521/" + MainInterface.queryBean.getBbddService(), MainInterface.queryBean.getBbddUser(),MainInterface.queryBean.getBbddPass());
 

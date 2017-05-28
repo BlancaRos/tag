@@ -14,16 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -57,8 +55,9 @@ public class ComboBoxUtility {
 	private static JButton showContent; 
 	private static JButton nextStep;
 	private static JButton addQuery;
-	private static JButton sentQueryButton; 
+	private static JButton showReportButton; 
 	private static JButton resetButton; 
+	private static JButton showCsvButton;
 
 	public static String sqlQuery = "";
 	public static String textQuery = "";
@@ -105,9 +104,7 @@ public class ComboBoxUtility {
 						panel.remove(nextStep);	
 					if(addQuery != null)
 						panel.remove(addQuery);	
-					//if(labelDescriptionQuery != null) , labelAddQuery , desiredAddQuery
-					//	panel.remove(labelDescriptionQuery);
-					Util.removeComponentFromPanel(MainInterface.panel2, "id2_descriptionModify", "id2_queryModify");
+					Util.removeComponentFromPanel(MainInterface.panel2, "id2_descriptionSelectedQuery", "id2_scrollPaneSqlQueries");
 
 					sqlQuery = DesignQuery(panel);
 				}else{
@@ -156,36 +153,6 @@ public class ComboBoxUtility {
 				MensajeDialog.MessageDialogue();
 			}
 		});
-
-////		try {
-//			System.out.println("EEIII");
-////			icon = new ImageIcon(ImageIO.read(ComboBoxUtility.class.getClassLoader().getResourceAsStream("loading.gif")));
-////			labelLoading = new JLabel(icon);
-//			labelLoading = new JLabel("Loading...");
-//			labelLoading.setBounds(250, 340, 50, 50);
-//			labelLoading.setVisible(true);
-//			panel.add(labelLoading);
-//
-////		} catch (IOException e1) {
-////			// TODO Auto-generated catch block
-////			e1.printStackTrace();
-////		}
-		
-//		JPanel panelito = Util.searchPane(MainInterface.mainInterface, "panel2");
-//		panelito.add(labelLoading);
-		/////////////////////
-		JLabel img = new JLabel(); 
-		ImageIcon image = new ImageIcon("/Users/admin/Desktop/TFG/Imágenes/cargando.gif"); 
-
-		//Propiedades de la etiqueta 
-		img.setIcon(image); 
-		img.setName("id2_loading");
-		img.setSize(80,80); 
-//		img.setLocation(460,80); 
-		img.setLocation(55,310); 
-		img.setVisible(false); 
-		panel.add(img);
-
 
 		panel.add(labelQueryDescription);
 		panel.add(descriptionQuery);
@@ -278,11 +245,11 @@ public class ComboBoxUtility {
 		labelSQLSelected.setForeground(new Color(27,85,131));
 		labelSQLSelected.setBounds(60, 180, 700, 50);
 
-		sentQueryButton = new JButton();
-		sentQueryButton.setText(Constants.SENT_QUERY);
-		sentQueryButton.setBounds(110, 320, 100, 50);
+		showReportButton = new JButton();
+		showReportButton.setText(Constants.SHOW_REPORT);
+		showReportButton.setBounds(110, 320, 100, 50);
 
-		sentQueryButton.addActionListener(new ActionListener(){
+		showReportButton.addActionListener(new ActionListener(){
 			List<ReportBean> reportBean = new ArrayList<ReportBean>();
 
 			public void actionPerformed(ActionEvent e) {
@@ -325,13 +292,8 @@ public class ComboBoxUtility {
 					
 //					JasperPrint jPrint = JasperFillManager.fillReport(jReport, datasourceCsv, datasource);
 
-					CSVReportBean cv1 = new CSVReportBean();
-					cv1.setCsv("mi row1");
-					CSVReportBean cv2 = new CSVReportBean();
-					cv2.setCsv("mi row2");
-					listCSV.add(cv1);
-					listCSV.add(cv2);
-					parameters.put("csv",cv1.getCsv()+"<br/>"+cv2.getCsv());
+				
+					parameters.put("csv",MainInterface.queryBean.getStringCSV());
 
 					JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, datasource);
 					
@@ -345,18 +307,64 @@ public class ComboBoxUtility {
 			}
 		});
 
+		showCsvButton = new JButton();
+		showCsvButton.setText(Constants.SHOW_REPORT);
+		showCsvButton.setBounds(70, 320, 100, 50);
+
+		showCsvButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+
+				Calendar cal = Calendar.getInstance();
+				int year = cal.get(Calendar.YEAR);
+				int month = cal.get(Calendar.MONTH) + 1;
+				int day = cal.get(Calendar.DAY_OF_MONTH);
+				int hour = cal.get(Calendar.HOUR_OF_DAY);
+				int minute = cal.get(Calendar.MINUTE);
+				int second = cal.get(Calendar.SECOND);
+				StringBuilder sb = new StringBuilder();
+
+				sb.append(year);
+				sb.append(month);
+				sb.append(day);
+				sb.append(Constants.LOW_BAR);
+				sb.append(hour);
+				sb.append(minute);				
+				sb.append(second);
+
+//				Map<String, Object> parameters = new HashMap<String, Object>();
+//
+//				parameters.put("csvRow", MainInterface.queryBean.getStringCSV());
+
+				InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.CSVREPORT);
+				JasperReport jReport;
+				List<CSVRowBean> listaReport = new ArrayList<CSVRowBean>();
+				listaReport =MainInterface.queryBean.getStringCSV();
+				JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
+
+				try {
+					//Añadir datos obtenidos
+					jReport = JasperCompileManager.compileReport(template);
+					
+					JasperPrint jPrint = JasperFillManager.fillReport(jReport, null, datasource);
+					
+					JasperExportManager.exportReportToPdfFile(jPrint, Constants.CSV_REPORT_PATH + sb.toString() + Constants.REPORT_EXTENSION);
+					JasperViewer.viewReport(jPrint, false);
+					
+				} catch (JRException e1) {
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		
 		resetButton = new JButton();
 		resetButton.setText(Constants.RESET_BUTTON);
 		resetButton.setBounds(225, 320, 100, 50);
 
 		resetButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				try {
-					Runtime.getRuntime().exec(Constants.APP);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				System.exit(0);
+				Util.resetApp();
 			}
 		});
 
@@ -364,8 +372,9 @@ public class ComboBoxUtility {
 		panel.add(labelTextSelected);
 		panel.add(labelInfoSQLQuery);
 		panel.add(labelSQLSelected);
-		panel.add(sentQueryButton);
+		panel.add(showReportButton);
 		panel.add(resetButton);	
+		panel.add(showCsvButton);
 
 		return panel;
 	}

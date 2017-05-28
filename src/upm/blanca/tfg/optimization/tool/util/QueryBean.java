@@ -17,6 +17,8 @@ public class QueryBean {
 	private int numRows;
 	private int idBBDD;
 	private byte[] csv;
+	private List<CSVRowBean> stringCSV;
+
 
 	public byte[] getCsv() {
 		return csv;
@@ -86,4 +88,11 @@ public class QueryBean {
 	public void setNumRows(int numRows) {
 		this.numRows = numRows;
 	}
+	public List<CSVRowBean> getStringCSV() {
+		return stringCSV;
+	}
+	public void setStringCSV(List<CSVRowBean> stringCSV) {
+		this.stringCSV = stringCSV;
+	}
+
 }

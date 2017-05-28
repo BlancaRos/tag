@@ -57,7 +57,7 @@ public class Constants {
 
 
 	//BUTTONS
-	public final static String SENT_QUERY ="Ver informe";
+	public final static String SHOW_REPORT ="Ver informe";
 	public final static String NEXT_BUTTON = "Siguiente";
 	public final static String RESET_BUTTON = "Reset";
 	public final static String ADD_BUTTON = "Añadir";
@@ -76,6 +76,7 @@ public class Constants {
 	
 	//REPORT
 	public final static String REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Informe_";
+	public final static String CSV_REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Csv_";
 	//public final static String LOGO_PATH = "/Users/admin/Desktop/TFG/Imagenes/logo_UPM.gif";
 	public final static String REPORT_EXTENSION = ".pdf";
 	
@@ -102,6 +103,7 @@ public class Constants {
 	
 	//JASPERREPORT
 	public final static String INFORME = "Informe.jrxml";
+	public final static String CSVREPORT = "reportCSV.jrxml";
 	
 	//APP
 	public final static String APP = "java -jar miapp.jar";

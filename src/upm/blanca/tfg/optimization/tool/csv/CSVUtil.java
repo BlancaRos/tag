@@ -5,13 +5,14 @@ import java.io.Writer;
 import java.util.List;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
+import upm.blanca.tfg.optimization.tool.util.CSVRowBean;
 
 public class CSVUtil {
 
 	private static final char DEFAULT_SEPARATOR = ',';
 
-	public static void writeLine(Writer w, List<String> values, char separators) throws IOException {
-
+	public static CSVRowBean writeLine(Writer w, List<String> values, char separators) throws IOException {
+		CSVRowBean csvRow = new CSVRowBean();
 		boolean first = true;
 
 		if (separators == ' ') {
@@ -33,5 +34,7 @@ public class CSVUtil {
 		}
 		sb.append(Constants.LINE_BREAK);
 		w.append(sb.toString());
+		csvRow.setCsvRow(sb.toString());
+		return csvRow;
 	}
 }

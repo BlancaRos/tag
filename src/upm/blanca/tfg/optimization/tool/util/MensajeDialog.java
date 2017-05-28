@@ -11,7 +11,9 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -70,7 +72,7 @@ public class MensajeDialog implements ActionListener{
 					}
 					//Escribo en el csv
 					CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
-
+					List<CSVRowBean> allLines =  new ArrayList<CSVRowBean>();
 					while(resultSet.next())  {
 						numRows++;
 						for (int i=0; i<numOfColums;i++){
@@ -78,9 +80,16 @@ public class MensajeDialog implements ActionListener{
 							columns[i] = String.valueOf(resultSet.getObject(i+1)).replaceAll(Constants.COMMA,Constants.BLANK);
 						}
 						//Escribo en el csv
-						CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
+						CSVRowBean line = CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
+						allLines.add(line);
 						first = false;
 					}
+					StringBuilder sbReport = new StringBuilder();
+//					for (String line : allLines) {
+//						sbReport.append(line);
+//						sbReport.append("<br/>");
+//					}
+					MainInterface.queryBean.setStringCSV(allLines);
 					MainInterface.queryBean.setNumRows(numRows);
 					oracleConnection.close(); 
 					System.out.println(writer.toString());
@@ -126,16 +135,13 @@ public class MensajeDialog implements ActionListener{
 
 	public static void MessageSqlInfo() {
 		JOptionPane.showMessageDialog(null, "Error en la sentencia SQL", "ERROR SQL", JOptionPane.ERROR_MESSAGE);
+		Util.resetApp();
 	}
 	
 	public static void MessageDBInfo() {
 		JOptionPane.showMessageDialog(null, "No es posible conectarse a la BBDD Interna", "ERROR BBDD", JOptionPane.ERROR_MESSAGE);
 		//MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel1));
-		try {
-			Runtime.getRuntime().exec(Constants.APP);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		System.exit(0);
+		Util.resetApp();
 	}
+	
 }

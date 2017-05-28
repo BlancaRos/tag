@@ -1,6 +1,7 @@
 package upm.blanca.tfg.optimization.tool.util;
 
 import java.awt.Component;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.JLabel;
@@ -39,20 +40,6 @@ public class Util {
 			if(jc instanceof JTabbedPane){
 				((JTabbedPane) jc).getSelectedComponent();
 				panelito3 = (JTabbedPane) jc;
-			//////2	
-				//for(Component jc:MainInterface.panel2.getComponents()){
-//				for(Component j:mainInterface.getComponents()){
-//					if(jc instanceof JPanel && j.getName().equals("panel2")){
-//						panelito = (JPanel) j; 
-//						//				for (Component c : panelito.getComponents()){
-//						//					if (c instanceof JPanel && c.getName().equals("panel22")) {
-//						//						panelito2 = (JPanel) c;
-//						//						break;
-//						//					}
-//						//				}
-//						break;
-//					}
-//				}
 			}
 		}
 		return panelito3;
@@ -90,5 +77,14 @@ public class Util {
 				((JLabel) jcomp).setText(MainInterface.queryBean.getQueryDescription());
 			}
 		}
+	}
+	
+	public static void resetApp(){
+		try {
+			Runtime.getRuntime().exec(Constants.APP);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		System.exit(0);
 	}
 }
