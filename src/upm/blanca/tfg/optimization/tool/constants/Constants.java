@@ -55,21 +55,24 @@ public class Constants {
 	public final static String MODIFY_DESCRIPTION_TEXT = "1.- Seleccione la descripción a la que desea añadir una consulta: ";
 	public final static String MODIFY_SQL_TEXT = "2.- Seleccione/añada la consulta a realizar: ";
 
-
 	//BUTTONS
 	public final static String SHOW_REPORT ="Ver informe";
+	public final static String SHOW_CSV_REPORT ="Ver resultado";
 	public final static String NEXT_BUTTON = "Siguiente";
 	public final static String RESET_BUTTON = "Reset";
 	public final static String ADD_BUTTON = "Añadir";
 	public final static String ADD_BBDD_BUTTON = "Nueva BBDD";
 	public final static String CANCEL_BUTTON = "Cancelar";
 	
-	
 	//MESSAGE DIALOGS
 	public final static String CONFIRM_DIALOG = "¿Seguro que desea continuar?";
 	public final static String CONFIRM_DIALOG_TITLE = "¡Alerta!";
 	public final static String ERROR_DIALOG = "¡Debes seleccionar una opción!";
 	public final static String ERROR_DIALOG_TITLE = "¡Error!";
+	public final static String ERROR_SQL = "Error en la sentencia SQL";
+	public final static String ERROR_SQL_TITLE = "ERROR SQL";
+	public final static String ERROR_BBDD = "No es posible conectarse a la BBDD Interna";
+	public final static String ERROR_BBDD_TITLE = "ERROR BBDD";
 	
 	//CSV
 	public final static String CSV_PATH = "/Users/admin/Desktop/resultQuery.csv";
@@ -77,12 +80,10 @@ public class Constants {
 	//REPORT
 	public final static String REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Informe_";
 	public final static String CSV_REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Csv_";
-	//public final static String LOGO_PATH = "/Users/admin/Desktop/TFG/Imagenes/logo_UPM.gif";
 	public final static String REPORT_EXTENSION = ".pdf";
 	
 	//Queries
 	public final static String REPORT_VALUES = "select qs.query, db.NombreBBDD, qs.avgTime, qs.rows from QuerySQL qs, BBDD db where db.idBBDD = qs.idBBDD and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
-	//public final static String REPORT_VALUES = "select qs.query, db.NombreBBDD, qs.avgTime, exec.numFilas from QuerySQL qs, Execution exec, BBDD db where qs.idQuerySQL = exec.idQuerySQL and db.idBBDD = qs.idBBDD and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
 	public final static String CSV_VALUES = "select csv from QueryDescription where Descripcion = '";
 	public final static String INSERT_DESCRIPTION = "INSERT INTO QueryDescription (Descripcion, csv) VALUES(?,?);";
 	public final static String INSERT_BBDD = "INSERT INTO BBDD (NombreBBDD, UserBBDD, PassBBDD, ServicioBBDD) VALUES(?,?,?,?);";

@@ -1,6 +1,5 @@
-package upm.blanca.tfg.optimization.tool.db.util;
+package upm.blanca.tfg.optimization.tool.oracle.util;
 
-import java.awt.Component;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,19 +12,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
+import upm.blanca.tfg.optimization.tool.beans.QueryBean;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
+import upm.blanca.tfg.optimization.tool.interfaz.util.ExecutionBean;
+import upm.blanca.tfg.optimization.tool.interfaz.util.MensajeDialog;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
-import upm.blanca.tfg.optimization.tool.util.ExecutionBean;
-import upm.blanca.tfg.optimization.tool.util.MensajeDialog;
-import upm.blanca.tfg.optimization.tool.util.QueryBean;
-import upm.blanca.tfg.optimization.tool.util.Util;
 
 public class OracleDBUtil {
 
@@ -34,25 +28,18 @@ public class OracleDBUtil {
 
 	public static Connection getConnectionOracle() throws SQLException{
 
-		System.out.println("-------- Oracle JDBC Connection Testing ------");
-
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 		} catch (ClassNotFoundException e) {
-			System.out.println("Where is your Oracle JDBC Driver?");
 			e.printStackTrace();
 		}
-
-		System.out.println("Oracle JDBC Driver Registered!");
 
 		Connection connection = null;
 
 		try {
-			//connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521/orcl", "hr","oracle");
 			connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521/" + MainInterface.queryBean.getBbddService(), MainInterface.queryBean.getBbddUser(),MainInterface.queryBean.getBbddPass());
 
 		} catch (SQLException e) {
-			System.out.println("Connection Failed! Check output console");
 			MensajeDialog.MessageDBInfo();
 			e.printStackTrace();
 		}
@@ -64,7 +51,6 @@ public class OracleDBUtil {
 		List<ExecutionBean> executionBeanList = new ArrayList<ExecutionBean>();
 		
 		if (connection != null) {
-			System.out.println("You made it, take control your database now!");
 
 			Statement stmt;
 			try {
@@ -118,8 +104,6 @@ public class OracleDBUtil {
 				e.printStackTrace();
 			}  
 			//			connection.close();
-		} else {				
-			System.out.println("Failed to make connection!");
 		}
 		return resultSet;
 	}

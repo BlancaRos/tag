@@ -76,6 +76,9 @@
 			</staticText>
 			<staticText>
 				<reportElement x="13" y="36" width="268" height="20" uuid="7a1f4b47-1d1d-4e71-9231-c60b9cbda5df"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Resultado de la consulta ejecutada:]]></text>
 			</staticText>
 		</band>
@@ -83,7 +86,10 @@
 	<detail>
 		<band height="23">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="13" y="0" width="541" height="20" uuid="fc220925-797c-4bb7-abc0-b1a79518d711"/>
+				<reportElement positionType="Float" x="13" y="0" width="541" height="20" forecolor="#0070B8" uuid="fc220925-797c-4bb7-abc0-b1a79518d711"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{csvRow}]]></textFieldExpression>
 			</textField>
 		</band>

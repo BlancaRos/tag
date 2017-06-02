@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.interfaz.util;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -27,7 +27,6 @@ public class WindowUtility {
 	private static JTextArea desiredBbddUser;
 	private static JTextArea desiredBbddPass;
 	private static JTextArea desiredAddQuery;
-
 
 	private static JButton nextStep;
 	public static String newBbddService = Constants.BLANK;
@@ -70,7 +69,7 @@ public class WindowUtility {
 		desiredBbddUser = new JTextArea();
 		desiredBbddUser.setBounds(70, 230, 250, 40);
 
-		//Usuario de la BBDD
+		//Contraseña de la BBDD
 		labelBbddPass = new JLabel();
 		labelBbddPass.setName("id2_newPassBBDD");
 		labelBbddPass.setText(Constants.INSERT_DB_PASS);
@@ -89,7 +88,6 @@ public class WindowUtility {
 				MainInterface.queryBean.setBbddService(newBbddService);
 				newBbddName = desiredBbddName.getText(); 
 				MainInterface.queryBean.setBbddName(newBbddName);
-				//MensajeDialog.MessageDialogue();
 				newBbddUser = desiredBbddUser.getText(); 
 				MainInterface.queryBean.setBbddUser(newBbddUser);
 				newBbddPass = desiredBbddPass.getText();
@@ -109,8 +107,6 @@ public class WindowUtility {
 		panelCreateBBDD.add(labelBbddPass);
 		panelCreateBBDD.add(desiredBbddPass);
 		panelCreateBBDD.add(nextStep);
-		//Añadir nuevos componentes al panel
-		//panelCreateBBDD.paintAll(panel.getGraphics());
 		ventanaBBDD.add(panelCreateBBDD); 
 		ventanaBBDD.setVisible(true); 
 	}
@@ -130,8 +126,6 @@ public class WindowUtility {
 		labelAddQuery.setName("id2_addQuery");
 		labelAddQuery.setText(Constants.INSERT_NEW_QUERY_SQL);
 		labelAddQuery.setBounds(50, 30, 400, 15);	
-//		desiredAddQuery = new JTextField();
-//		desiredAddQuery.setBounds(50, 60, 400, 180);
 		desiredAddQuery = new JTextArea();
 		desiredAddQuery.setLineWrap(true);
 		desiredAddQuery.setBounds(50, 60, 400, 180);
@@ -150,11 +144,6 @@ public class WindowUtility {
 				MensajeDialog.MessageDialogue();
 			}
 		});
-		
-//		JButton buttonCancel = new JButton(); 
-//		buttonCancel.setText(Constants.CANCEL_BUTTON);
-//		buttonCancel.setBounds(100, 380, 100, 30);
-//		ButtonUtility.addListenerClickCancelButtonDescription(buttonCancel, ventanaAddQuery);
 
 		panelCreateAddQuery.add(labelAddQuery);
 		panelCreateAddQuery.add(desiredAddQuery);
@@ -162,5 +151,4 @@ public class WindowUtility {
 		ventanaAddQuery.add(panelCreateAddQuery); 
 		ventanaAddQuery.setVisible(true); 
 	}
-
 }

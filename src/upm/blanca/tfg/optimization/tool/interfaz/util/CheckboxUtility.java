@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.interfaz.util;
 
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -20,8 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
-import upm.blanca.tfg.optimization.tool.db.util.MySQLUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
+import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
 
 public class CheckboxUtility {
 
@@ -70,24 +70,19 @@ public class CheckboxUtility {
 
 		panel.add(nextButton);
 		panel.add(newBbddButton);
-
 	} 
 
 	public static void obtenerBbdd(JPanel panel, Connection connection) throws SQLException{
 
 		List<String> result = MySQLUtil.getBbdd(connection);
 
-		//creación del objeto lista 
 		String[] bbdds = new String[result.size()];
 		bbdds = (String[]) result.toArray(bbdds);
 		JList lista = new JList(bbdds); 
 
-		//se cambia la orientación de presentación y el ajuste 
 		lista.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION); 
-		//selecciona un elemento de la lista 
-		Object seleccion = lista.getSelectedValue(); 
-		//recoge el indice de los seleccionados 
-		int[] indices = lista.getSelectedIndices(); 
+//		Object seleccion = lista.getSelectedValue(); 
+//		int[] indices = lista.getSelectedIndices(); 
 
 		if(result.isEmpty()){
 			JLabel bbddIsEmpty = new JLabel();
@@ -97,7 +92,7 @@ public class CheckboxUtility {
 			panel.add(bbddIsEmpty);
 		}
 		else{
-			// aquí se crea el objeto, es decir la barra de desplazamiento 
+			//Barra de desplazamiento 
 			JScrollPane barraDesplazamiento = new JScrollPane(lista); 
 			barraDesplazamiento.setName("id1_dataBasesCroll");
 			barraDesplazamiento.setBounds(53,70,320,100);
@@ -105,6 +100,4 @@ public class CheckboxUtility {
 			panel.add(barraDesplazamiento);
 		}
 	}
-
-	
 }

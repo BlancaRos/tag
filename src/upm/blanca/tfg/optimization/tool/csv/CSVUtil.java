@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+import upm.blanca.tfg.optimization.tool.beans.CSVRowBean;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
-import upm.blanca.tfg.optimization.tool.util.CSVRowBean;
 
 public class CSVUtil {
 

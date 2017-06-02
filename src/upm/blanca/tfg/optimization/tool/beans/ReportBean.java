@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.beans;
 
 import java.io.Serializable;
 
@@ -34,10 +34,4 @@ public class ReportBean implements Serializable {
 	public void setBbdd(String bbdd) {
 		this.bbdd = bbdd;
 	}
-	
-	/**
-	 * añadir datos cuando mysql
-	 **/
-	
-	
 }

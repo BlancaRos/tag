@@ -1,8 +1,9 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.beans;
 
 import java.util.List;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
+import upm.blanca.tfg.optimization.tool.interfaz.util.ExecutionBean;
 
 public class QueryBean {
 	private String queryString = Constants.BLANK;
@@ -11,14 +12,12 @@ public class QueryBean {
 	private String bbddName = Constants.BLANK;
 	private String bbddUser = Constants.BLANK;
 	private String bbddPass = Constants.BLANK;
-	//private String costQuery;
 	private List<ExecutionBean> executionBeanList;
 	private String avgTime;
 	private int numRows;
 	private int idBBDD;
 	private byte[] csv;
 	private List<CSVRowBean> stringCSV;
-
 
 	public byte[] getCsv() {
 		return csv;
@@ -94,5 +93,4 @@ public class QueryBean {
 	public void setStringCSV(List<CSVRowBean> stringCSV) {
 		this.stringCSV = stringCSV;
 	}
-
 }

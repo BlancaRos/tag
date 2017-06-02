@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.interfaz.util;
 
 import java.awt.Component;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
-import upm.blanca.tfg.optimization.tool.db.util.MySQLUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
+import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
 
 public class Util {
 
@@ -31,10 +31,7 @@ public class Util {
 		return selected;
 	}
 	public static JTabbedPane searchPane(JTabbedPane mainInterface, String idName) {
-		JPanel panelito = null;
-		JPanel panelito2 = null;
 		JTabbedPane panelito3 = null;
-		
 		
 		for(Component jc:mainInterface.getComponents()){
 			if(jc instanceof JTabbedPane){

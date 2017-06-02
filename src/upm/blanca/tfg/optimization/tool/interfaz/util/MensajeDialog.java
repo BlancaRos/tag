@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.interfaz.util;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -18,11 +18,12 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import upm.blanca.tfg.optimization.tool.beans.CSVRowBean;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.csv.CSVUtil;
-import upm.blanca.tfg.optimization.tool.db.util.MySQLUtil;
-import upm.blanca.tfg.optimization.tool.db.util.OracleDBUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
+import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
+import upm.blanca.tfg.optimization.tool.oracle.util.OracleDBUtil;
 
 public class MensajeDialog implements ActionListener{
 
@@ -50,7 +51,6 @@ public class MensajeDialog implements ActionListener{
 					((JLabel) jc).setText(MainInterface.queryBean.getQueryDescription());
 				}
 			}
-
 			try {
 				Connection oracleConnection = OracleDBUtil.getConnectionOracle();
 
@@ -70,6 +70,7 @@ public class MensajeDialog implements ActionListener{
 					for (int i=0; i<numOfColums;i++){
 						columns[i] = resultSet.getMetaData().getColumnName(i+1);
 					}
+					
 					//Escribo en el csv
 					CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
 					List<CSVRowBean> allLines =  new ArrayList<CSVRowBean>();
@@ -84,27 +85,12 @@ public class MensajeDialog implements ActionListener{
 						allLines.add(line);
 						first = false;
 					}
-					StringBuilder sbReport = new StringBuilder();
-//					for (String line : allLines) {
-//						sbReport.append(line);
-//						sbReport.append("<br/>");
-//					}
+
 					MainInterface.queryBean.setStringCSV(allLines);
 					MainInterface.queryBean.setNumRows(numRows);
 					oracleConnection.close(); 
 					System.out.println(writer.toString());
-					InputStream bo = new ByteArrayInputStream(writer.toString().getBytes());
 					MainInterface.queryBean.setCsv(writer.toString().getBytes());
-					//					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					//					byte[] tmp = new byte[4096];
-					//					int ret = 0;
-					//
-					//					while((ret = inputStream.read(tmp)) > 0)
-					//					{
-					//					    bos.write(tmp, 0, ret);
-					//					}
-					//
-					//					byte[] myArray = bos.toByteArray();
 					writer.flush();
 					writer.close();
 					
@@ -119,9 +105,7 @@ public class MensajeDialog implements ActionListener{
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-
 		}
-		
 	}
 
 	public static void NextStep(){
@@ -134,14 +118,12 @@ public class MensajeDialog implements ActionListener{
 	}
 
 	public static void MessageSqlInfo() {
-		JOptionPane.showMessageDialog(null, "Error en la sentencia SQL", "ERROR SQL", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, Constants.ERROR_SQL, Constants.ERROR_SQL_TITLE, JOptionPane.ERROR_MESSAGE);
 		Util.resetApp();
 	}
 	
 	public static void MessageDBInfo() {
-		JOptionPane.showMessageDialog(null, "No es posible conectarse a la BBDD Interna", "ERROR BBDD", JOptionPane.ERROR_MESSAGE);
-		//MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel1));
+		JOptionPane.showMessageDialog(null, Constants.ERROR_BBDD, Constants.ERROR_BBDD_TITLE, JOptionPane.ERROR_MESSAGE);
 		Util.resetApp();
 	}
-	
 }

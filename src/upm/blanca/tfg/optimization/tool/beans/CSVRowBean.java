@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.beans;
 
 import java.io.Serializable;
 
@@ -11,10 +11,7 @@ public class CSVRowBean implements Serializable  {
 	public String getCsvRow() {
 		return csvRow;
 	}
-
 	public void setCsvRow(String csvRow) {
 		this.csvRow = csvRow;
 	}
-	
-	
 }

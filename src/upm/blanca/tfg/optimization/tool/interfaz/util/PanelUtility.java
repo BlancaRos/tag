@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.interfaz.util;
 
 import java.sql.SQLException;
 
@@ -14,14 +14,13 @@ public class PanelUtility {
 
 	public static String message = Constants.BLANK;
 
+	//PANEL 1
 	public static JPanel createPanelDataBase(String text) throws SQLException {
-		//Crear primer panel y etiqueta correspondiente
 		JPanel panel = new JPanel();
 		panel.setName("panel1");
-		//JLabel label = new JLabel(text, SwingConstants.CENTER);
 		JLabel label = new JLabel(text, SwingConstants.LEFT);
 		label.setName("id1_labelDB");
-		panel.setLayout(null);//Para poder poner los componentes donde quiero
+		panel.setLayout(null); //Para poder poner los componentes donde quiero
 		label.setBounds(55,30,400,25); 
 		panel.add(label); 
 
@@ -30,13 +29,13 @@ public class PanelUtility {
 		return panel;
 	}
 
+	//PANEL 2
 	public static JPanel createPanelQueryType(String text){
-		//Crear segundo panel y etiqueta correspondiente
 		JPanel panel = new JPanel();
 		panel.setName("panel2");
 		JLabel label = new JLabel(text, SwingConstants.CENTER);
-		//JLabel label = new JLabel(text, SwingConstants.LEFT);
 		label.setName("id2_labelQueryType");
+		
 		//Crear un desplegable
 		DefaultComboBoxModel dropDown = new DefaultComboBoxModel();
 		dropDown.addElement(Constants.DEFAULT_TYPE);
@@ -53,11 +52,10 @@ public class PanelUtility {
 		return panel;
 	}
 
+	//PANEL 3
 	public static JPanel createPanelReport(String text) {
-		//Crear tercer panel y etiqueta correspondiente
 		JPanel panel = new JPanel();
 		panel.setName("panel3");
-
 		panel = ComboBoxUtility.ReportQuery();
 
 		return panel;

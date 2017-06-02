@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.db.util;
+package upm.blanca.tfg.optimization.tool.mysql.util;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Connection;
@@ -13,12 +13,12 @@ import oracle.jdbc.Const;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import upm.blanca.tfg.optimization.tool.beans.CSVReportBean;
+import upm.blanca.tfg.optimization.tool.beans.QueryBean;
+import upm.blanca.tfg.optimization.tool.beans.ReportBean;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
+import upm.blanca.tfg.optimization.tool.interfaz.util.ExecutionBean;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
-import upm.blanca.tfg.optimization.tool.util.CSVReportBean;
-import upm.blanca.tfg.optimization.tool.util.ExecutionBean;
-import upm.blanca.tfg.optimization.tool.util.QueryBean;
-import upm.blanca.tfg.optimization.tool.util.ReportBean;
 
 import com.mysql.jdbc.PreparedStatement;
 public class MySQLUtil {
@@ -30,12 +30,10 @@ public class MySQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			System.out.println("Where is your MySQL JDBC Driver?");
 			e.printStackTrace();
 			return null;
 		}
 
-		System.out.println("MySQL JDBC Driver Registered!");
 		Connection connection = null;
 		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/BBDD_interna","root", "root");	
 
@@ -44,7 +42,6 @@ public class MySQLUtil {
 	}
 
 	public static void populateDB(QueryBean queryBean) throws SQLException{
-		//hace conexion y redistribuye
 		Connection connection = getConnectionMySQL();
 		int idBBDD = insertIntoBBDD(connection, queryBean);
 		int idDescription = insertIntoQueryDescription(connection, queryBean);
@@ -66,14 +63,12 @@ public class MySQLUtil {
 			Statement s = connection.createStatement(); 
 			ResultSet rs = s.executeQuery ((Constants.SELECT_BBDD) + queryBean.getBbddService() + (Constants.CLOSE_QUERY));
 
-			//Guardo los valores del resultado de la consulta
 			while (rs.next()){ 
 				claveGenerada = rs.getInt(1);
 				nameBBDD = rs.getString(2);
 				userBBDD = rs.getString(3);
 				passBBDD = rs.getString(4);
 				servicioBBDD = rs.getString(5);
-
 			}
 
 			if(nameBBDD.equals("")){
@@ -104,7 +99,6 @@ public class MySQLUtil {
 			Statement s = connection.createStatement(); 
 			ResultSet rs = s.executeQuery (Constants.SELECT_DESCRIPTION + queryBean.getQueryDescription() + (Constants.CLOSE_QUERY));
 
-			//Guardo los valores del resultado de la consulta
 			while (rs.next()){ 
 				claveGenerada = rs.getInt(1);
 				description = rs.getString(2);
@@ -124,7 +118,6 @@ public class MySQLUtil {
 			else{
 				idResult = claveGenerada;
 			}
-
 		}		
 		return (int) idResult;
 	}
@@ -166,12 +159,9 @@ public class MySQLUtil {
 				pstm.setInt(5, queryBean.getNumRows());
 				pstm.execute();
 				idResult = pstm.getLastInsertID();
-
-			}
-			else{
+			}else{
 				idResult = claveGenerada;
 			}
-
 		}		
 		return (int) idResult;
 	}
@@ -202,12 +192,10 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_ALL_DESCRIPTION);
 			ResultSet result1 = consulta1.executeQuery();
+			
 			while(result1.next()){
-
 				String nombre= result1.getString(1);
-
-				//Creas un objeto del tipo que te estas trayendo de la bd
-				lista.add(nombre); //agregas ese objeto a la lista
+				lista.add(nombre); 
 			}
 		}
 		return lista;
@@ -221,13 +209,11 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_ALL_BBDD_NAME);
 			ResultSet result1 = consulta1.executeQuery();
+			
 			while(result1.next()){
-
 				String nombre= result1.getString(1);
-
-				//Creas un objeto del tipo que te estas trayendo de la bd
-				String k=new String(nombre);//le mandas los parametros necesarios al constructor
-				lista.add(k); //agregas ese objeto a la lista
+				String k = new String(nombre);
+				lista.add(k);
 			}
 		}
 		return lista;
@@ -242,8 +228,8 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_SQL_FROM_DESCRIPTION + descriptionSelected + Constants.CLOSE_QUERY_WITH_SUBQUERY);
 			ResultSet result1 = consulta1.executeQuery();
+			
 			while(result1.next()){
-
 				String querySql= result1.getString(1);
 				lista.add(querySql);
 			}
@@ -262,6 +248,7 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_ALL_DB + descriptionSelected + Constants.CLOSE_QUERY);
 			ResultSet result1 = consulta1.executeQuery();
+			
 			while(result1.next()){
 				user = result1.getString(Constants.USER_BBDD);
 				pass = result1.getString(Constants.PASS_BBDD);
@@ -271,7 +258,6 @@ public class MySQLUtil {
 				MainInterface.queryBean.setBbddPass(pass);
 			}
 		}
-
 	}
 
 	public static List<ReportBean> getQueryToReport() throws SQLException{
@@ -287,8 +273,8 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.REPORT_VALUES + MainInterface.queryBean.getQueryDescription() + Constants.CLOSE_QUERY_WITH_SUBQUERY);
 			ResultSet result1 = consulta1.executeQuery();
+			
 			while(result1.next()){
-				//creo bean, guardo valores y lo mando a la lista de beans
 				ReportBean reportBean = new ReportBean();
 				String querySql= result1.getString(1);
 				String bbdd= result1.getString(2);
@@ -300,7 +286,6 @@ public class MySQLUtil {
 				reportBean.setRows(rows);
 				listaReport.add(reportBean);
 			}
-
 		}
 		return listaReport;
 	}
@@ -316,19 +301,16 @@ public class MySQLUtil {
 
 		if(connection != null){
 
-			//OBTENER LOS CSV DE LA TABLA DESCRIPCION!!!!!
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.CSV_VALUES + MainInterface.queryBean.getQueryDescription() + Constants.CLOSE_QUERY);
 			ResultSet result1 = consulta1.executeQuery();
+			
 			while(result1.next()){
-				//creo bean, guardo valores y lo mando a la lista de beans
 				CSVReportBean csvReportBean = new CSVReportBean();
 				String csvQuery= result1.getString(1);
 				csvReportBean.setCsv(csvQuery);
 				listaCsvReport.add(csvReportBean);
 			}
-
 		}
 		return listaCsvReport;
-
 	}
 }

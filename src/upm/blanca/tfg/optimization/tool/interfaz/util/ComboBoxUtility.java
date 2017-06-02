@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.interfaz.util;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,9 +30,11 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
+import upm.blanca.tfg.optimization.tool.beans.CSVRowBean;
+import upm.blanca.tfg.optimization.tool.beans.ReportBean;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
-import upm.blanca.tfg.optimization.tool.db.util.MySQLUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
+import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
 
 public class ComboBoxUtility {
 
@@ -49,9 +51,7 @@ public class ComboBoxUtility {
 
 	private static JLabel labelModifyDescriptionText;
 	private static JLabel labelModifySQLQuery;
-	private static JLabel labelLoading;
-	private static Icon icon;
-
+	
 	private static JButton showContent; 
 	private static JButton nextStep;
 	private static JButton addQuery;
@@ -66,7 +66,6 @@ public class ComboBoxUtility {
 
 	public static void addListenerToDropDown(JComboBox dropDown, JPanel panel){
 		dropDown.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent event) {
 				JComboBox<String> typeOfAction = (JComboBox<String>) event.getSource();
 				String actionSelected = (String) typeOfAction.getSelectedItem();
@@ -146,7 +145,6 @@ public class ComboBoxUtility {
 				sqlQuery = desiredQuery.getText(); 
 				textQuery = descriptionQuery.getText();
 
-				//GUARDO LA CONSULTA A REALIZAR (texto y sql)
 				MainInterface.queryBean.setQueryString(sqlQuery);
 				MainInterface.queryBean.setQueryDescription(textQuery);
 
@@ -217,6 +215,7 @@ public class ComboBoxUtility {
 		return sqlQuery;
 	}
 
+	//OBTENER INFORME
 	public static JPanel ReportQuery(){
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
@@ -247,10 +246,10 @@ public class ComboBoxUtility {
 
 		showReportButton = new JButton();
 		showReportButton.setText(Constants.SHOW_REPORT);
-		showReportButton.setBounds(110, 320, 100, 50);
+		showReportButton.setBounds(170, 320, 100, 50);
 
 		showReportButton.addActionListener(new ActionListener(){
-			List<ReportBean> reportBean = new ArrayList<ReportBean>();
+//			List<ReportBean> reportBean = new ArrayList<ReportBean>();
 
 			public void actionPerformed(ActionEvent e) {
 
@@ -271,7 +270,7 @@ public class ComboBoxUtility {
 				sb.append(minute);				
 				sb.append(second);
 
-				List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
+//				List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
 				Map<String, Object> parameters = new HashMap<String, Object>();
 
 				parameters.put("description", MainInterface.queryBean.getQueryDescription());
@@ -279,16 +278,15 @@ public class ComboBoxUtility {
 				InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.INFORME);
 				JasperReport jReport;
 				try {
-					//Añadir datos obtenidos
 					jReport = JasperCompileManager.compileReport(template);
 					
 					List<ReportBean> listaReport = new ArrayList<ReportBean>();
 					listaReport = MySQLUtil.getQueryToReport();
 					JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
 
-					List<CSVReportBean> listCSV = new ArrayList<CSVReportBean>();
-					listCSV = MySQLUtil.getCSVToReport();
-					JRBeanCollectionDataSource datasourceCsv = new JRBeanCollectionDataSource(listCSV);
+//					List<CSVReportBean> listCSV = new ArrayList<CSVReportBean>();
+//					listCSV = MySQLUtil.getCSVToReport();
+//					JRBeanCollectionDataSource datasourceCsv = new JRBeanCollectionDataSource(listCSV);
 					
 //					JasperPrint jPrint = JasperFillManager.fillReport(jReport, datasourceCsv, datasource);
 
@@ -308,8 +306,8 @@ public class ComboBoxUtility {
 		});
 
 		showCsvButton = new JButton();
-		showCsvButton.setText(Constants.SHOW_REPORT);
-		showCsvButton.setBounds(70, 320, 100, 50);
+		showCsvButton.setText(Constants.SHOW_CSV_REPORT);
+		showCsvButton.setBounds(50, 320, 100, 50);
 
 		showCsvButton.addActionListener(new ActionListener(){
 
@@ -333,7 +331,6 @@ public class ComboBoxUtility {
 				sb.append(second);
 
 //				Map<String, Object> parameters = new HashMap<String, Object>();
-//
 //				parameters.put("csvRow", MainInterface.queryBean.getStringCSV());
 
 				InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.CSVREPORT);
@@ -343,7 +340,6 @@ public class ComboBoxUtility {
 				JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
 
 				try {
-					//Añadir datos obtenidos
 					jReport = JasperCompileManager.compileReport(template);
 					
 					JasperPrint jPrint = JasperFillManager.fillReport(jReport, null, datasource);
@@ -360,7 +356,7 @@ public class ComboBoxUtility {
 		
 		resetButton = new JButton();
 		resetButton.setText(Constants.RESET_BUTTON);
-		resetButton.setBounds(225, 320, 100, 50);
+		resetButton.setBounds(290, 320, 100, 50);
 
 		resetButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {

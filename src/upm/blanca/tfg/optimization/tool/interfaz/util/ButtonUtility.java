@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.util;
+package upm.blanca.tfg.optimization.tool.interfaz.util;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import upm.blanca.tfg.optimization.tool.db.util.MySQLUtil;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
+import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
 
 
 public class ButtonUtility {
@@ -55,7 +55,6 @@ public class ButtonUtility {
 				
 				try {
 					List<String> sqlList = MySQLUtil.getSelectedSqlQuery(descriptionSelected);
-					//MySQLUtil.getReportValuesQuery(descriptionSelected);
 					String[] sqlQueries = new String[sqlList.size()];
 					sqlQueries = (String[]) sqlList.toArray(sqlQueries);
 					JList lista = new JList(sqlQueries);
