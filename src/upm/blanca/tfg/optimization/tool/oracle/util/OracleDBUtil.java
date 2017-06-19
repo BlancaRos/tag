@@ -15,17 +15,19 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import upm.blanca.tfg.optimization.tool.beans.ExecutionBean;
 import upm.blanca.tfg.optimization.tool.beans.QueryBean;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
-import upm.blanca.tfg.optimization.tool.interfaz.util.ExecutionBean;
 import upm.blanca.tfg.optimization.tool.interfaz.util.MensajeDialog;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 
 public class OracleDBUtil {
 
-	private static JLabel labelLoading;
-	private static JPanel panel;
-
+	/**
+	 * Método que realiza la conexión con la BBDD externa
+	 * @return Connection connection - conexion para la BBDD externa
+	 * @throws SQLException sqle
+	 */
 	public static Connection getConnectionOracle() throws SQLException{
 
 		try {
@@ -40,12 +42,21 @@ public class OracleDBUtil {
 			connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521/" + MainInterface.queryBean.getBbddService(), MainInterface.queryBean.getBbddUser(),MainInterface.queryBean.getBbddPass());
 
 		} catch (SQLException e) {
-			MensajeDialog.MessageDBInfo();
+			MensajeDialog.messageDBInfo();
 			e.printStackTrace();
 		}
 		return connection;
 	}
 
+
+	/**
+	 * Método que realiza la consulta seleccionada por el usuario a la BBDD externa
+	 * @param connection - Conexión necesaria para realizar la consulta
+	 * @param queryBean - Bean donde está almacenada toda la información necesaria para realizar la consulta
+	 * @return ResultSet resultSet - ??
+	 * @throw SQLException sqle
+	 * @throw IOException ??
+	 */
 	public static ResultSet createQueryOracle(Connection connection, QueryBean queryBean) throws SQLException, IOException{
 		ResultSet resultSet = null;
 		List<ExecutionBean> executionBeanList = new ArrayList<ExecutionBean>();
@@ -70,23 +81,23 @@ public class OracleDBUtil {
 				for(int numEjecuciones = 0; numEjecuciones < 10; numEjecuciones++){
 					executionBean = new ExecutionBean();
 
-					long startTimeMillis = System.nanoTime();
-					Date currentDateMillis = new Date(startTimeMillis);
+					long startTimeNano = System.nanoTime();
+					Date currentDateMillis = new Date(System.currentTimeMillis());
 					DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 					String dateString  = formatter.format(currentDateMillis);
 
 					executionBean.setQueryDate(dateString);
 
-					String startTime = new SimpleDateFormat("HH:mm:ss").format(new Date(startTimeMillis));
+					String startTime = new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis()));
 					executionBean.setQueryStartTime(startTime);
 
 					resultSet=stmt.executeQuery(finalQuery);
 
-					long endTimeMillis = System.nanoTime();
-					String endTime = new SimpleDateFormat("HH:mm:ss").format(new Date(endTimeMillis));
+					long endTimeNano = System.nanoTime();
+					String endTime = new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis()));
 					executionBean.setQueryEndTime(endTime);
-					long totalTime = endTimeMillis - startTimeMillis;
-					System.out.println(endTimeMillis + " - " + startTimeMillis + " = " + totalTime);
+					long totalTime = endTimeNano - startTimeNano;
+					System.out.println(endTimeNano + " - " + startTimeNano + " = " + totalTime);
 					executionBean.setTotalTime((int) totalTime);
 					if(numEjecuciones > 0 && numEjecuciones < 9){
 						sumTotalTime = sumTotalTime + totalTime;
@@ -100,7 +111,7 @@ public class OracleDBUtil {
 				MainInterface.queryBean.setAvgTime(String.valueOf(avgTotalTime));
 
 			} catch (SQLException e) {
-				MensajeDialog.MessageSqlInfo();
+				MensajeDialog.messageSqlInfo();
 				e.printStackTrace();
 			}  
 			//			connection.close();

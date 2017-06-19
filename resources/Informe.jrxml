@@ -151,15 +151,6 @@
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="61" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="19" y="20" width="515" height="20" uuid="0933b515-8704-40bc-ab91-fed315e452c7"/>
-				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$P{csv}]]></textFieldExpression>
-			</textField>
-		</band>
-	</columnFooter>
 	<pageFooter>
 		<band height="29" splitType="Stretch">
 			<staticText>

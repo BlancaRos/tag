@@ -35,6 +35,9 @@ public class WindowUtility {
 	public static String newBbddPass = Constants.BLANK;
 	public static String newSqlQuery = Constants.BLANK;
 
+	/**
+	 * Metodo que crea una ventana en la que aparece lo necesario para introducir una nueva BBDD externa 
+	 */
 	public static void createWindowNewBbdd (){
 		JFrame ventanaBBDD = new JFrame(Constants.ADD_NEW_DB); 
 		ventanaBBDD.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
@@ -94,7 +97,7 @@ public class WindowUtility {
 				MainInterface.queryBean.setBbddPass(newBbddPass);
 				ventanaBBDD.setVisible(false); 
 
-				MensajeDialog.NextStep();
+				MensajeDialog.nextStep();
 			}
 		});
 
@@ -111,6 +114,9 @@ public class WindowUtility {
 		ventanaBBDD.setVisible(true); 
 	}
 
+	/**
+	 * Metodo que crea una ventana en la que aparece lo necesario para crear una nueva consulta
+	 */
 	public static void createWindowAddQuery (){
 		JFrame ventanaAddQuery = new JFrame(Constants.INSERT_NEW_QUERY); 
 		ventanaAddQuery.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
@@ -141,7 +147,7 @@ public class WindowUtility {
 				newSqlQuery = desiredAddQuery.getText();
 				MainInterface.queryBean.setQueryString(newSqlQuery);
 				ventanaAddQuery.setVisible(false); 
-				MensajeDialog.MessageDialogue();
+				MensajeDialog.messageDialogue();
 			}
 		});
 

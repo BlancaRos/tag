@@ -2,20 +2,23 @@ package upm.blanca.tfg.optimization.tool.interfaz.util;
 
 import java.awt.Component;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
-import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
 
 public class Util {
 
+	/**
+	 * Metodo que devuelve la BBDD seleccionada por el usuario
+	 * @param panel - panel en el cual está la informacion necesaria
+	 * @param idName - id del desplegable
+	 * @return String Valor - valor seleccionado de la lista.
+	 */
 	public static String searchScrollPaneInfo(JPanel panel, String idName) {
 		String selected = Constants.BLANK;
 
@@ -30,31 +33,13 @@ public class Util {
 		}
 		return selected;
 	}
-	public static JTabbedPane searchPane(JTabbedPane mainInterface, String idName) {
-		JTabbedPane panelito3 = null;
-		
-		for(Component jc:mainInterface.getComponents()){
-			if(jc instanceof JTabbedPane){
-				((JTabbedPane) jc).getSelectedComponent();
-				panelito3 = (JTabbedPane) jc;
-			}
-		}
-		return panelito3;
-	}
 
-	public static String searchJLabelInfo(JPanel panel, String idName) {
-		String selected = Constants.BLANK;
-		for(Component jc:panel.getComponents()){
-
-			if(jc instanceof JScrollPane && jc.getName().equals(idName)){
-				JScrollPane jsp = (JScrollPane) jc;
-				JList listPanel = (JList) jsp.getViewport().getComponent(0);
-				selected = listPanel.getSelectedValue().toString();			
-			}
-		}
-		return selected;
-	}
-
+	/**
+	 * Metodo que elimina los componentes del panel recibido como parametro
+	 * @param panel - panel del cual se quiere eliminar componentes
+	 * @param idNameLabel - id de la etiqueta
+	 * @param idNameScroll - id del desplegable a eliminar
+	 */
 	public static void removeComponentFromPanel(JPanel panel, String idNameLabel, String idNameScroll) {
 		for(Component jc:panel.getComponents()){
 			if(jc instanceof JLabel && jc.getName().equals(idNameLabel)){					
@@ -65,6 +50,12 @@ public class Util {
 		}
 	}
 
+	/**
+	 * Metodo que introduce en el panel de los informes la informacion que desea el usuario
+	 * @param panel - panel donde introducir la informacion
+	 * @param idNameLabel1 - id de la etiqueta 1
+	 * @param idNameLabel2 - id de la etiqueta 2
+	 */
 	public static void setLabelsInfoPanel3(JPanel panel, String idNameLabel1, String idNameLabel2) {
 		for(Component jcomp:panel.getComponents()){
 			if(jcomp instanceof JLabel && jcomp.getName().equals(idNameLabel1)){					
@@ -76,6 +67,9 @@ public class Util {
 		}
 	}
 	
+	/**
+	 * Metodo que resetea la aplicacion
+	 */
 	public static void resetApp(){
 		try {
 			Runtime.getRuntime().exec(Constants.APP);

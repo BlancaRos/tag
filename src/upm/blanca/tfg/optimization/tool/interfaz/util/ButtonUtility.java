@@ -18,9 +18,9 @@ import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
 public class ButtonUtility {
 
 	/**
-	 * Method to add a listener to the button of descriptions
-	 * @param button The button clicked
-	 * @param ventana The windows where the button is
+	 * Metodo para añadir un listener al boton de descripciones
+	 * @param button - El boton pulsado
+	 * @param ventana - La ventana donde esta el boton
 	 */
 	public static void addListenerClickCancelButtonDescription(JButton button, JFrame ventana) {
 
@@ -33,10 +33,10 @@ public class ButtonUtility {
 	}
 
 	/**
-	 * 
-	 * @param button
-	 * @param ventana
-	 * @param list
+	 * Metodo para añadir un listener al boton de descripciones
+	 * @param button - El boton pulsado
+	 * @param ventana - La ventana donde esta el boton
+	 * @param list - Lista que contiene las descripciones disponibles
 	 */
 	public static void addListenerClickOkButtonDescription(JButton button, JFrame ventana, JList list) {
 
@@ -47,7 +47,8 @@ public class ButtonUtility {
 				
 				String descriptionSelected = list.getSelectedValue().toString();
 				labelDescriptionQuery.setText(descriptionSelected);
-				labelDescriptionQuery.setBounds(50, 70, 500, 30);
+				labelDescriptionQuery.setBounds(50, 70, 900, 30);
+				//TEXTO AJUSTABLE ?
 				labelDescriptionQuery.setForeground(new Color(27,85,131));
 
 				MainInterface.queryBean.setQueryDescription(descriptionSelected);

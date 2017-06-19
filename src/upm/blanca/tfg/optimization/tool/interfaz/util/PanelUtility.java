@@ -14,22 +14,33 @@ public class PanelUtility {
 
 	public static String message = Constants.BLANK;
 
-	//PANEL 1
+
+	/**
+	 * Metodo que crea el panel de BBDD
+	 * @param text - etiqueta a añadir en el panel
+	 * @return JPanel panel - panel de BBDD
+	 * @throw SQLException sqle
+	 */
 	public static JPanel createPanelDataBase(String text) throws SQLException {
 		JPanel panel = new JPanel();
 		panel.setName("panel1");
 		JLabel label = new JLabel(text, SwingConstants.LEFT);
 		label.setName("id1_labelDB");
 		panel.setLayout(null); //Para poder poner los componentes donde quiero
-		label.setBounds(55,30,400,25); 
+		label.setBounds(325,30,400,25); 
 		panel.add(label); 
 
-		CheckboxUtility.Checkbox(panel);
+		CheckboxUtility.checkbox(panel);
 
 		return panel;
 	}
 
-	//PANEL 2
+
+	/**
+	 * Método que crea el panel de tipo de consulta a realizar
+	 * @param text - etiqueta a añadir en el panel
+	 * @return JPanel panel - panel de tipo de consulta
+	 */
 	public static JPanel createPanelQueryType(String text){
 		JPanel panel = new JPanel();
 		panel.setName("panel2");
@@ -47,16 +58,21 @@ public class PanelUtility {
 		panel.add(label);
 		panel.add(comboBox);
 
-		ComboBoxUtility.addListenerToDropDown(comboBox, panel);
+		ComboBoxUtility.cleanPanelQueryTypeListener(comboBox, panel);
 
 		return panel;
 	}
 
-	//PANEL 3
+
+	/**
+	 * Método que crea el panel de informes
+	 * @param text - etiqueta a añadir en el panel
+	 * @return JPanel panel - panel de informes
+	 */
 	public static JPanel createPanelReport(String text) {
 		JPanel panel = new JPanel();
 		panel.setName("panel3");
-		panel = ComboBoxUtility.ReportQuery();
+		panel = ComboBoxUtility.reportQuery();
 
 		return panel;
 	}

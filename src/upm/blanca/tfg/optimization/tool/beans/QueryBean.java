@@ -3,7 +3,6 @@ package upm.blanca.tfg.optimization.tool.beans;
 import java.util.List;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
-import upm.blanca.tfg.optimization.tool.interfaz.util.ExecutionBean;
 
 public class QueryBean {
 	private String queryString = Constants.BLANK;

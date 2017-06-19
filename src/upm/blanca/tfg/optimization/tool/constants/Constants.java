@@ -14,48 +14,46 @@ public class Constants {
 	public final static String TAB_QUERY = "Tipo de consulta";
 	public final static String TAB_REPORT = "Consulta e informe";
 
-	//EXPLANATION TABS
+	//EXPLICACION TABS
 	public final static String LABEL_DB = "Elige la Base de Datos a la que realizar la consulta:";
 	public final static String LABEL_QUERY = "Selecciona el tipo de consulta a realizar";
 	public final static String LABEL_DESCRIPTION_REPORT = "La consulta en formato texto seleccionada es: ";
 	public final static String LABEL_SQL_REPORT = "La sentencia SQL seleccionada es: ";
-	public final static String LABEL_ADD_BBDD = "No hay Base de Datos almacenadas. Si lo desea, añada una pulsando al botón 'Nueva BBDD'";
+	public final static String LABEL_ADD_BBDD = "No hay Base de Datos almacenadas.";
 	public final static String LABEL_WINDOW_DESCRIPTIONS = "Descripciones almacenadas";
 	public final static String LABEL_DESCRIPTIONS = "Seleccione la descripción de la que desee obtener el informe:";
 	
-	//BBDD NEW
+	//NUEVA BBDD 
 	public final static String ADD_NEW_DB= "Añadir BBDD";
 	public final static String INSERT_DB_SERVICE = "1.- Inserte el servicio de la BBDD:";
 	public final static String INSERT_DB_NAME = "2.- Inserte un nombre para el servicio:";
 	public final static String INSERT_DB_USER = "3.- Introduce el usuario de la BBDD:";
 	public final static String INSERT_DB_PASS = "4.- Introduce la contraseña de la BBDD";
 	
-	//NEW QUERY
+	//NUEVA QUERY
 	public final static String INSERT_NEW_QUERY = "Añadir consulta";
 	public final static String INSERT_NEW_QUERY_SQL = "Introduzca la sentencia sql que desea añadir:";
 	
-	//POSSIBLE SELECTIONS
+	//DESPLEGABLE
 	public final static String NEW_TYPE = "Consulta nueva";
 	public final static String OLD_TYPE = "Modificar consulta creada";
 	public final static String DEFAULT_TYPE = "Seleccione uno...";
-	public final static String VEHICLE_DATABASE = "Vehículos";
-	public final static String OTHER_DATABASE = "Otro";
 	
-	//PANEL NAME
+	//NOMBRE PANEL 
 	public final static String FIRST_PANEL = "Panel BBDD";
 	public final static String SECOND_PANEL = "Panel tipo consulta";
 	public final static String THIRD_PANEL = "Panel informe";
 
-	//Explanation of the two types of queries
+	//Explicacion de los dos tipos de queries
 	public final static String SQL_TEXT = "Diseñe la consulta que desee realizar:";
 	public final static String DESCRIPTION_TEXT = "Diseñe la descripcion a consultar:";
 	public final static String OPERATION_TYPE = "Seleccione el tipo de consulta que desea ver.";
 	
-	//Modify query
+	//Modificar query
 	public final static String MODIFY_DESCRIPTION_TEXT = "1.- Seleccione la descripción a la que desea añadir una consulta: ";
 	public final static String MODIFY_SQL_TEXT = "2.- Seleccione/añada la consulta a realizar: ";
 
-	//BUTTONS
+	//Botones
 	public final static String SHOW_REPORT ="Ver informe";
 	public final static String SHOW_CSV_REPORT ="Ver resultado";
 	public final static String NEXT_BUTTON = "Siguiente";
@@ -73,16 +71,18 @@ public class Constants {
 	public final static String ERROR_SQL_TITLE = "ERROR SQL";
 	public final static String ERROR_BBDD = "No es posible conectarse a la BBDD Interna";
 	public final static String ERROR_BBDD_TITLE = "ERROR BBDD";
+	public final static String EMPTY_QUERY = "No se ha obtenido nada para la consulta seleccionada";
+	public final static String EMPTY_QUERY_TITLE = "Resultado de consulta vacío";
 	
 	//CSV
 	public final static String CSV_PATH = "/Users/admin/Desktop/resultQuery.csv";
 	
-	//REPORT
+	//Informe
 	public final static String REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Informe_";
 	public final static String CSV_REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Csv_";
 	public final static String REPORT_EXTENSION = ".pdf";
 	
-	//Queries
+	//Queries utiles
 	public final static String REPORT_VALUES = "select qs.query, db.NombreBBDD, qs.avgTime, qs.rows from QuerySQL qs, BBDD db where db.idBBDD = qs.idBBDD and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
 	public final static String CSV_VALUES = "select csv from QueryDescription where Descripcion = '";
 	public final static String INSERT_DESCRIPTION = "INSERT INTO QueryDescription (Descripcion, csv) VALUES(?,?);";

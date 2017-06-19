@@ -51,7 +51,7 @@ public class ComboBoxUtility {
 
 	private static JLabel labelModifyDescriptionText;
 	private static JLabel labelModifySQLQuery;
-	
+
 	private static JButton showContent; 
 	private static JButton nextStep;
 	private static JButton addQuery;
@@ -61,10 +61,14 @@ public class ComboBoxUtility {
 
 	public static String sqlQuery = "";
 	public static String textQuery = "";
-	public static String message;
 
 
-	public static void addListenerToDropDown(JComboBox dropDown, JPanel panel){
+	/**
+	 * Metodo para limpiar el panel tras cambiar la opcion de tip de consulta.
+	 * @param dropdown - desplegable del tipo de consulta
+	 * @param panel - Panel a modificar
+	 */
+	public static void  cleanPanelQueryTypeListener(JComboBox dropDown, JPanel panel){
 		dropDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				JComboBox<String> typeOfAction = (JComboBox<String>) event.getSource();
@@ -86,7 +90,7 @@ public class ComboBoxUtility {
 					if(nextStep != null)
 						panel.remove(nextStep);	
 					try {
-						textQuery = ModifyQuery(panel);
+						textQuery = modifyQuery(panel);
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
@@ -105,18 +109,23 @@ public class ComboBoxUtility {
 						panel.remove(addQuery);	
 					Util.removeComponentFromPanel(MainInterface.panel2, "id2_descriptionSelectedQuery", "id2_scrollPaneSqlQueries");
 
-					sqlQuery = DesignQuery(panel);
+					sqlQuery = designQuery(panel);
 				}else{
-					MensajeDialog.MessageSelectOption();
+					MensajeDialog.messageSelectOption();
 				}
 			}
 		});
 	}
 
-	//CONSULTA NUEVA
-	public static String DesignQuery(JPanel panel) {
+
+	/**
+	 * Metodo para realizar una nueva consulta
+	 * @param panel - Panel a diseñar
+	 * @return String sqlQuery sentencia diseñada
+	 */
+	public static String designQuery(JPanel panel) {
 		panel.setLayout(null);
-		
+
 
 		labelQueryDescription = new JLabel();
 		labelQueryDescription.setName("id2_descriptionText");
@@ -148,7 +157,7 @@ public class ComboBoxUtility {
 				MainInterface.queryBean.setQueryString(sqlQuery);
 				MainInterface.queryBean.setQueryDescription(textQuery);
 
-				MensajeDialog.MessageDialogue();
+				MensajeDialog.messageDialogue();
 			}
 		});
 
@@ -162,8 +171,13 @@ public class ComboBoxUtility {
 		return sqlQuery;
 	}
 
-	//MODIFICAR CONSULTA
-	public static String ModifyQuery(JPanel panel) throws SQLException{
+
+	/**
+	 * Metodo para modificar una consulta ya existente
+	 * @param panel - Panel a diseñar
+	 * @return String sqlQuery ??
+	 */
+	public static String modifyQuery(JPanel panel) throws SQLException{
 		panel.setLayout(null);
 
 		labelModifyDescriptionText = new JLabel();
@@ -189,10 +203,15 @@ public class ComboBoxUtility {
 			public void actionPerformed(ActionEvent e) {
 				//Busco el scrollPane y añado en el bean la consulta seleccionada
 				String selected = Util.searchScrollPaneInfo(MainInterface.panel2, "id2_scrollPaneSqlQueries");
-				MainInterface.queryBean.setQueryString(selected);
-				MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3),true);
-				MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3));
-				Util.setLabelsInfoPanel3(MainInterface.panel3, "id2_infoSQLQuerySelected", "id2_infoDescriptQuerySelected");
+				if(selected != null && !selected.equals(Constants.BLANK)){
+					MainInterface.queryBean.setQueryString(selected);
+					MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3),true);
+					MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3));
+					Util.setLabelsInfoPanel3(MainInterface.panel3, "id2_infoSQLQuerySelected", "id2_infoDescriptQuerySelected");
+				}
+				else{
+					MensajeDialog.messageSelectOption();
+				}
 			}
 		});
 
@@ -215,11 +234,15 @@ public class ComboBoxUtility {
 		return sqlQuery;
 	}
 
-	//OBTENER INFORME
-	public static JPanel ReportQuery(){
+
+	/**
+	 * Método para obetener los distintos informes
+	 * @return JPanel panel Panel panel que contiene el resumen de la consulta
+	 */
+	public static JPanel reportQuery(){
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		
+
 		Font font = new Font("Verdana",Font.ITALIC,12);
 
 		labelInfoTextQuery = new JLabel();
@@ -245,67 +268,67 @@ public class ComboBoxUtility {
 		labelSQLSelected.setBounds(60, 180, 700, 50);
 
 		showReportButton = new JButton();
+		showReportButton.setName("id3_showReportButton");
 		showReportButton.setText(Constants.SHOW_REPORT);
 		showReportButton.setBounds(170, 320, 100, 50);
 
 		showReportButton.addActionListener(new ActionListener(){
-//			List<ReportBean> reportBean = new ArrayList<ReportBean>();
 
 			public void actionPerformed(ActionEvent e) {
 
-				Calendar cal = Calendar.getInstance();
-				int year = cal.get(Calendar.YEAR);
-				int month = cal.get(Calendar.MONTH) + 1;
-				int day = cal.get(Calendar.DAY_OF_MONTH);
-				int hour = cal.get(Calendar.HOUR_OF_DAY);
-				int minute = cal.get(Calendar.MINUTE);
-				int second = cal.get(Calendar.SECOND);
-				StringBuilder sb = new StringBuilder();
+				if(MainInterface.queryBean.getNumRows() > 0){
+					Calendar cal = Calendar.getInstance();
+					int year = cal.get(Calendar.YEAR);
+					int month = cal.get(Calendar.MONTH) + 1;
+					int day = cal.get(Calendar.DAY_OF_MONTH);
+					int hour = cal.get(Calendar.HOUR_OF_DAY);
+					int minute = cal.get(Calendar.MINUTE);
+					int second = cal.get(Calendar.SECOND);
+					StringBuilder sb = new StringBuilder();
 
-				sb.append(year);
-				sb.append(month);
-				sb.append(day);
-				sb.append(Constants.LOW_BAR);
-				sb.append(hour);
-				sb.append(minute);				
-				sb.append(second);
+					sb.append(year);
+					sb.append(month);
+					sb.append(day);
+					sb.append(Constants.LOW_BAR);
+					sb.append(hour);
+					sb.append(minute);				
+					sb.append(second);
 
-//				List<JasperPrint> jasperPrintList = new ArrayList<JasperPrint>();
-				Map<String, Object> parameters = new HashMap<String, Object>();
+					Map<String, Object> parameters = new HashMap<String, Object>();
 
-				parameters.put("description", MainInterface.queryBean.getQueryDescription());
+					parameters.put("description", MainInterface.queryBean.getQueryDescription());
 
-				InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.INFORME);
-				JasperReport jReport;
-				try {
-					jReport = JasperCompileManager.compileReport(template);
-					
-					List<ReportBean> listaReport = new ArrayList<ReportBean>();
-					listaReport = MySQLUtil.getQueryToReport();
-					JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
+					InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.INFORME);
+					JasperReport jReport;
+					try {
+						jReport = JasperCompileManager.compileReport(template);
 
-//					List<CSVReportBean> listCSV = new ArrayList<CSVReportBean>();
-//					listCSV = MySQLUtil.getCSVToReport();
-//					JRBeanCollectionDataSource datasourceCsv = new JRBeanCollectionDataSource(listCSV);
-					
-//					JasperPrint jPrint = JasperFillManager.fillReport(jReport, datasourceCsv, datasource);
+						List<ReportBean> listaReport = new ArrayList<ReportBean>();
+						listaReport = MySQLUtil.getQueryToReport();
+						JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
 
-				
-					parameters.put("csv",MainInterface.queryBean.getStringCSV());
+						parameters.put("csv",MainInterface.queryBean.getStringCSV());
 
-					JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, datasource);
-					
-					JasperExportManager.exportReportToPdfFile(jPrint, Constants.REPORT_PATH + sb.toString() + Constants.REPORT_EXTENSION);
-					JasperViewer.viewReport(jPrint, false);
-					
-				} catch (JRException | SQLException e1) {
-					e1.printStackTrace();
+						JasperPrint jPrint = JasperFillManager.fillReport(jReport, parameters, datasource);
+
+						JasperExportManager.exportReportToPdfFile(jPrint, Constants.REPORT_PATH + sb.toString() + Constants.REPORT_EXTENSION);
+						JasperViewer.viewReport(jPrint, false);
+
+					}
+					catch (JRException | SQLException e1) {
+						MensajeDialog.messageEmptyQuery();
+						e1.printStackTrace();
+					}
+				}else{
+					MensajeDialog.messageEmptyQuery();
 				}
 
 			}
+
 		});
 
 		showCsvButton = new JButton();
+		showCsvButton.setName("id3_showCsvButton");
 		showCsvButton.setText(Constants.SHOW_CSV_REPORT);
 		showCsvButton.setBounds(50, 320, 100, 50);
 
@@ -313,47 +336,48 @@ public class ComboBoxUtility {
 
 			public void actionPerformed(ActionEvent e) {
 
-				Calendar cal = Calendar.getInstance();
-				int year = cal.get(Calendar.YEAR);
-				int month = cal.get(Calendar.MONTH) + 1;
-				int day = cal.get(Calendar.DAY_OF_MONTH);
-				int hour = cal.get(Calendar.HOUR_OF_DAY);
-				int minute = cal.get(Calendar.MINUTE);
-				int second = cal.get(Calendar.SECOND);
-				StringBuilder sb = new StringBuilder();
+				if(MainInterface.queryBean.getNumRows() > 0){
+					Calendar cal = Calendar.getInstance();
+					int year = cal.get(Calendar.YEAR);
+					int month = cal.get(Calendar.MONTH) + 1;
+					int day = cal.get(Calendar.DAY_OF_MONTH);
+					int hour = cal.get(Calendar.HOUR_OF_DAY);
+					int minute = cal.get(Calendar.MINUTE);
+					int second = cal.get(Calendar.SECOND);
+					StringBuilder sb = new StringBuilder();
 
-				sb.append(year);
-				sb.append(month);
-				sb.append(day);
-				sb.append(Constants.LOW_BAR);
-				sb.append(hour);
-				sb.append(minute);				
-				sb.append(second);
+					sb.append(year);
+					sb.append(month);
+					sb.append(day);
+					sb.append(Constants.LOW_BAR);
+					sb.append(hour);
+					sb.append(minute);				
+					sb.append(second);
 
-//				Map<String, Object> parameters = new HashMap<String, Object>();
-//				parameters.put("csvRow", MainInterface.queryBean.getStringCSV());
+					InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.CSVREPORT);
+					JasperReport jReport;
+					List<CSVRowBean> listaReport = new ArrayList<CSVRowBean>();
+					listaReport = MainInterface.queryBean.getStringCSV();
+					JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
 
-				InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.CSVREPORT);
-				JasperReport jReport;
-				List<CSVRowBean> listaReport = new ArrayList<CSVRowBean>();
-				listaReport =MainInterface.queryBean.getStringCSV();
-				JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);
+					try {
+						jReport = JasperCompileManager.compileReport(template);
 
-				try {
-					jReport = JasperCompileManager.compileReport(template);
-					
-					JasperPrint jPrint = JasperFillManager.fillReport(jReport, null, datasource);
-					
-					JasperExportManager.exportReportToPdfFile(jPrint, Constants.CSV_REPORT_PATH + sb.toString() + Constants.REPORT_EXTENSION);
-					JasperViewer.viewReport(jPrint, false);
-					
-				} catch (JRException e1) {
-					e1.printStackTrace();
+						JasperPrint jPrint = JasperFillManager.fillReport(jReport, null, datasource);
+
+						JasperExportManager.exportReportToPdfFile(jPrint, Constants.CSV_REPORT_PATH + sb.toString() + Constants.REPORT_EXTENSION);
+						JasperViewer.viewReport(jPrint, false);
+
+					} catch (JRException e1) {
+						e1.printStackTrace();
+					}
 				}
-
+				else{
+					MensajeDialog.messageEmptyQuery();
+				}
 			}
 		});
-		
+
 		resetButton = new JButton();
 		resetButton.setText(Constants.RESET_BUTTON);
 		resetButton.setBounds(290, 320, 100, 50);

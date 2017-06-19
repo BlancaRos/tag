@@ -9,20 +9,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import oracle.jdbc.Const;
-
 import org.apache.commons.lang.StringEscapeUtils;
 
 import upm.blanca.tfg.optimization.tool.beans.CSVReportBean;
+import upm.blanca.tfg.optimization.tool.beans.ExecutionBean;
 import upm.blanca.tfg.optimization.tool.beans.QueryBean;
 import upm.blanca.tfg.optimization.tool.beans.ReportBean;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
-import upm.blanca.tfg.optimization.tool.interfaz.util.ExecutionBean;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 
 import com.mysql.jdbc.PreparedStatement;
+
 public class MySQLUtil {
 
+	/**
+	 * Metodo para la conexion con la BBDD interna
+	 * @return Connection connection - conexion necesaria para conectar con la BBDD interna
+	 * @throw SQLException sqle
+	 */
 	public static Connection getConnectionMySQL() throws SQLException{
 
 		System.out.println("-------- MySQL JDBC Connection Testing ------------");
@@ -38,25 +42,38 @@ public class MySQLUtil {
 		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/BBDD_interna","root", "root");	
 
 		return connection;
-
 	}
 
+	/**
+	 * Metodo principal encargado de llamar a otros para almacenar informacion en la BBDD interna
+	 * @param queryBean - bean en el cual se encuentra la informacion necesaria para almacenar
+	 * @throw SQLException sqle
+	 */
 	public static void populateDB(QueryBean queryBean) throws SQLException{
+
 		Connection connection = getConnectionMySQL();
 		int idBBDD = insertIntoBBDD(connection, queryBean);
 		int idDescription = insertIntoQueryDescription(connection, queryBean);
 		int idSQLQuery = insertIntoQuerySQL(connection, queryBean, idBBDD, idDescription);
 		insertIntoExecution(connection, queryBean, idSQLQuery);
+
 		connection.close();
 	}
 
+	/**
+	 * Metodo que inserta informacion concreta en la tabla BBDD de la BBDD interna
+	 * @param connection - conexion necesaria para conectarse a la BBDD interna
+	 * @param queryBean - bean en el cual se encuentra la informacion necesaria para almacenar
+	 * @return int idResult - id de la BBDD asignado
+	 * @throw SQLException sqle
+	 */
 	public static int insertIntoBBDD(Connection connection, QueryBean queryBean) throws SQLException{
 		int claveGenerada = 0;
 		long idResult = 0L;
 		String nameBBDD = "";
-		String userBBDD = "";
-		String passBBDD = "";
-		String servicioBBDD = "";
+//		String userBBDD = "";
+//		String passBBDD = "";
+//		String servicioBBDD = "";
 
 		if(connection != null){
 
@@ -66,9 +83,9 @@ public class MySQLUtil {
 			while (rs.next()){ 
 				claveGenerada = rs.getInt(1);
 				nameBBDD = rs.getString(2);
-				userBBDD = rs.getString(3);
-				passBBDD = rs.getString(4);
-				servicioBBDD = rs.getString(5);
+//				userBBDD = rs.getString(3);
+//				passBBDD = rs.getString(4);
+//				servicioBBDD = rs.getString(5);
 			}
 
 			if(nameBBDD.equals("")){
@@ -89,6 +106,14 @@ public class MySQLUtil {
 		}
 		return (int) idResult;
 	}
+
+	/**
+	 * Metodo que inserta informacion concreta en la tabla QueryDescription de la BBDD interna
+	 * @param connection - conexion necesaria para conectarse a la BBDD interna
+	 * @param queryBean - bean en el cual se encuentra la informacion necesaria para almacenar
+	 * @return int idResult - id de la descripcion generada
+	 * @throw SQLException sqle
+	 */
 	public static int insertIntoQueryDescription(Connection connection, QueryBean queryBean) throws SQLException{
 		int claveGenerada = 0;
 		String description = "";
@@ -123,12 +148,12 @@ public class MySQLUtil {
 	}
 
 	/**
-	 * 
-	 * @param connection
-	 * @param queryBean
-	 * @param idBBDD
-	 * @param idDescription
-	 * @return int the primary key
+	 * Metodo que inserta informacion concreta en la tabla QuerySQL de la BBDD interna
+	 * @param connection - conexion necesaria para conectarse a la BBDD interna
+	 * @param queryBean - bean en el cual se encuentra la informacion necesaria para almacenar
+	 * @param idBBDD - id de la BBDD
+	 * @param idDescription - id de la descripcion
+	 * @return int idResult - id de la sentencia generada
 	 * @throws SQLException sqle
 	 */
 	public static int insertIntoQuerySQL(Connection connection, QueryBean queryBean, int idBBDD, int idDescription) throws SQLException{
@@ -165,6 +190,15 @@ public class MySQLUtil {
 		}		
 		return (int) idResult;
 	}
+
+	/**
+	 * Metodo que inserta informacion concreta en la tabla Execution de la BBDD interna
+	 * @param connection - conexion necesaria para conectarse a la BBDD interna
+	 * @param queryBean - bean en el cual se encuentra la informacion necesaria para almacenar
+	 * @param idSQLQuery - id de la sentencia
+	 * @return int idResult - id de la ejecucion
+	 * @throws SQLException sqle
+	 */
 	public static void insertIntoExecution(Connection connection, QueryBean queryBean, int idSQLQuery) throws SQLException{
 
 		if(connection != null){
@@ -184,15 +218,22 @@ public class MySQLUtil {
 			}
 		}		
 	}
+
+	/**
+	 * Metodo que obtiene todas las descripciones almacenadas en la BBDD interna
+	 * @param connection - conexion necesaria para conectarse a la BBDD interna
+	 * @return List<String> lista - lista de las descripciones almacenadas
+	 * @throws SQLException sqle
+	 */
 	public static List<String> getDescriptions(Connection connection) throws SQLException{
 
-		List<String> lista=new ArrayList<String>();
+		List<String> lista = new ArrayList<String>();
 
 		if(connection != null){
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_ALL_DESCRIPTION);
 			ResultSet result1 = consulta1.executeQuery();
-			
+
 			while(result1.next()){
 				String nombre= result1.getString(1);
 				lista.add(nombre); 
@@ -201,6 +242,12 @@ public class MySQLUtil {
 		return lista;
 	}
 
+	/**
+	 * Metodo que obtiene todas las BBDD almacenadas en la BBDD interna
+	 * @param connection - conexion necesaria para conectarse a la BBDD interna
+	 * @return List<String> lista - lista de las BBDD almacenadas
+	 * @throws SQLException sqle
+	 */
 	public static List<String> getBbdd (Connection connection) throws SQLException{
 
 		List<String> lista=new ArrayList<String>();
@@ -209,7 +256,7 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_ALL_BBDD_NAME);
 			ResultSet result1 = consulta1.executeQuery();
-			
+
 			while(result1.next()){
 				String nombre= result1.getString(1);
 				String k = new String(nombre);
@@ -219,16 +266,22 @@ public class MySQLUtil {
 		return lista;
 	}
 
+	/**
+	 * Metodo que obtiene la sentencia SQL seleccionada por el usuario
+	 * @param descriptionSelected - descripcion elegida por el usuario
+	 * @return List<String> lista - lista de las sentencias almacenadas
+	 * @throws SQLException sqle
+	 */
 	public static List<String> getSelectedSqlQuery(String descriptionSelected) throws SQLException {
 
 		Connection connection = MySQLUtil.getConnectionMySQL();
-		List<String> lista=new ArrayList<String>();
+		List<String> lista = new ArrayList<String>();
 
 		if(connection != null){
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_SQL_FROM_DESCRIPTION + descriptionSelected + Constants.CLOSE_QUERY_WITH_SUBQUERY);
 			ResultSet result1 = consulta1.executeQuery();
-			
+
 			while(result1.next()){
 				String querySql= result1.getString(1);
 				lista.add(querySql);
@@ -236,6 +289,12 @@ public class MySQLUtil {
 		}
 		return lista;
 	}
+
+	/**
+	 * Metodo que obtiene todas la BBDD seleccionada por el usuario
+	 * @param descriptionSelected - descripcion elegida por el usuario
+	 * @throws SQLException sqle
+	 */
 	public static void getSelectedDataBase(String descriptionSelected) throws SQLException {
 
 		String service;
@@ -248,7 +307,7 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_ALL_DB + descriptionSelected + Constants.CLOSE_QUERY);
 			ResultSet result1 = consulta1.executeQuery();
-			
+
 			while(result1.next()){
 				user = result1.getString(Constants.USER_BBDD);
 				pass = result1.getString(Constants.PASS_BBDD);
@@ -260,6 +319,12 @@ public class MySQLUtil {
 		}
 	}
 
+	/**
+	 * Metodo que obtiene el informe de la consulta realizada
+	 * @param descriptionSelected - descripcion elegida por el usuario
+	 * @return List<ReportBean> listaReport - Lista con los beans para generar el PDF
+	 * @throws SQLException sqle
+	 */
 	public static List<ReportBean> getQueryToReport() throws SQLException{
 		Connection connection = MySQLUtil.getConnectionMySQL();
 		try {
@@ -273,7 +338,7 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.REPORT_VALUES + MainInterface.queryBean.getQueryDescription() + Constants.CLOSE_QUERY_WITH_SUBQUERY);
 			ResultSet result1 = consulta1.executeQuery();
-			
+
 			while(result1.next()){
 				ReportBean reportBean = new ReportBean();
 				String querySql= result1.getString(1);
@@ -290,6 +355,12 @@ public class MySQLUtil {
 		return listaReport;
 	}
 
+	/**
+	 * Metodo que obtiene el resultado de la consulta realizada
+	 * @param descriptionSelected - descripcion elegida por el usuario
+	 * @return List<CSVReportBean> listaCsvReport - Lista con los beans para generar el PDF
+	 * @throws SQLException sqle
+	 */
 	public static List<CSVReportBean> getCSVToReport() throws SQLException{
 		Connection connection = MySQLUtil.getConnectionMySQL();
 		try {
@@ -303,7 +374,7 @@ public class MySQLUtil {
 
 			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.CSV_VALUES + MainInterface.queryBean.getQueryDescription() + Constants.CLOSE_QUERY);
 			ResultSet result1 = consulta1.executeQuery();
-			
+
 			while(result1.next()){
 				CSVReportBean csvReportBean = new CSVReportBean();
 				String csvQuery= result1.getString(1);

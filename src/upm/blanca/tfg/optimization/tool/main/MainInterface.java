@@ -12,7 +12,7 @@ import upm.blanca.tfg.optimization.tool.interfaz.util.PanelUtility;
 
 public class MainInterface extends JFrame  {
 
-	//private static final long serialVersionUID = -809150699758926335L;
+	private static final long serialVersionUID = -809150699758926335L;
 	public static QueryBean queryBean = new QueryBean();
 	public static JTabbedPane mainInterface = new JTabbedPane();
 	public static String labelDB = Constants.LABEL_DB;
@@ -21,14 +21,17 @@ public class MainInterface extends JFrame  {
 	public static JPanel panel1 = null;	
 	public static JPanel panel3 = null;
 	public static JPanel panel2 = null;
-	boolean valor = false;
 
+	/**
+	 * Metodo principal en el cual se crean los tres paneles de la aplicacion
+	 * @throw SQLException sqle
+	 */
 	public MainInterface() throws SQLException {
 
 		super( "TFG" );
 		panel1 = PanelUtility.createPanelDataBase(labelDB);	
-		panel3 = PanelUtility.createPanelReport(labelReport);
 		panel2 = PanelUtility.createPanelQueryType(labelDefaultQuery);
+		panel3 = PanelUtility.createPanelReport(labelReport);
 
 		//Panel1 y meterlo en JTabbedPane
 		String tab1 = Constants.TAB_DB;

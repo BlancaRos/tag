@@ -1,4 +1,4 @@
-package upm.blanca.tfg.optimization.tool.interfaz.util;
+package upm.blanca.tfg.optimization.tool.beans;
 
 
 public class ExecutionBean {
