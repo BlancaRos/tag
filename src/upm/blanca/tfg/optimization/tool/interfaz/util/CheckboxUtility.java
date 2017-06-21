@@ -74,6 +74,7 @@ public class CheckboxUtility {
 	 * @param connection - Conexion para conectarse a la BBDD interna
 	 * @throw SQLException sqle
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void obtenerBbdd(JPanel panel, Connection connection) throws SQLException{
 
 		List<String> result = MySQLUtil.getBbdd(connection);

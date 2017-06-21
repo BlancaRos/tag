@@ -2,7 +2,6 @@ package upm.blanca.tfg.optimization.tool.csv;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.sql.SQLException;
 import java.util.List;
 
 import upm.blanca.tfg.optimization.tool.beans.CSVRowBean;
@@ -13,12 +12,12 @@ public class CSVUtil {
 	private static final char DEFAULT_SEPARATOR = ',';
 
 	/**
-	 * Metodo 
-	 * @param w - ??
-	 * @param values - 
-	 * @param separators - 
-	 * @return CSVRowBean csvRow ??
-	 * @throws IOException ??
+	 * Metodo para generar el bean con la inforamcion de la fila obtenida de BBDD e ir generando el csv
+	 * @param w - writer
+	 * @param values - datos de la fila
+	 * @param separators - separador
+	 * @return CSVRowBean Bean con la informacion de la fila para el csv
+	 * @throws IOException ioe
 	 */
 	public static CSVRowBean writeLine(Writer w, List<String> values, char separators) throws IOException {
 		CSVRowBean csvRow = new CSVRowBean();

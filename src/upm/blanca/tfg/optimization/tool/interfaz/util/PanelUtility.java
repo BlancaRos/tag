@@ -41,6 +41,7 @@ public class PanelUtility {
 	 * @param text - etiqueta a añadir en el panel
 	 * @return JPanel panel - panel de tipo de consulta
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static JPanel createPanelQueryType(String text){
 		JPanel panel = new JPanel();
 		panel.setName("panel2");

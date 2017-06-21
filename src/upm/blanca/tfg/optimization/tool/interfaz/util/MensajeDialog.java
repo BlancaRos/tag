@@ -33,7 +33,7 @@ public class MensajeDialog implements ActionListener{
 	 * Metodo que al confirmar la accion ejecuta la consulta y genera el CSV
 	 */
 	public static void messageDialogue() {
-		int eleccion = JOptionPane.showConfirmDialog(null, Constants.CONFIRM_DIALOG, Constants.CONFIRM_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		int eleccion = JOptionPane.showConfirmDialog(null, Constants.SENT_QUERY_DIALOG, Constants.CONFIRM_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		ResultSet resultSet = null;
 
 		if( eleccion == JOptionPane.NO_OPTION){
@@ -59,7 +59,6 @@ public class MensajeDialog implements ActionListener{
 
 					// Numero de columnas pedidas a iterar
 					int numOfColums = resultSet.getMetaData().getColumnCount();
-					boolean first = true;
 					String [] columns = new String[numOfColums];
 					FileWriter writer;
 					String csvFile =  Constants.CSV_PATH;
@@ -83,26 +82,20 @@ public class MensajeDialog implements ActionListener{
 						//Escribo en el csv
 						CSVRowBean line = CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
 						allLines.add(line);
-						first = false;
 					}
 
-//					if(numRows > 0){
-						MainInterface.queryBean.setStringCSV(allLines);
-						MainInterface.queryBean.setNumRows(numRows);
-						oracleConnection.close(); 
-						MainInterface.queryBean.setCsv(writer.toString().getBytes());
-						writer.flush();
-						writer.close();
+					MainInterface.queryBean.setStringCSV(allLines);
+					MainInterface.queryBean.setNumRows(numRows);
+					oracleConnection.close(); 
+					MainInterface.queryBean.setCsv(writer.toString().getBytes());
+					writer.flush();
+					writer.close();
 
-						try {
-							MySQLUtil.populateDB(MainInterface.queryBean);
-						} catch (SQLException e) {			
-							e.printStackTrace();
-						}
-//					}
-//					else{
-//						MessageEmptyQuery();
-//					}
+					try {
+						MySQLUtil.populateDB(MainInterface.queryBean);
+					} catch (SQLException e) {			
+						e.printStackTrace();
+					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -140,7 +133,7 @@ public class MensajeDialog implements ActionListener{
 	public static void messageEmptyQuery() {
 		JOptionPane.showMessageDialog(null, Constants.EMPTY_QUERY, Constants.EMPTY_QUERY_TITLE, JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	/**
 	 * Metodo que muestra un error en el cual se indica que no se puede conectar a la BBDD externa
 	 */

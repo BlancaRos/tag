@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import upm.blanca.tfg.optimization.tool.beans.ExecutionBean;
 import upm.blanca.tfg.optimization.tool.beans.QueryBean;
 import upm.blanca.tfg.optimization.tool.constants.Constants;
@@ -50,12 +47,12 @@ public class OracleDBUtil {
 
 
 	/**
-	 * Método que realiza la consulta seleccionada por el usuario a la BBDD externa
-	 * @param connection - Conexión necesaria para realizar la consulta
-	 * @param queryBean - Bean donde está almacenada toda la información necesaria para realizar la consulta
+	 * Metodo que realiza la consulta seleccionada por el usuario a la BBDD externa
+	 * @param connection - Conexion necesaria para realizar la consulta
+	 * @param queryBean - Bean donde esta almacenada toda la informacion necesaria para realizar la consulta
 	 * @return ResultSet resultSet - ??
 	 * @throw SQLException sqle
-	 * @throw IOException ??
+	 * @throw IOException ioe
 	 */
 	public static ResultSet createQueryOracle(Connection connection, QueryBean queryBean) throws SQLException, IOException{
 		ResultSet resultSet = null;
@@ -112,7 +109,7 @@ public class OracleDBUtil {
 
 			} catch (SQLException e) {
 				MensajeDialog.messageSqlInfo();
-				e.printStackTrace();
+				
 			}  
 			//			connection.close();
 		}

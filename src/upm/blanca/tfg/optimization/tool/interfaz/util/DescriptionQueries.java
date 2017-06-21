@@ -19,6 +19,7 @@ public class DescriptionQueries {
 	 * Metodo para crear una ventana en la que se insertaran las descripciones almacenadas en la BBDD
 	 * @param result - lista de descripciones existentes
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void selectDescriptionQuery(List<String> result){ 
 		//Ventana 
 		JFrame ventana = new JFrame(Constants.LABEL_WINDOW_DESCRIPTIONS); 

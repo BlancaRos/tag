@@ -19,6 +19,7 @@ public class Util {
 	 * @param idName - id del desplegable
 	 * @return String Valor - valor seleccionado de la lista.
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String searchScrollPaneInfo(JPanel panel, String idName) {
 		String selected = Constants.BLANK;
 

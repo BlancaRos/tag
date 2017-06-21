@@ -12,16 +12,16 @@ public class Constants {
 	//TABS
 	public final static String TAB_DB = "BBDD";
 	public final static String TAB_QUERY = "Tipo de consulta";
-	public final static String TAB_REPORT = "Consulta e informe";
+	public final static String TAB_REPORT = "Consulta e informes";
 
 	//EXPLICACION TABS
-	public final static String LABEL_DB = "Elige la Base de Datos a la que realizar la consulta:";
+	public final static String LABEL_DB = "Selecciona la BBDD a la que realizar la consulta:";
 	public final static String LABEL_QUERY = "Selecciona el tipo de consulta a realizar";
-	public final static String LABEL_DESCRIPTION_REPORT = "La consulta en formato texto seleccionada es: ";
+	public final static String LABEL_DESCRIPTION_REPORT = "La descripción seleccionada es: ";
 	public final static String LABEL_SQL_REPORT = "La sentencia SQL seleccionada es: ";
-	public final static String LABEL_ADD_BBDD = "No hay Base de Datos almacenadas.";
+	public final static String LABEL_ADD_BBDD = "No se ha podido recuperar la Base de Datos.";
 	public final static String LABEL_WINDOW_DESCRIPTIONS = "Descripciones almacenadas";
-	public final static String LABEL_DESCRIPTIONS = "Seleccione la descripción de la que desee obtener el informe:";
+	public final static String LABEL_DESCRIPTIONS = "Seleccione la descripción mediante la cual obtendrá el informe:";
 	
 	//NUEVA BBDD 
 	public final static String ADD_NEW_DB= "Añadir BBDD";
@@ -32,7 +32,7 @@ public class Constants {
 	
 	//NUEVA QUERY
 	public final static String INSERT_NEW_QUERY = "Añadir consulta";
-	public final static String INSERT_NEW_QUERY_SQL = "Introduzca la sentencia sql que desea añadir:";
+	public final static String INSERT_NEW_QUERY_SQL = "Introduzca la sentencia SQL:";
 	
 	//DESPLEGABLE
 	public final static String NEW_TYPE = "Consulta nueva";
@@ -47,11 +47,10 @@ public class Constants {
 	//Explicacion de los dos tipos de queries
 	public final static String SQL_TEXT = "Diseñe la consulta que desee realizar:";
 	public final static String DESCRIPTION_TEXT = "Diseñe la descripcion a consultar:";
-	public final static String OPERATION_TYPE = "Seleccione el tipo de consulta que desea ver.";
 	
 	//Modificar query
-	public final static String MODIFY_DESCRIPTION_TEXT = "1.- Seleccione la descripción a la que desea añadir una consulta: ";
-	public final static String MODIFY_SQL_TEXT = "2.- Seleccione/añada la consulta a realizar: ";
+	public final static String MODIFY_DESCRIPTION_TEXT = "1.- Descripción seleccionada: ";
+	public final static String MODIFY_SQL_TEXT = "2.- Seleccione o añada la sentencia SQL a realizar: ";
 
 	//Botones
 	public final static String SHOW_REPORT ="Ver informe";
@@ -64,12 +63,13 @@ public class Constants {
 	
 	//MESSAGE DIALOGS
 	public final static String CONFIRM_DIALOG = "¿Seguro que desea continuar?";
+	public final static String SENT_QUERY_DIALOG = "¿Desea realizar la consulta?";
 	public final static String CONFIRM_DIALOG_TITLE = "¡Alerta!";
 	public final static String ERROR_DIALOG = "¡Debes seleccionar una opción!";
 	public final static String ERROR_DIALOG_TITLE = "¡Error!";
 	public final static String ERROR_SQL = "Error en la sentencia SQL";
 	public final static String ERROR_SQL_TITLE = "ERROR SQL";
-	public final static String ERROR_BBDD = "No es posible conectarse a la BBDD Interna";
+	public final static String ERROR_BBDD = "No es posible conectarse a la BBDD Externa";
 	public final static String ERROR_BBDD_TITLE = "ERROR BBDD";
 	public final static String EMPTY_QUERY = "No se ha obtenido nada para la consulta seleccionada";
 	public final static String EMPTY_QUERY_TITLE = "Resultado de consulta vacío";
@@ -79,7 +79,7 @@ public class Constants {
 	
 	//Informe
 	public final static String REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Informe_";
-	public final static String CSV_REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Csv_";
+	public final static String CSV_REPORT_PATH = "/Users/admin/Desktop/TFG/Reports/Resultado_";
 	public final static String REPORT_EXTENSION = ".pdf";
 	
 	//Queries utiles

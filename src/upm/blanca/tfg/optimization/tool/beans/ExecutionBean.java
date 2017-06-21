@@ -10,28 +10,61 @@ public class ExecutionBean {
 
 	public ExecutionBean(){
 	}
+
+	/**
+	 * @return the queryStartTime
+	 */
 	public String getQueryStartTime() {
 		return queryStartTime;
 	}
-	public String getQueryDate() {
-		return queryDate;
-	}
-	public void setQueryDate(String queryDate) {
-		this.queryDate = queryDate;
-	}
+
+	/**
+	 * @param queryStartTime the queryStartTime to set
+	 */
 	public void setQueryStartTime(String queryStartTime) {
 		this.queryStartTime = queryStartTime;
 	}
+
+	/**
+	 * @return the queryEndTime
+	 */
 	public String getQueryEndTime() {
 		return queryEndTime;
 	}
+
+	/**
+	 * @param queryEndTime the queryEndTime to set
+	 */
 	public void setQueryEndTime(String queryEndTime) {
 		this.queryEndTime = queryEndTime;
 	}
+
+	/**
+	 * @return the totalTime
+	 */
 	public int getTotalTime() {
 		return totalTime;
 	}
+
+	/**
+	 * @param totalTime the totalTime to set
+	 */
 	public void setTotalTime(int totalTime) {
 		this.totalTime = totalTime;
 	}
+
+	/**
+	 * @return the queryDate
+	 */
+	public String getQueryDate() {
+		return queryDate;
+	}
+
+	/**
+	 * @param queryDate the queryDate to set
+	 */
+	public void setQueryDate(String queryDate) {
+		this.queryDate = queryDate;
+	}
+	
 }

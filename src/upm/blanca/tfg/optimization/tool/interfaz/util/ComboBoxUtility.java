@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,14 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -68,8 +65,10 @@ public class ComboBoxUtility {
 	 * @param dropdown - desplegable del tipo de consulta
 	 * @param panel - Panel a modificar
 	 */
+	@SuppressWarnings("rawtypes")
 	public static void  cleanPanelQueryTypeListener(JComboBox dropDown, JPanel panel){
 		dropDown.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent event) {
 				JComboBox<String> typeOfAction = (JComboBox<String>) event.getSource();
 				String actionSelected = (String) typeOfAction.getSelectedItem();
@@ -175,7 +174,8 @@ public class ComboBoxUtility {
 	/**
 	 * Metodo para modificar una consulta ya existente
 	 * @param panel - Panel a diseñar
-	 * @return String sqlQuery ??
+	 * @return String sqlQuery sentencia sql
+	 * @throws SQLException sqle
 	 */
 	public static String modifyQuery(JPanel panel) throws SQLException{
 		panel.setLayout(null);
@@ -298,6 +298,7 @@ public class ComboBoxUtility {
 
 					parameters.put("description", MainInterface.queryBean.getQueryDescription());
 
+					@SuppressWarnings("static-access")
 					InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.INFORME);
 					JasperReport jReport;
 					try {
@@ -354,6 +355,7 @@ public class ComboBoxUtility {
 					sb.append(minute);				
 					sb.append(second);
 
+					@SuppressWarnings("static-access")
 					InputStream template = this.getClass().getClassLoader().getSystemResourceAsStream(Constants.CSVREPORT);
 					JasperReport jReport;
 					List<CSVRowBean> listaReport = new ArrayList<CSVRowBean>();

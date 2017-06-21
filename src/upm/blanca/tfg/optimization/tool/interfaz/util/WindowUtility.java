@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;

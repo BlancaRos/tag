@@ -38,9 +38,11 @@ public class ButtonUtility {
 	 * @param ventana - La ventana donde esta el boton
 	 * @param list - Lista que contiene las descripciones disponibles
 	 */
+	@SuppressWarnings("rawtypes")
 	public static void addListenerClickOkButtonDescription(JButton button, JFrame ventana, JList list) {
 
 		button.addActionListener (new ActionListener(){
+			@SuppressWarnings("unchecked")
 			public void actionPerformed (ActionEvent e){
 				JLabel labelDescriptionQuery = new JLabel();
 				labelDescriptionQuery.setName("id2_descriptionSelectedQuery");
