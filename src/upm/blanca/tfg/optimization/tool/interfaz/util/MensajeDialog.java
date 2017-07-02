@@ -70,15 +70,11 @@ public class MensajeDialog implements ActionListener{
 						if (resultSetSQL.getLong(1) >= 1L) {
 							isDifferent = OracleDBUtil.createQueryToCompareOracle(oracleConnection,MainInterface.queryBean);
 
-							if (!isDifferent) {
-								generateAndPopulateInfo(resultSet,oracleConnection);
-							}
-							else{
+							if (isDifferent) {
 								messageIncorrectQuery();
 							}
-						} else {
-							generateAndPopulateInfo(resultSet,oracleConnection);
-						}
+						} 
+						generateAndPopulateInfo(resultSet,oracleConnection);
 					}
 				}
 
@@ -185,6 +181,5 @@ public class MensajeDialog implements ActionListener{
 	 */
 	public static void messageIncorrectQuery() {
 		JOptionPane.showMessageDialog(null, Constants.ERROR_QUERY, Constants.ERROR_BBDD_TITLE, JOptionPane.ERROR_MESSAGE);
-		Util.resetApp();
 	}
 }
