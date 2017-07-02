@@ -71,9 +71,6 @@ public class MySQLUtil {
 		int claveGenerada = 0;
 		long idResult = 0L;
 		String nameBBDD = "";
-//		String userBBDD = "";
-//		String passBBDD = "";
-//		String servicioBBDD = "";
 
 		if(connection != null){
 
@@ -83,9 +80,6 @@ public class MySQLUtil {
 			while (rs.next()){ 
 				claveGenerada = rs.getInt(1);
 				nameBBDD = rs.getString(2);
-//				userBBDD = rs.getString(3);
-//				passBBDD = rs.getString(4);
-//				servicioBBDD = rs.getString(5);
 			}
 
 			if(nameBBDD.equals("")){
@@ -134,8 +128,9 @@ public class MySQLUtil {
 				String query = Constants.INSERT_DESCRIPTION;
 
 				pstm = (PreparedStatement) connection.prepareStatement(query);
-				pstm.setString(1, queryBean.getQueryDescription());
-				pstm.setBlob(2, new ByteArrayInputStream(MainInterface.queryBean.getCsv()));
+				pstm.setInt(1, queryBean.getIdBBDD());
+				pstm.setString(2, queryBean.getQueryDescription());
+				pstm.setBlob(3, new ByteArrayInputStream(MainInterface.queryBean.getCsv()));
 				pstm.execute();
 				idResult = pstm.getLastInsertID();
 
@@ -231,9 +226,9 @@ public class MySQLUtil {
 
 		if(connection != null){
 
-			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_ALL_DESCRIPTION);
+			java.sql.PreparedStatement consulta1 = connection.prepareStatement(Constants.SELECT_ALL_DESCRIPTION + MainInterface.queryBean.getIdBBDD() + Constants.CLOSE_QUERY);
 			ResultSet result1 = consulta1.executeQuery();
-
+System.out.println(Constants.SELECT_ALL_DESCRIPTION + MainInterface.queryBean.getIdBBDD() + Constants.CLOSE_QUERY);
 			while(result1.next()){
 				String nombre= result1.getString(1);
 				lista.add(nombre); 
@@ -300,7 +295,7 @@ public class MySQLUtil {
 		String service;
 		String user;
 		String pass;
-
+		int idDB = 0;
 		Connection connection = MySQLUtil.getConnectionMySQL();
 
 		if(connection != null){
@@ -312,9 +307,12 @@ public class MySQLUtil {
 				user = result1.getString(Constants.USER_BBDD);
 				pass = result1.getString(Constants.PASS_BBDD);
 				service = result1.getString(Constants.SERVICE_BBDD);
+				idDB = result1.getInt(Constants.IDDB);
 				MainInterface.queryBean.setBbddService(service);
 				MainInterface.queryBean.setBbddUser(user);
 				MainInterface.queryBean.setBbddPass(pass);
+				MainInterface.queryBean.setIdBBDD(idDB);
+				
 			}
 		}
 	}
@@ -362,6 +360,7 @@ public class MySQLUtil {
 	 * @throws SQLException sqle
 	 */
 	public static List<CSVReportBean> getCSVToReport() throws SQLException{
+
 		Connection connection = MySQLUtil.getConnectionMySQL();
 		try {
 			connection = MySQLUtil.getConnectionMySQL();

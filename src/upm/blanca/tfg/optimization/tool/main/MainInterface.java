@@ -18,9 +18,9 @@ public class MainInterface extends JFrame  {
 	public static String labelDB = Constants.LABEL_DB;
 	public static String labelReport = Constants.LABEL_SQL_REPORT;
 	public static String labelDefaultQuery = Constants.LABEL_QUERY;
-	public static JPanel panel1 = null;	
-	public static JPanel panel3 = null;
-	public static JPanel panel2 = null;
+	public static JPanel panelDataBase = null;	
+	public static JPanel panelReport = null;
+	public static JPanel panelQueryType = null;
 
 	/**
 	 * Metodo principal en el cual se crean los tres paneles de la aplicacion
@@ -29,22 +29,22 @@ public class MainInterface extends JFrame  {
 	public MainInterface() throws SQLException {
 
 		super( "TFG" );
-		panel1 = PanelUtility.createPanelDataBase(labelDB);	
-		panel2 = PanelUtility.createPanelQueryType(labelDefaultQuery);
-		panel3 = PanelUtility.createPanelReport(labelReport);
+		panelDataBase = PanelUtility.createPanelDataBase(labelDB);	
+		panelQueryType = PanelUtility.createPanelQueryType(labelDefaultQuery);
+		panelReport = PanelUtility.createPanelReport(labelReport);
 
-		//Panel1 y meterlo en JTabbedPane
+		//PanelDataBase y meterlo en JTabbedPane
 		String tab1 = Constants.TAB_DB;
-		mainInterface.addTab(tab1, null, panel1, Constants.FIRST_PANEL);
+		mainInterface.addTab(tab1, null, panelDataBase, Constants.FIRST_PANEL);
 		mainInterface.setEnabledAt(0,false);
-		//Panel2 y meterlo en JTabbedPane
+		//PanelQueryType y meterlo en JTabbedPane
 		String tab2 = Constants.TAB_QUERY;
-		mainInterface.addTab(tab2, null, panel2, Constants.SECOND_PANEL); 
+		mainInterface.addTab(tab2, null, panelQueryType, Constants.SECOND_PANEL); 
 		mainInterface.setEnabledAt(1,false);
 
-		//Panel3 y meterlo en JTabbedPane
+		//PanelReport y meterlo en JTabbedPane
 		String tab3 = Constants.TAB_REPORT;
-		mainInterface.addTab(tab3, null, panel3, Constants.THIRD_PANEL); 
+		mainInterface.addTab(tab3, null, panelReport, Constants.THIRD_PANEL); 
 		mainInterface.setEnabledAt(2,false);
 
 		getContentPane().add(mainInterface);

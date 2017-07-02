@@ -54,7 +54,7 @@ public class ButtonUtility {
 				labelDescriptionQuery.setForeground(new Color(27,85,131));
 
 				MainInterface.queryBean.setQueryDescription(descriptionSelected);
-				MainInterface.panel2.add(labelDescriptionQuery);
+				MainInterface.panelQueryType.add(labelDescriptionQuery);
 				
 				try {
 					List<String> sqlList = MySQLUtil.getSelectedSqlQuery(descriptionSelected);
@@ -66,7 +66,7 @@ public class ButtonUtility {
 					JScrollPane barraDesplazamiento = new JScrollPane(lista); 
 					barraDesplazamiento.setName("id2_scrollPaneSqlQueries");
 					barraDesplazamiento.setBounds(50,190,400,100);
-					MainInterface.panel2.add(barraDesplazamiento);
+					MainInterface.panelQueryType.add(barraDesplazamiento);
 					
 				} catch (SQLException e1) {
 					e1.printStackTrace();

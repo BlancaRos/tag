@@ -70,6 +70,7 @@ public class Constants {
 	public final static String ERROR_SQL = "Error en la sentencia SQL";
 	public final static String ERROR_SQL_TITLE = "ERROR SQL";
 	public final static String ERROR_BBDD = "No es posible conectarse a la BBDD Externa";
+	public final static String ERROR_QUERY = "La sentencia SQL no se corresponde con la descripción seleccionada";
 	public final static String ERROR_BBDD_TITLE = "ERROR BBDD";
 	public final static String EMPTY_QUERY = "No se ha obtenido nada para la consulta seleccionada";
 	public final static String EMPTY_QUERY_TITLE = "Resultado de consulta vacío";
@@ -83,24 +84,26 @@ public class Constants {
 	public final static String REPORT_EXTENSION = ".pdf";
 	
 	//Queries utiles
-	public final static String REPORT_VALUES = "select qs.query, db.NombreBBDD, qs.avgTime, qs.rows from QuerySQL qs, BBDD db where db.idBBDD = qs.idBBDD and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where Descripcion = '";
-	public final static String CSV_VALUES = "select csv from QueryDescription where Descripcion = '";
-	public final static String INSERT_DESCRIPTION = "INSERT INTO QueryDescription (Descripcion, csv) VALUES(?,?);";
-	public final static String INSERT_BBDD = "INSERT INTO BBDD (NombreBBDD, UserBBDD, PassBBDD, ServicioBBDD) VALUES(?,?,?,?);";
-	public final static String INSERT_EXECUTION = "INSERT INTO Execution (Fecha, HoraInicio, HoraFin, Tiempo, idQuerySQL, numFilas) VALUES(?,?,?,?,?,?);";
-	public final static String INSERT_SQL = "INSERT INTO QuerySQL (query, idBBDD, idQueryDescription, avgTime, rows) VALUES(?,?,?,?,?);";
-	public final static String SELECT_DESCRIPTION = "SELECT * FROM QueryDescription where Descripcion = '";
-	public final static String SELECT_BBDD = "SELECT * FROM BBDD WHERE ServicioBBDD = '";
+	public final static String REPORT_VALUES = "select qs.query, db.DBName, qs.avgTime, qs.rows from QuerySQL qs, BBDD db where db.idDB = qs.idDB and qs.idQueryDescription = ( select qd.idQueryDescription from QueryDescription qd where description = '";
+	public final static String CSV_VALUES = "select csv from QueryDescription where description = '";
+	public final static String INSERT_DESCRIPTION = "INSERT INTO QueryDescription (idDB, description, csv) VALUES(?,?,?);";
+	public final static String INSERT_BBDD = "INSERT INTO BBDD (DBName, DBUser, DBPass, DBService) VALUES(?,?,?,?);";
+	public final static String INSERT_EXECUTION = "INSERT INTO Execution (executionDate, startTime, endTime, avgTime, idQuerySQL, numRows) VALUES(?,?,?,?,?,?);";
+	public final static String INSERT_SQL = "INSERT INTO QuerySQL (query, idDB, idQueryDescription, avgTime, rows) VALUES(?,?,?,?,?);";
+	public final static String SELECT_DESCRIPTION = "SELECT * FROM QueryDescription where description = '";
+	public final static String SELECT_BBDD = "SELECT * FROM BBDD WHERE DBService = '";
 	public final static String SELECT_SQL = "SELECT * FROM QuerySQL where query = '";
 	public final static String CLOSE_QUERY = "'";
 	public final static String CLOSE_QUERY_WITH_SUBQUERY = "')";
-	public final static String SELECT_ALL_DESCRIPTION = "SELECT Descripcion FROM QueryDescription";
-	public final static String SELECT_ALL_BBDD_NAME = "SELECT NombreBBDD FROM BBDD";
-	public final static String SELECT_SQL_FROM_DESCRIPTION = "select query from QuerySQL where idQueryDescription = (select idQueryDescription from QueryDescription where Descripcion = '";
-	public final static String SELECT_ALL_DB = "select * from BBDD where NombreBBDD = '";
-	public final static String USER_BBDD = "UserBBDD";
-	public final static String PASS_BBDD = "PassBBDD";
-	public final static String SERVICE_BBDD = "ServicioBBDD";
+	public final static String SELECT_ALL_DESCRIPTION = "SELECT description FROM QueryDescription where idDB = '";
+	public final static String SELECT_ALL_BBDD_NAME = "SELECT DBName FROM BBDD";
+	public final static String SELECT_SQL_FROM_DESCRIPTION = "select query from QuerySQL where idQueryDescription = (select idQueryDescription from QueryDescription where description = '";
+	public final static String SELECT_ALL_DB = "select * from BBDD where DBName = '";
+	public final static String USER_BBDD = "DBUser";
+	public final static String PASS_BBDD = "DBPass";
+	public final static String SERVICE_BBDD = "DBService";
+	public static final String IDDB = "idDB";
+	public final static String CHECK_ROWS = "SELECT count(*) FROM QuerySQL WHERE idQueryDescription = (SELECT idQueryDescription FROM QueryDescription WHERE description = '";
 	
 	//JASPERREPORT
 	public final static String INFORME = "Informe.jrxml";

@@ -17,7 +17,7 @@ import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
 
-public class CheckboxUtility {
+public class BBDDActionUtility {
 
 	public static JButton nextButton;
 	public static JButton newBbddButton;
@@ -31,7 +31,7 @@ public class CheckboxUtility {
 
 		Connection connection = MySQLUtil.getConnectionMySQL();
 
-		CheckboxUtility.obtenerBbdd(panel, connection);
+		BBDDActionUtility.obtenerBbdd(panel, connection);
 
 		nextButton = new JButton();
 		nextButton.setText(Constants.NEXT_BUTTON);
@@ -39,7 +39,7 @@ public class CheckboxUtility {
 		//OBTENER EL CONTENIDO DE LA CAJA Y GUARDARLO EN UNA VARIABLE
 		nextButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				String selected = Util.searchScrollPaneInfo(MainInterface.panel1, "id1_dataBasesCroll");
+				String selected = Util.searchScrollPaneInfo(MainInterface.panelDataBase, "id1_dataBasesCroll");
 				if(Constants.BLANK.equals(selected)){
 					MensajeDialog.messageSelectOption();
 				}

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,13 +38,13 @@ public class MensajeDialog implements ActionListener{
 		ResultSet resultSet = null;
 
 		if( eleccion == JOptionPane.NO_OPTION){
-			MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel2));			
+			MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panelQueryType));			
 		} else {
 
 			// PARA MANTENER SELECCIONADA UNA PESTAÑA 
-			MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3),true);
-			MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3));
-			for(Component jc:MainInterface.panel3.getComponents()){
+			MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panelReport),true);
+			MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panelReport));
+			for(Component jc:MainInterface.panelReport.getComponents()){
 				if(jc instanceof JLabel && jc.getName().equals("id2_infoSQLQuerySelected")){					
 					((JLabel) jc).setText(MainInterface.queryBean.getQueryString());
 				}
@@ -53,50 +54,34 @@ public class MensajeDialog implements ActionListener{
 			}
 			try {
 				Connection oracleConnection = OracleDBUtil.getConnectionOracle();
+				Connection connMysql = null;
+				connMysql = MySQLUtil.getConnectionMySQL();
 
 				if (oracleConnection != null){
 					resultSet = OracleDBUtil.createQueryOracle(oracleConnection,MainInterface.queryBean);
+					Statement stmtMySQL;
+					ResultSet resultSetSQL = null;
+					stmtMySQL = connMysql.createStatement();
 
-					// Numero de columnas pedidas a iterar
-					int numOfColums = resultSet.getMetaData().getColumnCount();
-					String [] columns = new String[numOfColums];
-					FileWriter writer;
-					String csvFile =  Constants.CSV_PATH;
-					writer = new FileWriter(csvFile);
-					int numRows = 0;
+					// Comprobar si hay varios registros para una descripcion
+					boolean isDifferent = false;
+					resultSetSQL = stmtMySQL.executeQuery(Constants.CHECK_ROWS + MainInterface.queryBean.getQueryDescription() + Constants.CLOSE_QUERY_WITH_SUBQUERY);
+					if (resultSetSQL.next()){
+						if (resultSetSQL.getLong(1) >= 1L) {
+							isDifferent = OracleDBUtil.createQueryToCompareOracle(oracleConnection,MainInterface.queryBean);
 
-					// Iterar los resultados de la query
-					for (int i=0; i<numOfColums;i++){
-						columns[i] = resultSet.getMetaData().getColumnName(i+1);
-					}
-
-					//Escribo en el csv
-					CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
-					List<CSVRowBean> allLines =  new ArrayList<CSVRowBean>();
-					while(resultSet.next())  {
-						numRows++;
-						for (int i=0; i<numOfColums;i++){
-							//Guardo todos los valores sin importar el tipo
-							columns[i] = String.valueOf(resultSet.getObject(i+1)).replaceAll(Constants.COMMA,Constants.BLANK);
+							if (!isDifferent) {
+								generateAndPopulateInfo(resultSet,oracleConnection);
+							}
+							else{
+								messageIncorrectQuery();
+							}
+						} else {
+							generateAndPopulateInfo(resultSet,oracleConnection);
 						}
-						//Escribo en el csv
-						CSVRowBean line = CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
-						allLines.add(line);
-					}
-
-					MainInterface.queryBean.setStringCSV(allLines);
-					MainInterface.queryBean.setNumRows(numRows);
-					oracleConnection.close(); 
-					MainInterface.queryBean.setCsv(writer.toString().getBytes());
-					writer.flush();
-					writer.close();
-
-					try {
-						MySQLUtil.populateDB(MainInterface.queryBean);
-					} catch (SQLException e) {			
-						e.printStackTrace();
 					}
 				}
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} catch (IOException e1) {
@@ -105,11 +90,64 @@ public class MensajeDialog implements ActionListener{
 		}
 	}
 
+
+	/**
+	 * 
+	 * @param resultSet
+	 * @param oracleConnection
+	 */
+	private static void generateAndPopulateInfo(ResultSet resultSet, Connection oracleConnection)  {
+		// Numero de columnas pedidas a iterar
+		int numOfColums;
+		try {
+			numOfColums = resultSet.getMetaData().getColumnCount();
+
+			String [] columns = new String[numOfColums];
+			FileWriter writer;
+			String csvFile =  Constants.CSV_PATH;
+			writer = new FileWriter(csvFile);
+			int numRows = 0;
+
+			// Iterar los resultados de la query
+			for (int i=0; i<numOfColums;i++){
+				columns[i] = resultSet.getMetaData().getColumnName(i+1);
+			}
+
+			//Escribo en el csv
+			CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
+			List<CSVRowBean> allLines =  new ArrayList<CSVRowBean>();
+			while(resultSet.next())  {
+				numRows++;
+				for (int i=0; i<numOfColums;i++){
+					//Guardo todos los valores sin importar el tipo
+					columns[i] = String.valueOf(resultSet.getObject(i+1)).replaceAll(Constants.COMMA,Constants.BLANK);
+				}
+				//Escribo en el csv
+				CSVRowBean line = CSVUtil.writeLine(writer, Arrays.asList(columns), ',');
+				allLines.add(line);
+			}
+
+			MainInterface.queryBean.setStringCSV(allLines);
+			MainInterface.queryBean.setNumRows(numRows);
+			oracleConnection.close(); 
+			MainInterface.queryBean.setCsv(writer.toString().getBytes());
+			writer.flush();
+			writer.close();
+
+
+			MySQLUtil.populateDB(MainInterface.queryBean);
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 		
+	}
+
 	/**
 	 * Metodo para avanzar a la siguiente pestaña
 	 */
 	public static void nextStep(){
-		MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel2));
+		MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panelQueryType));
 	}
 
 	/**
@@ -139,6 +177,14 @@ public class MensajeDialog implements ActionListener{
 	 */
 	public static void messageDBInfo() {
 		JOptionPane.showMessageDialog(null, Constants.ERROR_BBDD, Constants.ERROR_BBDD_TITLE, JOptionPane.ERROR_MESSAGE);
+		Util.resetApp();
+	}
+
+	/**
+	 * Metodo que muestra un error que indica que la sentencia SQL no se corresponde con la descripcion seleccionada
+	 */
+	public static void messageIncorrectQuery() {
+		JOptionPane.showMessageDialog(null, Constants.ERROR_QUERY, Constants.ERROR_BBDD_TITLE, JOptionPane.ERROR_MESSAGE);
 		Util.resetApp();
 	}
 }

@@ -19,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.lowagie.text.pdf.CMYKColor;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -33,7 +35,7 @@ import upm.blanca.tfg.optimization.tool.constants.Constants;
 import upm.blanca.tfg.optimization.tool.main.MainInterface;
 import upm.blanca.tfg.optimization.tool.mysql.util.MySQLUtil;
 
-public class ComboBoxUtility {
+public class QueryActionTypeUtility {
 
 	private static JTextArea desiredQuery;
 	private static JTextArea descriptionQuery;
@@ -106,7 +108,7 @@ public class ComboBoxUtility {
 						panel.remove(nextStep);	
 					if(addQuery != null)
 						panel.remove(addQuery);	
-					Util.removeComponentFromPanel(MainInterface.panel2, "id2_descriptionSelectedQuery", "id2_scrollPaneSqlQueries");
+					Util.removeComponentFromPanel(MainInterface.panelQueryType, "id2_descriptionSelectedQuery", "id2_scrollPaneSqlQueries");
 
 					sqlQuery = designQuery(panel);
 				}else{
@@ -202,12 +204,12 @@ public class ComboBoxUtility {
 		nextStep.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				//Busco el scrollPane y añado en el bean la consulta seleccionada
-				String selected = Util.searchScrollPaneInfo(MainInterface.panel2, "id2_scrollPaneSqlQueries");
+				String selected = Util.searchScrollPaneInfo(MainInterface.panelQueryType, "id2_scrollPaneSqlQueries");
 				if(selected != null && !selected.equals(Constants.BLANK)){
 					MainInterface.queryBean.setQueryString(selected);
-					MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3),true);
-					MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panel3));
-					Util.setLabelsInfoPanel3(MainInterface.panel3, "id2_infoSQLQuerySelected", "id2_infoDescriptQuerySelected");
+					MainInterface.mainInterface.setEnabledAt(MainInterface.mainInterface.indexOfComponent(MainInterface.panelReport),true);
+					MainInterface.mainInterface.setSelectedIndex(MainInterface.mainInterface.indexOfComponent(MainInterface.panelReport));
+					Util.setLabelsInfoPanel3(MainInterface.panelReport, "id2_infoSQLQuerySelected", "id2_infoDescriptQuerySelected");
 				}
 				else{
 					MensajeDialog.messageSelectOption();
@@ -240,6 +242,17 @@ public class ComboBoxUtility {
 	 * @return JPanel panel Panel panel que contiene el resumen de la consulta
 	 */
 	public static JPanel reportQuery(){
+		
+//		boolean checkRows = false;
+//		
+//		try {
+//			 checkRows = MySQLUtil.checkRows(MainInterface.queryBean.getQueryDescription());
+//		} catch (SQLException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
+
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 
@@ -277,6 +290,7 @@ public class ComboBoxUtility {
 			public void actionPerformed(ActionEvent e) {
 
 				if(MainInterface.queryBean.getNumRows() > 0){
+										
 					Calendar cal = Calendar.getInstance();
 					int year = cal.get(Calendar.YEAR);
 					int month = cal.get(Calendar.MONTH) + 1;
@@ -303,7 +317,8 @@ public class ComboBoxUtility {
 					JasperReport jReport;
 					try {
 						jReport = JasperCompileManager.compileReport(template);
-
+						
+						
 						List<ReportBean> listaReport = new ArrayList<ReportBean>();
 						listaReport = MySQLUtil.getQueryToReport();
 						JRBeanCollectionDataSource datasource = new JRBeanCollectionDataSource(listaReport);

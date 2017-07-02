@@ -30,7 +30,7 @@ public class PanelUtility {
 		label.setBounds(325,30,400,25); 
 		panel.add(label); 
 
-		CheckboxUtility.checkbox(panel);
+		BBDDActionUtility.checkbox(panel);
 
 		return panel;
 	}
@@ -59,7 +59,7 @@ public class PanelUtility {
 		panel.add(label);
 		panel.add(comboBox);
 
-		ComboBoxUtility.cleanPanelQueryTypeListener(comboBox, panel);
+		QueryActionTypeUtility.cleanPanelQueryTypeListener(comboBox, panel);
 
 		return panel;
 	}
@@ -73,7 +73,7 @@ public class PanelUtility {
 	public static JPanel createPanelReport(String text) {
 		JPanel panel = new JPanel();
 		panel.setName("panel3");
-		panel = ComboBoxUtility.reportQuery();
+		panel = QueryActionTypeUtility.reportQuery();
 
 		return panel;
 	}
